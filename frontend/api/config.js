@@ -1,6 +1,6 @@
 // config.js
-const url = 'http://120.53.231.51:5000/'
+const baseUrl = 'http://120.53.231.51:5000/api/v2'
 
 export default {
-    url
+    baseUrl
 }

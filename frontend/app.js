@@ -11,6 +11,22 @@ App({
   onLaunch() {
     // 调用API
     this.$util.hello();
-    this.$api.user.login();
+    // 登录
+    wx.login().then((res) => {
+      // 发送 res.code 到后台换取 openId, sessionKey, unionId
+      console.log(res);
+      const data = {
+        code: res.code
+      };
+      this.$api.user.login({ data: data }).then((res) => {
+        console.log(res);
+        console.log(res.data.jwt);
+        wx.setStorageSync('jwt', res.data.jwt);
+      }).catch((err) => {
+        console.error(err);
+      });
+    }).catch((err) => {
+      console.error(err);
+    });
   }
 });
