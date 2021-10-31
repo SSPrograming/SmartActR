@@ -40,6 +40,11 @@ app.$api.user.login(code);
 
 &emsp;&emsp;`utils/util.js`使用方法类似。
 
+```js
+const app = getApp();
+app.$util.hello();
+```
+
 ## 页面文件
 
 &emsp;&emsp;页面文件放在`pages`文件夹下，每个页面一个文件夹，可以使用组件。一个页面文件夹下至少包括`.js`、`.json`、`.wxml`与`.wxss`四个文件，分别对应逻辑、配置、结构与样式。
