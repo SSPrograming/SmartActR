@@ -9,7 +9,7 @@ const user = {
         return request({
             url: '/login',
             method: 'POST',
-            ...params
+            data: params
         });
     }
 };

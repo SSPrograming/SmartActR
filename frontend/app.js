@@ -15,10 +15,10 @@ App({
     wx.login().then((res) => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       console.log(res);
-      const data = {
+      const params = {
         code: res.code
       };
-      this.$api.user.login({ data: data }).then((res) => {
+      this.$api.user.login(params).then((res) => {
         console.log(res);
         console.log(res.data.jwt);
         wx.setStorageSync('jwt', res.data.jwt);
