@@ -4,6 +4,8 @@
 
 ```bash
 ├─api/
+|  ├─config.js          # 配置文件
+|  ├─common.js          # 包装了wx.request的promise形式
 │  ├─api.js             # api接口的统一出口
 |  └─...                # 其他的api文件
 ├─pages/
@@ -35,7 +37,10 @@
 ```js
 const app = getApp();
 // 调用user.js中的一个API
-app.$api.user.login(code);
+const params = {
+    code: res.code
+};
+app.$api.user.login(params);
 ```
 
 &emsp;&emsp;`utils/util.js`使用方法类似。
