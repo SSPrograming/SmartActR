@@ -39,7 +39,7 @@
             }
         ]
     },
-    "debug": true,
+    "debug": false,
     "usingComponents": {},
     "sitemapLocation": "sitemap.json",
     "style": "v2"

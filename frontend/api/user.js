@@ -2,10 +2,15 @@
 /**
  * 用户相关的api
  */
+import { request } from './common.js';
 
 const user = {
-    login(code) {
-        console.log(code);
+    login(params) {
+        return request({
+            url: '/login',
+            method: 'POST',
+            data: params
+        });
     }
 };
 

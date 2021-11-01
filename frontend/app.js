@@ -1,6 +1,6 @@
 // app.js
-import api from "api/api.js";
-import util from "utils/util.js";
+import api from 'api/api.js';
+import util from 'utils/util.js';
 
 App({
   $api: api,
@@ -15,7 +15,16 @@ App({
     wx.login().then((res) => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       console.log(res);
-      this.$api.user.login(res.code);
+      const params = {
+        code: res.code
+      };
+      this.$api.user.login(params).then((res) => {
+        console.log(res);
+        console.log(res.data.jwt);
+        wx.setStorageSync('jwt', res.data.jwt);
+      }).catch((err) => {
+        console.error(err);
+      });
     }).catch((err) => {
       console.error(err);
     });
