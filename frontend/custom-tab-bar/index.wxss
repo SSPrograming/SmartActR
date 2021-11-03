@@ -1,0 +1,64 @@
+/* custom-tab-bar/index.wxss */
+.tab-bar {
+    position: fix;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0rpx -5rpx 10rpx rgba(240, 194, 214, .6);
+}
+
+.radius-shadow {
+    position: absolute;
+    left: calc(50% - 80rpx);
+    top: -40rpx;
+    z-index: -1;
+    width: 160rpx;
+    height: 150rpx;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0rpx -5rpx 10rpx rgba(240, 194, 214, .6);
+}
+
+.tab-bar-containter {
+    display: flex;
+    background: #ffffff;
+}
+
+.tab-bar-item {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    padding: 20rpx;
+}
+
+.tab-bar-item-image-container {
+    background: #ffffff;
+}
+
+.tab-bar-item-image {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    box-shadow: 5rpx 5rpx 10rpx rgba(240, 195, 215, .8);
+}
+
+.tab-bar-item:nth-child(2) .tab-bar-item-image-container {
+    margin-top: -60rpx;
+    padding-top: 20rpx;
+    width: 160rpx;
+    height: 130rpx;
+    border-radius: 50%;
+}
+
+.tab-bar-item:nth-child(2) .tab-bar-item-image {
+    width: 130rpx;
+    height: 130rpx;
+}
+
+.tab-bar-item-text {
+    margin-top: 5rpx;
+    font-size: 24rpx;
+}
