@@ -7,7 +7,7 @@ import { request } from './common.js';
 const user = {
     login(params) {
         return request({
-            url: '/login',
+            url: '/user/login',
             method: 'POST',
             data: params
         });

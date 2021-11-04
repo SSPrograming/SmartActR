@@ -1,10 +1,10 @@
 // app.js
-import api from 'api/api.js';
-import util from 'utils/util.js';
+import $api from 'api/api.js';
+import $util from 'utils/util.js';
 
 App({
-  $api: api,
-  $util: util,
+  $api: $api,
+  $util: $util,
   globalData: {
 
   },
@@ -17,8 +17,8 @@ App({
   onShow(options) {
     // 如果是从其他小程序返回
     if (options.scene === 1038) {
-      if (options.referrerInfo.extraData) {
-        console.log(options.referrerInfo.extraData);
+      if (options.referrerInfo.extraData && options.referrerInfo.extraData.ticket) {
+        console.log(options.referrerInfo.extraData.ticket);
       }
     }
   }

@@ -44,12 +44,12 @@ const promptBind = () => {
             origin: 'miniapp',
             type: 'id.tsinghua'
           },
-          // 如果用户选择“取消”，则提示失败
+          // 如果用户选择取消打开小程序，则提示打开失败
           fail: (err) => {
             wx.showToast({
               title: '打开失败',
               icon: 'error',
-              duration: 1500
+              duration: 1000
             });
           }
         });
