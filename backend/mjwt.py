@@ -1,8 +1,6 @@
 import jwt
 import datetime
-import base64
-import hashlib
-import scrypt
+from config import query_yaml
 
 def generate_jwt(payload, expiry=None):
     """
@@ -19,7 +17,15 @@ def generate_jwt(payload, expiry=None):
     _payload = {'exp': expiry}
     _payload.update(payload)
 
-    secret = "^753*&FdFS#4D"            #TODO:后续需要写在配置文件中
+    secret = query_yaml('app.SECRET')
 
     token = jwt.encode(_payload, secret, algorithm='HS256')
     return token.decode()
+
+def decode_jwt(authorization):
+    secret = query_yaml('app.SECRET')
+    try:
+        payload = jwt.decode(authorization, secret, algorithms='HS256')
+        return payload, True
+    except Exception as e:
+        return e, False
