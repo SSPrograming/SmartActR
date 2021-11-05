@@ -1,1 +1,1 @@
-from .model import User, Reserve_Record
+from .model import User, Reserve_Record, Student

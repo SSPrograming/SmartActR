@@ -1,3 +1,4 @@
+from logging import exception
 from flask import request, jsonify, Blueprint, g
 import mjwt
 from config import query_yaml
@@ -62,3 +63,37 @@ def getIdentity():
         return jsonify({"errCode": 1,"errMsg": "用户身份无效"}), 200
     else:
         return jsonify({"errCode": 0,"identity": user.identity}), 200
+
+
+@bp_user.route('/api/v1/user/bind', methods=['POST'])
+@login_required
+def bind():
+    try:
+        ticket = request.json['ticket']
+    except KeyError:
+        return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
+    except:
+        return jsonify({"errCode": 1,"errMsg": "unknown error"}), 200
+    tsinghuaURL = query_yaml('app.TSINGHUAURL')
+    payload = {"token": ticket}
+    tResponse = requests.post(url=tsinghuaURL, data=payload)
+    tContent = tResponse.json()
+    if 'user' in tContent.keys():
+        try:
+            stuID = tContent['user']['card']
+            stuName = tContent['user']['name']
+            stuDepartment = tContent['user']['department']
+            stuCell = tContent['user']['cell']
+            stuMail = tContent['user']['mail']
+            stuInfo = {
+                'stuID': stuID,
+                'stuName': stuName,
+                'stuDepartment': stuDepartment,
+                'stuCell': stuCell,
+                'stuMail': stuMail
+            }
+            UserService.bind_user(g.userID, stuInfo)
+        except Exception:
+            return jsonify({"errCode": 1,"errMsg": "bad response from tsinghua server"}), 200
+    else:
+        return jsonify({"errCode": 1,"errMsg": "Invalid token"}), 200
