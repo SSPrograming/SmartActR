@@ -1,14 +1,15 @@
-from flask import Flask, request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint
 import mjwt
 from config import query_yaml
+from application.services import UserService
 import requests
 
-bp = Blueprint(
-    'hello',
+bp_user = Blueprint(
+    'user',
     __name__
 )
 
-@bp.route('/api/v1/login', methods=['POST'])
+@bp_user.route('/api/v1/user/login', methods=['POST'])
 def login():
     response = {}
     try:
@@ -17,13 +18,15 @@ def login():
         return jsonify({"errmsg": "bad agruments"}), 200
     except:
         return jsonify({"errmsg": "unknown error"}), 200
-    #TODO:ID 以及 secret 需要在配置文件中配置
+    
+    #获取用户信息
     wechatAppID = query_yaml('app.APPID')
     wechatAppSecret = query_yaml('app.APPSECRET')
     payload = {'appid': wechatAppID, 'secret': wechatAppSecret, 'js_code': code, 'grant_type':'authorization_code'}
     requestURL = query_yaml('app.WECHATURL')
     wechatResponse = requests.get(requestURL, params=payload)
     wechatResponseContent = wechatResponse.json()
+
     if 'errcode' in wechatResponseContent.keys(): 
         if wechatResponseContent['errcode'] == -1:
             return jsonify({"errmsg": "系统繁忙，请稍候再试"}), 200
@@ -36,7 +39,13 @@ def login():
         else:
             return jsonify({"errmsg": "未知错误"}), 200
     else:
-        userjwt = mjwt.generate_jwt({"openID": wechatResponseContent['openid']})
+        openid = wechatResponseContent['openid']
+        user, isExist = UserService.get_user(UserService,userID=openid)
+        if not isExist:
+            UserService.create_user(UserService, userID=openid, identity="tourist")
+        else:
+            print(user.identity)
+        userjwt = mjwt.generate_jwt({"openID": openid})
         response["jwt"] = userjwt
         return jsonify(response), 200
 

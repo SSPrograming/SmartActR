@@ -4,12 +4,12 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from config import query_yaml
 
-import hello
+from application import bp
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = query_yaml('db.MYSQL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.register_blueprint(hello.bp)
+app.register_blueprint(bp[0])
 
 db.init_app(app)
 manager = Manager(app)
