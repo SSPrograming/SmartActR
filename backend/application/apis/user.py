@@ -92,8 +92,43 @@ def bind():
                 'stuCell': stuCell,
                 'stuMail': stuMail
             }
-            UserService.bind_user(g.userID, stuInfo)
+            msg, bindstatus = UserService.bind_user(UserService, g.userID, stuInfo)
+            if bindstatus:
+                return jsonify({"errCode": 0, "isBind": True}), 200
+            else:
+                return jsonify({"errCode": 1, "errMsg": msg, "isBind": False}), 200
         except Exception:
             return jsonify({"errCode": 1,"errMsg": "bad response from tsinghua server"}), 200
     else:
         return jsonify({"errCode": 1,"errMsg": "Invalid token"}), 200
+
+
+@bp_user.route('/api/v1/user/getBindStatus', methods=['POST'])
+@login_required
+def getBindStatus():
+    msg, succ = UserService.get_user_status(UserService, g.userID)
+    if succ:
+        if msg == 'binded' or msg == 'freeze':
+            return jsonify({"errCode": 0,"isBind": True}), 200
+        else:
+            return jsonify({"errCode": 0,"isBind": False}), 200
+    else:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200
+
+
+@bp_user.route('/api/v1/user/getStudentInfo', methods=['POST'])
+@login_required
+def getStudentInfo():
+    msg, succ = UserService.get_stuInfo(UserService, g.userID)
+    if succ:
+        try:
+            msg['errCode'] = 0
+            stuID_tolist = list(msg['stuID'])
+            stuID_tolist[4:7] = "***"
+            msg['stuID'] = ''.join(stuID_tolist)
+            return jsonify(msg), 200
+        except Exception as e:
+            print(e)
+            return jsonify({"errCode": 1,"errMsg": "server error"}), 200
+    else:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200

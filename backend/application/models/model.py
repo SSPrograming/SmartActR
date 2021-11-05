@@ -8,6 +8,7 @@ class User(db.Model):
     userID = db.Column(db.String(128), primary_key=True,
                         doc="openid")
     status = db.Column(db.String(32), doc="用户状态")
+    # not bind, binded, freeze
     violationTimes = db.Column(db.Integer, doc="违约次数")
     freezeDate = db.Column(db.Date, doc= "开始冻结日期")
     identity = db.Column(db.String(32), doc="身份")

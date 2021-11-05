@@ -24,6 +24,26 @@ class UserService():
         except Exception as e:
             return e, False
     
+    def get_user_status(self, userID):
+        try:
+            u = User.query.filter(User.userID==userID).first()
+            if u is None:
+                return "用户不存在", False
+            else:
+                return u.status, True
+        except Exception as e:
+            return e, False
+    
+    def get_stuInfo(self, userID):
+        try:
+            u = Student.query.filter(Student.userID==userID).first()
+            if u is None:
+                return "用户不存在", False
+            else:
+                return {"stuID": u.stuID, "department": u.department}, True
+        except Exception as e:
+            return e, False
+    
     def bind_user(self, userID, stuInfo):
         try:
             stuID = stuInfo['stuID']
@@ -35,8 +55,26 @@ class UserService():
                           department=stuDepartment, cell=stuCell, email=stuMail)
             db.session.add(stu)
             db.session.commit()
-            return 'ok', True
+            msg, bindStatus = self.update_user_status(userID, 'binded')
+            if not bindStatus:
+                return msg, False
+            else:
+                return 'ok', True
         except KeyError:
             return '参数错误', False
+        except Exception as e:
+            return e, False
+
+    def update_user_status(self, userID, newStatus):
+        statuses = ['not bind', 'binded', 'freeze']
+        if newStatus not in statuses:
+            return "未定义的状态", False
+        user, isExist = self.get_user(self, userID)
+        if not isExist:
+            return "该用户不存在", False
+        try:
+            user.status = newStatus
+            db.session.commit()
+            return 'ok', True
         except Exception as e:
             return e, False
