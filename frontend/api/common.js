@@ -9,7 +9,7 @@ export const request = (params) => {
         wx.request({
             ...params,
             header: {
-                jwt: wx.getStorageSync('jwt') || ''
+                Authorization: wx.getStorageSync('jwt') || ''
             },
             url: config.baseUrl + params.url,
             success: (res) => {

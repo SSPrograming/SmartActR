@@ -11,6 +11,31 @@ const user = {
             method: 'POST',
             data: params
         });
+    },
+    bind(params) {
+        return request({
+            url: '/user/bind',
+            method: 'POST',
+            data: params
+        });
+    },
+    getBindStatus() {
+        return request({
+            url: '/user/getBindStatus',
+            method: 'POST'
+        });
+    },
+    getIdentity() {
+        return request({
+            url: '/user/getIdentity',
+            method: 'POST'
+        });
+    },
+    getStudentInfo() {
+        return request({
+            url: '/user/getStudentInfo',
+            method: 'POST'
+        });
     }
 };
 
