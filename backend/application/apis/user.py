@@ -54,7 +54,7 @@ def login():
         return jsonify(response), 200
 
 
-@bp_user.route('/api/v1/user/getIdentity', methods=['POST'])
+@bp_user.route('/api/v1/user/getIdentity', methods=['GET'])
 @login_required
 def getIdentity():
     openid = g.userID
@@ -69,15 +69,16 @@ def getIdentity():
 @login_required
 def bind():
     try:
-        ticket = request.json['ticket']
+        ticket = request.json['token']
     except KeyError:
         return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
     except:
         return jsonify({"errCode": 1,"errMsg": "unknown error"}), 200
     tsinghuaURL = query_yaml('app.TSINGHUAURL')
     payload = {"token": ticket}
-    tResponse = requests.post(url=tsinghuaURL, data=payload)
+    tResponse = requests.post(url=tsinghuaURL, json=payload)
     tContent = tResponse.json()
+    print(tContent)
     if 'user' in tContent.keys():
         try:
             stuID = tContent['user']['card']
@@ -96,14 +97,15 @@ def bind():
             if bindstatus:
                 return jsonify({"errCode": 0, "isBind": True}), 200
             else:
-                return jsonify({"errCode": 1, "errMsg": msg, "isBind": False}), 200
-        except Exception:
+                return jsonify({"errCode": 1, "errMsg": "绑定失败", "isBind": False}), 200
+        except Exception as e:
+            print(e)
             return jsonify({"errCode": 1,"errMsg": "bad response from tsinghua server"}), 200
     else:
         return jsonify({"errCode": 1,"errMsg": "Invalid token"}), 200
 
 
-@bp_user.route('/api/v1/user/getBindStatus', methods=['POST'])
+@bp_user.route('/api/v1/user/getBindStatus', methods=['GET'])
 @login_required
 def getBindStatus():
     msg, succ = UserService.get_user_status(UserService, g.userID)
@@ -116,7 +118,7 @@ def getBindStatus():
         return jsonify({"errCode": 1,"errMsg": msg}), 200
 
 
-@bp_user.route('/api/v1/user/getStudentInfo', methods=['POST'])
+@bp_user.route('/api/v1/user/getStudentInfo', methods=['GET'])
 @login_required
 def getStudentInfo():
     msg, succ = UserService.get_stuInfo(UserService, g.userID)
@@ -124,7 +126,7 @@ def getStudentInfo():
         try:
             msg['errCode'] = 0
             stuID_tolist = list(msg['stuID'])
-            stuID_tolist[4:7] = "***"
+            stuID_tolist[2:8] = "*****"
             msg['stuID'] = ''.join(stuID_tolist)
             return jsonify(msg), 200
         except Exception as e:
@@ -132,3 +134,30 @@ def getStudentInfo():
             return jsonify({"errCode": 1,"errMsg": "server error"}), 200
     else:
         return jsonify({"errCode": 1,"errMsg": msg}), 200
+
+
+@bp_user.route('/api/v1/user/unbind', methods=['POST'])
+@login_required
+def unBind():
+    """
+    解除绑定;删除stu表中相关行，更新user表中的status以及identity
+    """
+    # TODO:失败时回滚
+    msg1, stauts1 = UserService.update_user_status(UserService, userID=g.userID, newStatus='not bind')
+    msg2, status2 = UserService.update_user_identity(UserService, userID=g.userID, newIdentity='tourist')
+    msg3, status3 = UserService.drop_single_student(UserService, g.userID)
+    if stauts1 and status2 and status3:
+        return jsonify({"errCode": 0,"unBinded": True}), 200
+    else:
+        print(msg1, msg2, msg3)
+        return jsonify({"errCode": 1,"unBinded": False}), 200
+
+
+@bp_user.route('/api/v1/user/testfjsa*(*&^^^&dijklfa&(&d8998', methods=['GET'])
+def test():
+    """
+    测试用接口
+    """
+    msg, status = UserService.update_user_identity(UserService, '', 'student')
+    print(msg)
+    return jsonify({"ok":"ok"}), 200
