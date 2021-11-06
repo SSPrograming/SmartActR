@@ -19,6 +19,12 @@ const user = {
             data: params
         });
     },
+    unbind() {
+        return request({
+            url: '/user/unbind',
+            method: 'POST'
+        });
+    },
     getBindStatus() {
         return request({
             url: '/user/getBindStatus',

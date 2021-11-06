@@ -8,14 +8,35 @@ App({
   globalData: {
     login: false
   },
+  loginCallBack: [],
+  login() {
+    this.$util.login().then(() => {
+      // 设置登录标志
+      this.globalData.login = true;
+      // 完成回调函数
+      this.loginCallBack.forEach((cbk) => {
+        cbk();
+      });
+      this.loginCallBack = [];
+    }).catch((err) => {
+      // 如果登陆失败
+      console.error(err);
+    });
+  },
   onLaunch() {
     // 调用API
     this.$util.hello();
-    this.$util.login().then(() => {
-      this.globalData.login = true;
-      if (this.loginCallBack) {
-        this.loginCallBack();
-      }
+    // 解绑（仅用于测试）
+    this.loginCallBack.push(() => {
+      this.$api.user.unbind().then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.error(err);
+      });
+    });
+    // 把绑定加入登录回调函数列表
+    this.loginCallBack.push(() => {
+      // 获取绑定状态
       this.$api.user.getBindStatus().then((res) => {
         if (res.data.errCode === 0) {
           // 如果后端返回正确信息
@@ -30,7 +51,7 @@ App({
               console.error(err);
             });
             this.$api.user.getStudentInfo().then((res) => {
-              console.log(res);
+              console.log(res.data);
             }).catch((err) => {
               console.error(err);
             });
@@ -43,10 +64,9 @@ App({
         // 如果后端 api 调用失败
         console.error(err);
       });
-    }).catch((err) => {
-      // 如果登陆失败
-      console.error(err);
     });
+    // 登录
+    this.login();
   },
   onShow(options) {
     // 如果是从其他小程序返回
