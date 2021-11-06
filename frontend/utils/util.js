@@ -8,6 +8,10 @@ const hello = () => {
 const login = () => {
   return new Promise((resolve, reject) => {
     // 登录
+    wx.showLoading({
+      title: '登录中',
+      mask: true
+    });
     wx.login().then((res) => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       const params = {
@@ -15,6 +19,7 @@ const login = () => {
       };
       // 调用后端 api 获取登陆状态
       $api.user.login(params).then((res) => {
+        wx.hideLoading();
         if (res.data.errCode === 0) {
           // 如果后端返回正确信息
           try {
@@ -31,10 +36,12 @@ const login = () => {
         }
       }).catch((err) => {
         // 如果后端 api 调用失败
+        wx.hideLoading();
         console.error(err);
       });
     }).catch((err) => {
       // 如果微信登录失败
+      wx.hideLoading();
       console.error(err);
     });
   });
