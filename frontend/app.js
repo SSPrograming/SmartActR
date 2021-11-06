@@ -6,12 +6,16 @@ App({
   $api: $api,
   $util: $util,
   globalData: {
-
+    login: false
   },
   onLaunch() {
     // 调用API
     this.$util.hello();
     this.$util.login().then(() => {
+      this.globalData.login = true;
+      if (this.loginCallBack) {
+        this.loginCallBack();
+      }
       this.$api.user.getBindStatus().then((res) => {
         if (res.data.errCode === 0) {
           // 如果后端返回正确信息
@@ -47,9 +51,9 @@ App({
   onShow(options) {
     // 如果是从其他小程序返回
     if (options.scene === 1038) {
-      if (options.referrerInfo.extraData && options.referrerInfo.extraData.ticket) {
+      if (options.referrerInfo.extraData && options.referrerInfo.extraData.token) {
         const params = {
-          ticket: options.referrerInfo.extraData.ticket
+          token: options.referrerInfo.extraData.token
         };
         this.$api.user.bind(params).then((res) => {
           if (res.data.errCode === 0) {

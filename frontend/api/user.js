@@ -22,19 +22,19 @@ const user = {
     getBindStatus() {
         return request({
             url: '/user/getBindStatus',
-            method: 'POST'
+            method: 'GET'
         });
     },
     getIdentity() {
         return request({
             url: '/user/getIdentity',
-            method: 'POST'
+            method: 'GET'
         });
     },
     getStudentInfo() {
         return request({
             url: '/user/getStudentInfo',
-            method: 'POST'
+            method: 'GET'
         });
     }
 };
