@@ -1,3 +1,5 @@
+**用户相关**
+
 /api/v1/user/login
 
 POST
@@ -95,4 +97,190 @@ ret:
 	"department": "xxx"
 }
 ```
+
+****
+
+**登录相关**
+
+@bp_user.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
+
+@login_required
+
+> 获取全部设备信息
+
+params
+
+```
+{
+	"year": number,
+	"month": number,
+	"day": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": "",
+	[
+		{
+			"equipmentType": number,
+			"equipmentName": "name",
+			"equipmentID": number,
+			"equipmentStatus": number #0空闲，1拥挤，2已满
+		}
+	]
+}
+```
+
+
+
+@bp_user.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
+
+@login_required
+
+> 获取某一台设备信息
+
+params
+
+```
+{
+	"year": number,
+	"month": number,
+	"day": number，
+	"equipmentType": number,
+	"equipmentID": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": "",
+	{
+		"equipmentName": "name",
+		"equipmentDescription": "",
+		"equipmentSpareTime": 
+		[
+			{
+				"startTime": "", #时间格式: hh:mm
+				"endTime": ""
+			}	# 保证返回正确的时间
+		]
+	}
+}
+```
+
+
+
+@bp_user.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
+
+@login_required
+
+> 预约设备
+
+params:
+
+```
+{
+	"startTime": "",
+	"endTime": "",
+	"year": number,
+	"month": number,
+	"day": number,
+	"equipmentType": number,
+	"equipmentID": number
+}
+```
+
+
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": ""
+}
+```
+
+
+
+@bp_user.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+
+@login_required
+
+> 获取当前预约信息，今天及以后
+
+ret:
+
+```
+{
+	[
+		"reserveID": number,
+		"startTime": "",
+		"endTime": "",
+		"year": number,
+		"month": number,
+		"day": number,
+		"status": ""
+	]
+}
+```
+
+
+
+@bp_user.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+
+@login_required
+
+> 获取历史预约信息
+
+ret:
+
+```
+{
+	[
+		"reserveID": number,
+		"startTime": "",
+		"endTime": "",
+		"year": number,
+		"month": number,
+		"day": number,
+		"status": ""
+	]
+}
+```
+
+
+
+@bp_user.route('/api/v1/reserve/cancelReserve', methods=['GET'])
+
+@login_required
+
+> 取消某次预约
+
+params:
+
+```
+{
+	"reserveID": number
+}
+```
+
+
+
+ret:
+
+```
+{
+	"errCode": number
+}
+```
+
+
 
