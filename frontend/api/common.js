@@ -8,6 +8,9 @@ export const request = (params) => {
     return new Promise((resolve, reject) => {
         wx.request({
             ...params,
+            header: {
+                Authorization: wx.getStorageSync('jwt') || ''
+            },
             url: config.baseUrl + params.url,
             success: (res) => {
                 resolve(res);
