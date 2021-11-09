@@ -124,6 +124,7 @@ ret:
 {
 	"errCode": number,
 	"errMsg": "",
+	"status":
 	[
 		{
 			"equipmentType": number,
@@ -161,17 +162,15 @@ ret:
 {
 	"errCode": number,
 	"errMsg": "",
-	{
-		"equipmentName": "name",
-		"equipmentDescription": "",
-		"equipmentSpareTime": 
-		[
-			{
-				"startTime": "", #时间格式: hh:mm
-				"endTime": ""
-			}	# 保证返回正确的时间
-		]
-	}
+	"equipmentName": "name",
+	"equipmentDescription": "",
+	"equipmentSpareTime": 
+	[
+		{
+			"startTime": "", #时间格式: hh:mm
+			"endTime": ""
+		}	# 保证返回正确的时间
+	]
 }
 ```
 
