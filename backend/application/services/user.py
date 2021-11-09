@@ -127,4 +127,5 @@ class UserService():
             db.session.commit()
             return 'ok', True
         except Exception as e:
+            db.session.rollback()
             return e, False

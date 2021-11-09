@@ -2,7 +2,7 @@ from logging import exception
 from flask import request, jsonify, Blueprint, g
 import mjwt
 from config import query_yaml
-from application.services import UserService
+from application.services import UserService, EquipmentService
 from .login_decorator import login_required
 import requests
 
@@ -153,11 +153,16 @@ def unBind():
         return jsonify({"errCode": 1,"unBinded": False}), 200
 
 
-@bp_user.route('/api/v1/user/testfjsa*(*&^^^&dijklfa&(&d8998', methods=['GET'])
+@bp_user.route('/api/v1/user/test', methods=['GET'])
 def test():
     """
     测试用接口
     """
-    msg, status = UserService.update_user_identity(UserService, '', 'student')
+    msg = True
+    for i in range(2):
+        msg = msg and EquipmentService.insert_single_equipment(1, i+1)
+    for i in range(8):
+        msg = msg and EquipmentService.insert_single_equipment(2, i+1)
+    msg = msg and EquipmentService.insert_single_equipment(3,1)
     print(msg)
-    return jsonify({"ok":"ok"}), 200
+    return jsonify({"ok":msg}), 200

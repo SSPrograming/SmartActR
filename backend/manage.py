@@ -9,7 +9,8 @@ from application import bp
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = query_yaml('db.MYSQL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.register_blueprint(bp[0])
+for bluep in bp:
+    app.register_blueprint(bluep)
 app.before_request(verify_identity)
 
 db.init_app(app)
