@@ -100,7 +100,7 @@ ret:
 
 ****
 
-**登录相关**
+**预约相关**
 
 @bp_user.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 
@@ -258,7 +258,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/cancelReserve', methods=['GET'])
+@bp_user.route('/api/v1/reserve/cancelReserve', methods=['POST'])
 
 @login_required
 
