@@ -27,6 +27,7 @@ App({
     // 调用API
     this.$util.hello();
     // 解绑（仅用于测试）
+    /*
     this.loginCallBack.push(() => {
       this.$api.user.unbind().then((res) => {
         console.log(res);
@@ -34,6 +35,7 @@ App({
         console.error(err);
       });
     });
+    */
     // 把绑定加入登录回调函数列表
     this.loginCallBack.push(() => {
       // 获取绑定状态

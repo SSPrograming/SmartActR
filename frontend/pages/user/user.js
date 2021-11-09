@@ -8,14 +8,36 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        identity: ''
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        // 获取学生信息
+        const needToDo = () => {
+            app.$api.user.getIdentity().then((res) => {
+                if (res.data.errCode === 0) {
+                    // 如果后端返回正确信息
+                    this.setData({ identity: res.data.identity });
+                } else {
+                    // 如果后端返回错误信息
+                    console.error(res.data.errMsg);
+                }
+            }).catch((err) => {
+                // 如果后端 api 调用失败
+                console.error(err);
+            });
+        };
+        // 判断登录状态
+        if (app.globalData.login) {
+            // 如果已登录，则直接调用
+            needToDo();
+        } else {
+            // 如果未登录，则置入登录回调队列
+            app.loginCallBack.push(needToDo);
+        }
     },
 
     /**
