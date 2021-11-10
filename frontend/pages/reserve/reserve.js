@@ -8,14 +8,83 @@ Page({
    * 页面的初始数据
    */
   data: {
+    equipmentList: [
+      {
+        equipmentType: 1,
+        equipmentName: '实验台',
+        equipmentID: 1,
+        equipmentStatus: 0,
+      },
+      {
+        equipmentType: 1,
+        equipmentName: '实验台',
+        equipmentID: 2,
+        equipmentStatus: 1,
+      },
+      {
+        equipmentType: 2,
+        equipmentName: '3D打印机',
+        equipmentID: 1,
+        equipmentStatus: 2,
+      },
+    ],
+    dates: [],
+    selected: 0,
+    notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
+  },
 
+  switchDate(e) {
+    this.setData({
+      selected: e.currentTarget.dataset.index,
+    });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    // 获取当前及7天内日期信息
+    const numbers = [0, 1, 2, 3, 4, 5, 6];
+    const day2string = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    this.setData({
+      dates: numbers.map((num) => {
+        const date = new Date();
+        date.setDate(date.getDate() + num);
+        return {
+          index: num,
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          date: date.getDate(),
+          day: day2string[date.getDay()],
+        };
+      })
+    });
+    // 后端数据获取
+    const needToDo = () => {
+      const date = new Date();
+      const params = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate(),
+      };
+      app.$api.reserve.getAllEquipmentStatus(params)
+        .then((res) => {
+          this.setData({
+            equipmentList: res.data.status,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    // 判断登录状态
+    if (app.globalData.login) {
+      // 如果已登录，则直接调用
+      needToDo();
+    } else {
+      // 如果未登录，则置入登录回调队列
+      app.loginCallBack.push(needToDo);
+    }
   },
 
   /**

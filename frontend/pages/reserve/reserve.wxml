@@ -1,1 +1,9 @@
 <!--pages/reserve/reserve.wxml-->
+<view class="container">
+    <scroll-view class="dates-container" scroll-x="true">
+        <view class="date-container" wx:for="{{ dates }}" wx:key="index" data-index="{{ index }}" bindtap="switchDate">
+            <view class="date-day">{{ item.day }}</view>
+            <view class="{{ selected === index ? 'date-date date-data__selected' : 'date-date' }}">{{ item.date }}</view>
+        </view>
+    </scroll-view>
+</view>
