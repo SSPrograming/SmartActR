@@ -13,7 +13,7 @@ bp_reserve = Blueprint(
 )
 
 @bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
-@login_required
+#@login_required
 def getEquipmentStatus():
     try:
         targetType = request.json['equipmentType']
@@ -25,20 +25,16 @@ def getEquipmentStatus():
     except Exception as e:
         print(e)
         return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
-
     targetEquipment = EquipmentService.get_single_equipment(targetType, targetID)
     targetEquipmentType = EquipmentService.get_single_equipmentType(targetType)
     if targetEquipment is None:
         return jsonify({"errCode": 1,"errMsg": "无此设备"}), 200
-    
     if targetEquipment.equipmentStatus != 'fine':
         return jsonify({"errCode": 1,"errMsg": "设备损坏，不可使用"}), 200
-
     occupation, hasOccupation = ReserveService.get_occupation_of_day(date)
-
     records = ReserveService.get_record_of_single_equipment(date, targetType, targetID)
-    
     for record in records:
+        print(record.startTime)
         occupation.append({"startTime": record.startTime,
                                           "endTime": record.endTime})
     occupation = sorted(occupation, key=operator.itemgetter('startTime'))
@@ -64,15 +60,23 @@ def getEquipmentStatus():
         else:
             occupation_merged.append(cur_item)
             cur_item = item
+    occupation_merged.append(cur_item)
     spareTime=[{"startTime": "08:00", "endTime":"22:00"}]
+
+    for i in range(len(occupation_merged)):
+        occupation_merged[i]["startTime"] = occupation_merged[i]["startTime"].strftime("%H:%M")
+        occupation_merged[i]["endTime"] = occupation_merged[i]["endTime"].strftime("%H:%M")
+    
     for item in occupation_merged:
         spareTime_last = spareTime[-1]
+        spareTime.pop()
         splitTime_1 = {"startTime": spareTime_last["startTime"], "endTime": item["startTime"]}
         if splitTime_1["startTime"] != splitTime_1["endTime"]:
             spareTime.append(splitTime_1)
         splitTime_2 = {"startTime": item["endTime"], "endTime": spareTime_last["endTime"]}
         if splitTime_2["startTime"] != splitTime_2["endTime"]:
             spareTime.append(splitTime_2)
+
     return jsonify({
             "errCode": 0,
             "equipmentName": targetEquipmentType.equipmentName,
