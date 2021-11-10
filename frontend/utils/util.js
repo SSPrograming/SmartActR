@@ -47,6 +47,26 @@ const login = () => {
   });
 };
 
+const openBind = () => {
+  wx.navigateToMiniProgram({
+    appId: 'wx31f880501d44724a',
+    path: 'pages/index/index',
+    envVersion: 'trial',
+    extraData: {
+      origin: 'miniapp',
+      type: 'id.tsinghua'
+    },
+    // 如果用户选择取消打开小程序，则提示打开失败
+    fail: (err) => {
+      wx.showToast({
+        title: '打开失败',
+        icon: 'error',
+        duration: 1000
+      });
+    }
+  });
+};
+
 const promptBind = () => {
   // 绑定身份
   wx.showModal({
@@ -60,30 +80,17 @@ const promptBind = () => {
     success: (res) => {
       if (res.confirm) {
         // 如果用户选择确定，则跳转至助教的小程序
-        wx.navigateToMiniProgram({
-          appId: 'wx31f880501d44724a',
-          path: 'pages/index/index',
-          envVersion: 'trial',
-          extraData: {
-            origin: 'miniapp',
-            type: 'id.tsinghua'
-          },
-          // 如果用户选择取消打开小程序，则提示打开失败
-          fail: (err) => {
-            wx.showToast({
-              title: '打开失败',
-              icon: 'error',
-              duration: 1000
-            });
-          }
-        });
-      }
+        openBind();
+      };
     }
   });
 };
 
+
+
 export default {
   hello,
   login,
-  promptBind
+  promptBind,
+  openBind
 };
