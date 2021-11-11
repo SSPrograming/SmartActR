@@ -4,7 +4,6 @@ from config import query_yaml
 
 def generate_jwt(payload, expiry=None):
     """
-    
     :param payload: dict 载荷
     :param expiry: datetime 有效期
     :return: 生成jwt

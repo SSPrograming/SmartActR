@@ -19,7 +19,7 @@ class equipmentType(db.Model):
     设备种类
     """
     __tablename__ = 'equipmentType'
-    equipmentType = db.Column(db.Integer,primary_key=True)
+    equipmentType = db.Column(db.Integer,primary_key=True,autoincrement=True)
     equipmentName = db.Column(db.String(256))
     equipmentDescription = db.Column(db.String(1024))
 
@@ -27,8 +27,7 @@ class Equipment(db.Model):
     __tablename__ = 'equipment'
     equipmentType = db.Column(db.Integer, db.ForeignKey('equipmentType.equipmentType'), primary_key=True,
                               doc="设备种类")
-    equipmentID = db.Column(db.Integer, primary_key=True,
-                            doc="设备号")
+    equipmentID = db.Column(db.Integer, primary_key=True)
     equipmentStatus = db.Column(db.String(32),
                                 doc="设备状态,是否损坏等,默认为fine")
 
