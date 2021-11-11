@@ -225,11 +225,14 @@
 }
 
 .equipment-status {
+    /* 文字 */
     font-size: 48rpx;
 }
 
 ::-webkit-scrollbar {
+    /* 大小 */
     width: 0;
     height: 0;
+    /* 文字 */
     color: transparent;
 }
