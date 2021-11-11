@@ -7,16 +7,41 @@
 }
 
 .dates-container {
+    position: relative;
     box-sizing: border-box;
     text-align: center;
     margin: auto;
     padding: 30rpx;
-    width: 85%;
+    width: 666rpx;
     border: #d4317a 4rpx solid;
     border-radius: 20rpx;
     background: #ffffff;
     box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
     white-space: nowrap;
+}
+
+.left-arrow {
+    position: absolute;
+    top: 76rpx;
+    left: -90rpx;
+    width: 0;
+    height: 0;
+    border-top: 50rpx solid transparent;
+    border-right: 50rpx solid rgba(241, 123, 174, 0.6);
+    border-bottom: 50rpx solid transparent;
+    border-left: 50rpx solid transparent;
+}
+
+.right-arrow {
+    position: absolute;
+    top: 80rpx;
+    left: 651rpx;
+    width: 0;
+    height: 0;
+    border-top: 50rpx solid transparent;
+    border-right: 50rpx solid transparent;
+    border-bottom: 50rpx solid transparent;
+    border-left: 50rpx solid rgba(241, 123, 174, 0.6);
 }
 
 .date-container {
@@ -26,25 +51,25 @@
 
 .date-day {
     padding-bottom: 10rpx;
-    width: 130rpx;
+    width: 150rpx;
     font-size: 32rpx;
 }
 
 .date-date {
     box-sizing: border-box;
-    width: 130rpx;
-    height: 130rpx;
+    width: 150rpx;
+    height: 150rpx;
     background: linear-gradient(#ab2f74, #d23c7e);
     border-radius: 50%;
-    font-size: 65rpx;
-    line-height: 130rpx;
+    font-size: 75rpx;
+    line-height: 150rpx;
     color: #ffffff;
 }
 
 .date-data__selected {
     border: #d4317a 4rpx solid;
     background: #ffffff;
-    line-height: 126rpx;
+    line-height: 146rpx;
     color: #d4317a;
 }
 
@@ -52,4 +77,17 @@
     width: 0;
     height: 0;
     color: transparent;
+}
+
+.notice-container {
+    box-sizing: border-box;
+    display: flex;
+    margin: 30rpx auto 0 auto;
+    padding: 20rpx;
+    width: 666rpx;
+    border: #d4317a 4rpx solid;
+    border-radius: 20rpx;
+    background: #ffffff;
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    white-space: nowrap;
 }

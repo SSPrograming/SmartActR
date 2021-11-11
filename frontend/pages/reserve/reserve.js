@@ -33,10 +33,37 @@ Page({
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
   },
 
+  // 后端数据获取
+  needToDo() {
+    const date = new Date();
+    const params = this.data.dates[this.data.selected];
+    app.$api.reserve.getAllEquipmentStatus(params)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          this.setData({
+            equipmentList: res.data.status,
+          });
+        } else {
+          console.error(res.data.errMsg);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+
   switchDate(e) {
     this.setData({
       selected: e.currentTarget.dataset.index,
     });
+    // 判断登录状态
+    if (app.globalData.login) {
+      // 如果已登录，则直接调用
+      this.needToDo();
+    } else {
+      // 如果未登录，则置入登录回调队列
+      app.loginCallBack.push(this.needToDo);
+    }
   },
 
   /**
@@ -51,7 +78,6 @@ Page({
         const date = new Date();
         date.setDate(date.getDate() + num);
         return {
-          index: num,
           year: date.getFullYear(),
           month: date.getMonth() + 1,
           date: date.getDate(),
@@ -59,31 +85,13 @@ Page({
         };
       })
     });
-    // 后端数据获取
-    const needToDo = () => {
-      const date = new Date();
-      const params = {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate(),
-      };
-      app.$api.reserve.getAllEquipmentStatus(params)
-        .then((res) => {
-          this.setData({
-            equipmentList: res.data.status,
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    };
     // 判断登录状态
     if (app.globalData.login) {
       // 如果已登录，则直接调用
-      needToDo();
+      this.needToDo();
     } else {
       // 如果未登录，则置入登录回调队列
-      app.loginCallBack.push(needToDo);
+      app.loginCallBack.push(this.needToDo);
     }
   },
 

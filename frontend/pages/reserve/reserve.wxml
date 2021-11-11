@@ -1,9 +1,21 @@
 <!--pages/reserve/reserve.wxml-->
 <view class="container">
-    <scroll-view class="dates-container" scroll-x="true">
-        <view class="date-container" wx:for="{{ dates }}" wx:key="index" data-index="{{ index }}" bindtap="switchDate">
-            <view class="date-day">{{ item.day }}</view>
-            <view class="{{ selected === index ? 'date-date date-data__selected' : 'date-date' }}">{{ item.date }}</view>
+    <view class="dates-container">
+        <view class="left-arrow"></view>
+        <view class="right-arrow"></view>
+        <scroll-view scroll-x="true">
+            <view class="date-container" wx:for="{{ dates }}" wx:key="index" data-index="{{ index }}" bindtap="switchDate">
+                <view class="date-day">{{ item.day }}</view>
+                <view class="{{ selected === index ? 'date-date date-data__selected' : 'date-date' }}">{{ item.date }}</view>
+            </view>
+        </scroll-view>
+    </view>
+    <view class="notice-container">
+        <view class="title-container">
+            <view class="title-image"></view>
+            <view class="title-text">公告</view>
         </view>
-    </scroll-view>
+        <view class="vertical-delimiter"></view>
+        <view class="content">{{ notice }}</view>
+    </view>
 </view>
