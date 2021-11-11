@@ -34,7 +34,7 @@ Page({
   },
 
   // 后端数据获取
-  needToDo() {
+  getAllEquipmentStatus() {
     const date = new Date();
     const params = this.data.dates[this.data.selected];
     app.$api.reserve.getAllEquipmentStatus(params)
@@ -58,11 +58,9 @@ Page({
     });
     // 判断登录状态
     if (app.globalData.login) {
-      // 如果已登录，则直接调用
-      this.needToDo();
+      this.getAllEquipmentStatus();
     } else {
-      // 如果未登录，则置入登录回调队列
-      app.loginCallBack.push(this.needToDo);
+      app.loginCallBack.push(this.getAllEquipmentStatus);
     }
   },
 
@@ -87,11 +85,9 @@ Page({
     });
     // 判断登录状态
     if (app.globalData.login) {
-      // 如果已登录，则直接调用
-      this.needToDo();
+      this.getAllEquipmentStatus();
     } else {
-      // 如果未登录，则置入登录回调队列
-      app.loginCallBack.push(this.needToDo);
+      app.loginCallBack.push(this.getAllEquipmentStatus);
     }
   },
 

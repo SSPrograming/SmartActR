@@ -83,11 +83,65 @@
     box-sizing: border-box;
     display: flex;
     margin: 30rpx auto 0 auto;
-    padding: 20rpx;
+    padding: 10rpx 20rpx 10rpx 20rpx;
     width: 666rpx;
     border: #d4317a 4rpx solid;
     border-radius: 20rpx;
     background: #ffffff;
     box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    font-size: 32rpx;
+    line-height: 32rpx;
     white-space: nowrap;
+}
+
+.notice-title-container {
+    display: flex;
+    padding: 10rpx 0;
+}
+
+.notice-title-image {
+    width: 32rpx;
+    height: 32rpx;
+}
+
+.notice-vertical-delimiter {
+    flex-basis: 6rpx;
+    margin: 0 20rpx 0 20rpx;
+    background: linear-gradient(#ab2f74, #d23c7e);
+}
+
+.notice-content {
+    flex: 1;
+    overflow: hidden;
+    padding: 10rpx 0;
+}
+
+.notice-look {
+    flex-basis: 32rpx;
+}
+
+@keyframes scroll-notice {
+    0% {
+        text-indent: 0;
+    }
+
+    5% {
+        text-indent: 0;
+    }
+
+    95% {
+        text-indent: -34em;
+    }
+
+    100% {
+        text-indent: -34em;
+    }
+}
+
+/* 向此元素应用动画效果 */
+.notice-content {
+    animation-name: scroll-notice;
+    animation-timing-function: linear;
+    animation-duration: 12s;
+    animation-iteration-count: infinite;
 }

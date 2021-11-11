@@ -11,11 +11,12 @@
         </scroll-view>
     </view>
     <view class="notice-container">
-        <view class="title-container">
-            <view class="title-image"></view>
-            <view class="title-text">公告</view>
+        <view class="notice-title-container">
+            <view class="notice-title-image"></view>
+            <view class="notice-title-text">公告</view>
         </view>
-        <view class="vertical-delimiter"></view>
-        <view class="content">{{ notice }}</view>
+        <view class="notice-vertical-delimiter"></view>
+        <view class="notice-content">{{ notice }}</view>
+        <view class="notice-look"></view>
     </view>
 </view>
