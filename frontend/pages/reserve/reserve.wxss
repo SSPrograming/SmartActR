@@ -109,11 +109,11 @@
 
 @keyframes scroll-notice {
     0% {
-        text-indent: 0;
+        text-indent: 18em;
     }
 
     100% {
-        text-indent: -24em;
+        text-indent: -34em;
     }
 }
 
@@ -121,7 +121,7 @@
 .notice-content {
     animation-name: scroll-notice;
     animation-timing-function: linear;
-    animation-duration: 10s;
+    animation-duration: 12s;
     animation-iteration-count: infinite;
 }
 

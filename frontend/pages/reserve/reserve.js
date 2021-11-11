@@ -75,17 +75,19 @@ Page({
   },
 
   switchDate(e) {
-    this.setData({
-      selected: e.currentTarget.dataset.index,
-    });
-    // 判断登录状态
-    this.setData({
-      loading: true,
-    });
-    if (app.globalData.login) {
-      this.getAllEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getAllEquipmentStatus);
+    if (e.currentTarget.dataset.index != this.data.selected) {
+      this.setData({
+        selected: e.currentTarget.dataset.index,
+      });
+      // 判断登录状态
+      this.setData({
+        loading: true,
+      });
+      if (app.globalData.login) {
+        this.getAllEquipmentStatus();
+      } else {
+        app.loginCallBack.push(this.getAllEquipmentStatus);
+      }
     }
   },
 
