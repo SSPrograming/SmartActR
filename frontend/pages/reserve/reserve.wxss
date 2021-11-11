@@ -1,112 +1,148 @@
 /* pages/reserve/reserve.wxss */
 .container {
+    /* 大小 */
     padding-top: 30rpx;
 }
 
 .dates-container {
+    /* 位置 */
     position: relative;
-    text-align: center;
-    margin: auto;
-    padding: 30rpx;
+    /* 大小 */
     width: 592rpx;
-    border: #d4317a 4rpx solid;
-    border-radius: 20rpx;
-    background: #ffffff;
-    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    padding: 30rpx;
+    margin: auto;
+    /* 文字 */
+    text-align: center;
     white-space: nowrap;
+    /* 背景 */
+    background: #ffffff;
+    border: #d4317a 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
 }
 
 .left-arrow {
+    /* 位置 */
     position: absolute;
     top: 95rpx;
     left: -50rpx;
+    /* 大小 */
     width: 65rpx;
     height: 80rpx;
+    /* CSS3 */
     transform: scaleX(-1);
 }
 
 .right-arrow {
+    /* 位置 */
     position: absolute;
     top: 95rpx;
     right: -50rpx;
+    /* 大小 */
     width: 65rpx;
     height: 80rpx;
 }
 
 .date-container {
+    /* 位置 */
     display: inline-block;
+    /* 大小 */
     padding: 0 15rpx 0 15rpx;
 }
 
 .date-day {
-    padding-bottom: 10rpx;
+    /* 大小 */
     width: 150rpx;
+    padding-bottom: 10rpx;
+    /* 文字 */
     font-size: 32rpx;
 }
 
 .date-date {
-    box-sizing: border-box;
+    /* 大小 */
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     width: 150rpx;
     height: 150rpx;
-    background: linear-gradient(#ab2f74, #d23c7e);
-    border-radius: 50%;
+    /* 文字 */
     font-size: 60rpx;
-    line-height: 150rpx;
     color: #ffffff;
+    line-height: 150rpx;
+    /* 背景 */
+    background: linear-gradient(#ab2f74, #d23c7e);
+    /* CSS3 */
+    border-radius: 50%;
 }
 
 .date-data__selected {
-    border: #d4317a 4rpx solid;
-    background: #ffffff;
+    /* 文字 */
     color: #d4317a;
+    /* 背景 */
+    background: #ffffff;
+    border: #d4317a 4rpx solid;
 }
 
 .notice-container {
+    /* 位置 */
     display: flex;
-    margin: 30rpx auto 0 auto;
-    padding: 10rpx 20rpx 10rpx 20rpx;
+    /* 大小 */
     width: 612rpx;
-    border: #d4317a 4rpx solid;
-    border-radius: 20rpx;
-    background: #ffffff;
-    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    padding: 10rpx 20rpx 10rpx 20rpx;
+    margin: 30rpx auto 0 auto;
+    /* 文字 */
     font-size: 32rpx;
     line-height: 32rpx;
     white-space: nowrap;
+    /* 背景 */
+    background: #ffffff;
+    border: #d4317a 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
 }
 
 .notice-title-container {
+    /* 位置 */
     display: flex;
+    /* 大小 */
     padding: 10rpx 0;
 }
 
 .notice-title-image {
+    /* 大小 */
     width: 32rpx;
     height: 32rpx;
     margin-right: 10rpx;
 }
 
 .notice-vertical-delimiter {
+    /* 大小 */
     flex-basis: 4rpx;
     margin: 0 20rpx 0 20rpx;
+    /* 背景 */
     background: linear-gradient(#ab2f74, #d23c7e);
+    /* CSS3 */
     border-radius: 2rpx;
 }
 
 .notice-content {
+    /* 大小 */
     flex: 1;
-    overflow: hidden;
     padding: 10rpx 0;
+    /* 文字 */
+    overflow: hidden;
 }
 
 .notice-look {
+    /* 大小 */
     width: 22rpx;
-    padding: 10rpx 0 10rpx 20rpx;
     height: 32rpx;
+    padding: 10rpx 0 10rpx 20rpx;
 }
 
+/* 公告滚动动画 */
 @keyframes scroll-notice {
     0% {
         text-indent: 18em;
@@ -117,8 +153,8 @@
     }
 }
 
-/* 向此元素应用动画效果 */
 .notice-content {
+    /* CSS3 */
     animation-name: scroll-notice;
     animation-timing-function: linear;
     animation-duration: 12s;
@@ -126,49 +162,65 @@
 }
 
 .equipments-container {
+    /* 大小 */
     margin-top: 30rpx;
 }
 
 .equipment-scroll {
+    /* 大小 */
     max-height: calc(100vh - 585rpx);
 }
 
 .equipment-container {
+    /* 位置 */
     display: flex;
-    margin: 0 auto 30rpx auto;
-    padding: 20rpx;
+    /* 大小 */
     width: 612rpx;
-    border: #d4317a 4rpx solid;
-    border-radius: 20rpx;
-    background: #ffffff;
-    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    padding: 20rpx;
+    margin: 0 auto 30rpx auto;
+    /* 文字 */
     font-size: 32rpx;
+    /* 背景 */
+    background: #ffffff;
+    border: #d4317a 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
 }
 
 .equipment-container:last-child {
+    /* 大小 */
     margin-bottom: 200rpx;
 }
 
 .equipment-image {
+    /* 大小 */
     width: 220rpx;
     height: 180rpx;
 }
 
 .equipment-vertical-delimiter {
+    /* 大小 */
     flex-basis: 4rpx;
     margin: 0 20rpx 0 20rpx;
+    /* 背景 */
     background: linear-gradient(#ab2f74, #d23c7e);
+    /* CSS3 */
     border-radius: 2rpx;
 }
 
 .equipment-content {
-    flex: 1;
-    text-align: right;
+    /* 位置 */
     display: flex;
     flex-direction: column;
+    /* 大小 */
+    flex: 1;
+    /* 文字 */
+    text-align: right;
 }
 
 .equipments-whitespace {
+    /* 大小 */
     flex: 1;
 }
 

@@ -1,64 +1,84 @@
 /* custom-tab-bar/index.wxss */
 .tab-bar {
+    /* 位置 */
     position: fix;
-    left: 0;
     bottom: 0;
+    left: 0;
+    /* 大小 */
     width: 100%;
+    /* CSS3 */
     box-shadow: 0rpx -5rpx 10rpx rgba(240, 194, 214, .6);
 }
 
 .radius-shadow {
+    /* 位置 */
     position: absolute;
-    left: calc(50% - 80rpx);
     top: -40rpx;
+    left: calc(50% - 80rpx);
     z-index: -1;
+    /* 大小 */
     width: 160rpx;
     height: 150rpx;
-    border-radius: 50%;
+    /* 背景 */
     background: #ffffff;
+    /* CSS3 */
     box-shadow: 0rpx -5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 50%;
 }
 
 .tab-bar-containter {
+    /* 位置 */
     display: flex;
+    /* 背景 */
     background: #ffffff;
 }
 
 .tab-bar-item {
-    flex: 1;
-    text-align: center;
+    /* 位置 */
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    display: flex;
+    /* 大小 */
+    flex: 1;
     padding: 20rpx;
+    /* 文字 */
+    text-align: center;
 }
 
 .tab-bar-item-image-container {
+    /* 背景 */
     background: #ffffff;
 }
 
 .tab-bar-item-image {
+    /* 大小 */
     width: 80rpx;
     height: 80rpx;
-    border-radius: 50%;
+    /* CSS3 */
     box-shadow: 5rpx 5rpx 10rpx rgba(240, 195, 215, .8);
+    border-radius: 50%;
 }
 
 .tab-bar-item:nth-child(2) .tab-bar-item-image-container {
-    margin-top: -60rpx;
-    padding-top: 20rpx;
+    /* 大小 */
     width: 160rpx;
     height: 130rpx;
+    padding-top: 20rpx;
+    margin-top: -60rpx;
+    /* CSS3 */
     border-radius: 50%;
 }
 
 .tab-bar-item:nth-child(2) .tab-bar-item-image {
+    /* 大小 */
     width: 130rpx;
     height: 130rpx;
 }
 
 .tab-bar-item-text {
+    /* 大小 */
     margin-top: 6rpx;
+    /* 文字 */
     font-size: 24rpx;
 }
