@@ -59,6 +59,6 @@
 }
 
 .tab-bar-item-text {
-    margin-top: 5rpx;
+    margin-top: 6rpx;
     font-size: 24rpx;
 }

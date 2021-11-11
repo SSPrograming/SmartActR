@@ -9,6 +9,7 @@ Page({
    */
   data: {
     identity: '',
+    loading: false,
   },
 
   /**

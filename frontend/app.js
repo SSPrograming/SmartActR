@@ -24,14 +24,19 @@ App({
             this.loginCallBack = [];
           })
           .catch((err) => {
-            // 如果登陆失败
+            // 如果登录失败
+            wx.showToast({
+              title: '登录失败',
+              icon: 'error',
+              duration: 1000,
+            });
             console.error(err);
           });
       }
     };
     needToDo();
     // 打开定时器以处理登录失败的问题
-    this.login_timer = setInterval(needToDo, 1000);
+    this.login_timer = setInterval(needToDo, 10000);
   },
 
   /**

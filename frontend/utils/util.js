@@ -34,20 +34,19 @@ const login = () => {
               }
             } else {
               // 如果后端返回错误信息
-              // TODO: 增加更多的错误处理
-              console.error(res.data.errMsg);
+              reject(res.data.errMsg);
             }
           })
           .catch((err) => {
             // 如果后端 api 调用失败
             wx.hideLoading({ fail: (err) => { } });
-            console.error(err);
+            reject(err);
           });
       })
       .catch((err) => {
         // 如果微信登录失败
         wx.hideLoading({ fail: (err) => { } });
-        console.error(err);
+        reject(err);
       });
   });
 };
