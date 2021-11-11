@@ -8,29 +8,43 @@ Page({
    * 页面的初始数据
    */
   data: {
+    equipmentType2imagePath: [
+      '',
+      '/resources/images/3DPrinter.jpg',
+      '/resources/images/experimentTable.jpg',
+      '/resources/images/laserCutter.jpg',
+    ],
+    equipmentStatus2String: [
+      '空闲',
+      '拥挤',
+      '已满',
+    ],
     equipmentList: [
+      /*
       {
-        equipmentType: 1,
+        equipmentType: 2,
         equipmentName: '实验台',
         equipmentID: 1,
         equipmentStatus: 0,
       },
       {
-        equipmentType: 1,
+        equipmentType: 2,
         equipmentName: '实验台',
         equipmentID: 2,
         equipmentStatus: 1,
       },
       {
-        equipmentType: 2,
+        equipmentType: 1,
         equipmentName: '3D打印机',
         equipmentID: 1,
         equipmentStatus: 2,
       },
+      */
     ],
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
+    loading: false,
   },
 
   // 后端数据获取
@@ -46,9 +60,15 @@ Page({
         } else {
           console.error(res.data.errMsg);
         }
+        this.setData({
+          loading: false,
+        });
       })
       .catch((err) => {
         console.error(err);
+        this.setData({
+          loading: false,
+        });
       });
   },
 
@@ -57,6 +77,9 @@ Page({
       selected: e.currentTarget.dataset.index,
     });
     // 判断登录状态
+    this.setData({
+      loading: true,
+    });
     if (app.globalData.login) {
       this.getAllEquipmentStatus();
     } else {
@@ -84,6 +107,9 @@ Page({
       })
     });
     // 判断登录状态
+    this.setData({
+      loading: true,
+    });
     if (app.globalData.login) {
       this.getAllEquipmentStatus();
     } else {

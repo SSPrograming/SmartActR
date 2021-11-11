@@ -1,4 +1,7 @@
 <!--pages/reserve/reserve.wxml-->
+<page-meta root-background-color="#ebebeb">
+    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#000000" background-color="#ebebeb" />
+</page-meta>
 <view class="container">
     <view class="dates-container">
         <view class="left-arrow"></view>
@@ -18,5 +21,18 @@
         <view class="notice-vertical-delimiter"></view>
         <view class="notice-content">{{ notice }}</view>
         <view class="notice-look"></view>
+    </view>
+    <view class="equipments-container">
+        <scroll-view class="equipment-scroll" scroll-y="true">
+            <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}">
+                <image class="equipment-image" src="{{ equipmentType2imagePath[item.equipmentType] }}"></image>
+                <view class="equipment-vertical-delimiter"></view>
+                <view class="equipment-content">
+                    <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>
+                    <view class="equipments-whitespace"></view>
+                    <view class="equipment-status" style="{{ item.equipmentStatus === 0 ? 'color: green' : item.equipmentStatus === 1 ? 'color: orange' : 'color: red' }}">{{ equipmentStatus2String[item.equipmentStatus] }}</view>
+                </view>
+            </view>
+        </scroll-view>
     </view>
 </view>

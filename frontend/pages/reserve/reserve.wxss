@@ -1,18 +1,14 @@
 /* pages/reserve/reserve.wxss */
 .container {
     padding-top: 30rpx;
-    width: 100vw;
-    min-height: calc(100vh - 30rpx);
-    background: #ebebeb;
 }
 
 .dates-container {
     position: relative;
-    box-sizing: border-box;
     text-align: center;
     margin: auto;
     padding: 30rpx;
-    width: 666rpx;
+    width: 592rpx;
     border: #d4317a 4rpx solid;
     border-radius: 20rpx;
     background: #ffffff;
@@ -22,26 +18,20 @@
 
 .left-arrow {
     position: absolute;
-    top: 76rpx;
-    left: -90rpx;
-    width: 0;
-    height: 0;
-    border-top: 50rpx solid transparent;
-    border-right: 50rpx solid rgba(241, 123, 174, 0.6);
-    border-bottom: 50rpx solid transparent;
-    border-left: 50rpx solid transparent;
+    top: 100rpx;
+    left: -50rpx;
+    width: 70rpx;
+    height: 70rpx;
+    background: #000;
 }
 
 .right-arrow {
     position: absolute;
-    top: 80rpx;
-    left: 651rpx;
-    width: 0;
-    height: 0;
-    border-top: 50rpx solid transparent;
-    border-right: 50rpx solid transparent;
-    border-bottom: 50rpx solid transparent;
-    border-left: 50rpx solid rgba(241, 123, 174, 0.6);
+    top: 100rpx;
+    right: -50rpx;
+    width: 70rpx;
+    height: 70rpx;
+    background: #000;
 }
 
 .date-container {
@@ -56,7 +46,6 @@
 }
 
 .date-date {
-    box-sizing: border-box;
     width: 150rpx;
     height: 150rpx;
     background: linear-gradient(#ab2f74, #d23c7e);
@@ -67,24 +56,19 @@
 }
 
 .date-data__selected {
+    width: 146rpx;
+    height: 146rpx;
     border: #d4317a 4rpx solid;
     background: #ffffff;
-    line-height: 146rpx;
+    line-height: 150rpx;
     color: #d4317a;
 }
 
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    color: transparent;
-}
-
 .notice-container {
-    box-sizing: border-box;
     display: flex;
     margin: 30rpx auto 0 auto;
     padding: 10rpx 20rpx 10rpx 20rpx;
-    width: 666rpx;
+    width: 612rpx;
     border: #d4317a 4rpx solid;
     border-radius: 20rpx;
     background: #ffffff;
@@ -105,9 +89,10 @@
 }
 
 .notice-vertical-delimiter {
-    flex-basis: 6rpx;
+    flex-basis: 4rpx;
     margin: 0 20rpx 0 20rpx;
     background: linear-gradient(#ab2f74, #d23c7e);
+    border-radius: 2rpx;
 }
 
 .notice-content {
@@ -144,4 +129,61 @@
     animation-timing-function: linear;
     animation-duration: 12s;
     animation-iteration-count: infinite;
+}
+
+.equipments-container {
+    margin-top: 30rpx;
+}
+
+.equipment-scroll {
+    max-height: calc(100vh - 600rpx);
+}
+
+.equipment-container {
+    display: flex;
+    margin: 0 auto 30rpx auto;
+    padding: 20rpx;
+    width: 612rpx;
+    border: #d4317a 4rpx solid;
+    border-radius: 20rpx;
+    background: #ffffff;
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    font-size: 32rpx;
+}
+
+.equipment-container:last-child {
+    margin-bottom: 200rpx;
+}
+
+.equipment-image {
+    width: 220rpx;
+    height: 150rpx;
+}
+
+.equipment-vertical-delimiter {
+    flex-basis: 4rpx;
+    margin: 0 20rpx 0 20rpx;
+    background: linear-gradient(#ab2f74, #d23c7e);
+    border-radius: 2rpx;
+}
+
+.equipment-content {
+    flex: 1;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.equipments-whitespace {
+    flex: 1;
+}
+
+.equipment-status {
+    font-size: 48rpx;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
 }
