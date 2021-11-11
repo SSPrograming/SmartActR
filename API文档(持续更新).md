@@ -186,11 +186,11 @@ params:
 
 ```
 {
-	"startTime": "",
+	"startTime": "", 
 	"endTime": "",
 	"year": number,
 	"month": number,
-	"day": number,
+	"date": number,
 	"equipmentType": number,
 	"equipmentID": number
 }
@@ -225,7 +225,7 @@ ret:
 		"endTime": "",
 		"year": number,
 		"month": number,
-		"day": number,
+		"date": number,
 		"status": ""
 	]
 }
@@ -282,4 +282,24 @@ ret:
 ```
 
 
+
+****
+
+**公告相关**
+
+@bp_notice.route('/api/v1/reserve/getNotice', methods=['GET'])
+
+@login_required
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": "",
+	"noticeContent": "",
+    "noticeDate": "", #格式的样例："2021-11-09"
+    "expireDate": "", #格式的样例："2021-11-12"
+}
+```
 
