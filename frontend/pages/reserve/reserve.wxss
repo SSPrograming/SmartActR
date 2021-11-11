@@ -18,20 +18,19 @@
 
 .left-arrow {
     position: absolute;
-    top: 100rpx;
+    top: 95rpx;
     left: -50rpx;
-    width: 70rpx;
-    height: 70rpx;
-    background: #000;
+    width: 65rpx;
+    height: 80rpx;
+    transform: scaleX(-1);
 }
 
 .right-arrow {
     position: absolute;
-    top: 100rpx;
+    top: 95rpx;
     right: -50rpx;
-    width: 70rpx;
-    height: 70rpx;
-    background: #000;
+    width: 65rpx;
+    height: 80rpx;
 }
 
 .date-container {
@@ -46,21 +45,21 @@
 }
 
 .date-date {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     width: 150rpx;
     height: 150rpx;
     background: linear-gradient(#ab2f74, #d23c7e);
     border-radius: 50%;
-    font-size: 75rpx;
+    font-size: 60rpx;
     line-height: 150rpx;
     color: #ffffff;
 }
 
 .date-data__selected {
-    width: 146rpx;
-    height: 146rpx;
     border: #d4317a 4rpx solid;
     background: #ffffff;
-    line-height: 150rpx;
     color: #d4317a;
 }
 
@@ -86,6 +85,7 @@
 .notice-title-image {
     width: 32rpx;
     height: 32rpx;
+    margin-right: 10rpx;
 }
 
 .notice-vertical-delimiter {
@@ -102,7 +102,9 @@
 }
 
 .notice-look {
-    flex-basis: 32rpx;
+    width: 22rpx;
+    padding: 10rpx 0 10rpx 20rpx;
+    height: 32rpx;
 }
 
 @keyframes scroll-notice {
@@ -110,16 +112,8 @@
         text-indent: 0;
     }
 
-    5% {
-        text-indent: 0;
-    }
-
-    95% {
-        text-indent: -34em;
-    }
-
     100% {
-        text-indent: -34em;
+        text-indent: -24em;
     }
 }
 
@@ -127,7 +121,7 @@
 .notice-content {
     animation-name: scroll-notice;
     animation-timing-function: linear;
-    animation-duration: 12s;
+    animation-duration: 10s;
     animation-iteration-count: infinite;
 }
 
@@ -136,7 +130,7 @@
 }
 
 .equipment-scroll {
-    max-height: calc(100vh - 600rpx);
+    max-height: calc(100vh - 585rpx);
 }
 
 .equipment-container {
@@ -157,7 +151,7 @@
 
 .equipment-image {
     width: 220rpx;
-    height: 150rpx;
+    height: 180rpx;
 }
 
 .equipment-vertical-delimiter {

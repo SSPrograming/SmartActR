@@ -10,8 +10,7 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "智慧活动室",
         "backgroundColor": "#eee",
-        "backgroundTextStyle": "light",
-        "enablePullDownRefresh": false
+        "backgroundTextStyle": "light"
     },
     "tabBar": {
         "custom": true,

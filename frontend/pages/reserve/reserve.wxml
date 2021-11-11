@@ -4,8 +4,8 @@
 </page-meta>
 <view class="container">
     <view class="dates-container">
-        <view class="left-arrow"></view>
-        <view class="right-arrow"></view>
+        <image class="left-arrow" src="/resources/icons/reserve/arrow.png"></image>
+        <image class="right-arrow" src="/resources/icons/reserve/arrow.png"></image>
         <scroll-view scroll-x="true">
             <view class="date-container" wx:for="{{ dates }}" wx:key="index" data-index="{{ index }}" bindtap="switchDate">
                 <view class="date-day">{{ item.day }}</view>
@@ -15,12 +15,12 @@
     </view>
     <view class="notice-container">
         <view class="notice-title-container">
-            <view class="notice-title-image"></view>
+            <image class="notice-title-image" src="/resources/icons/reserve/notice.png"></image>
             <view class="notice-title-text">公告</view>
         </view>
         <view class="notice-vertical-delimiter"></view>
         <view class="notice-content">{{ notice }}</view>
-        <view class="notice-look"></view>
+        <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
     </view>
     <view class="equipments-container">
         <scroll-view class="equipment-scroll" scroll-y="true">

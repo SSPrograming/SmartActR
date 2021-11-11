@@ -60,12 +60,14 @@ Page({
         } else {
           console.error(res.data.errMsg);
         }
+        wx.stopPullDownRefresh();
         this.setData({
           loading: false,
         });
       })
       .catch((err) => {
         console.error(err);
+        wx.stopPullDownRefresh();
         this.setData({
           loading: false,
         });
@@ -157,7 +159,15 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-
+    // 判断登录状态
+    this.setData({
+      loading: true,
+    });
+    if (app.globalData.login) {
+      this.getAllEquipmentStatus();
+    } else {
+      app.loginCallBack.push(this.getAllEquipmentStatus);
+    }
   },
 
   /**
