@@ -13,7 +13,7 @@ bp_reserve = Blueprint(
 )
 
 @bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
-#@login_required
+@login_required
 def getEquipmentStatus():
     try:
         targetType = request.json['equipmentType']
@@ -128,3 +128,39 @@ def getAllEquipmentStatus():
         "errCode": 0,
         "status": equipmentStatuses
     })
+
+
+@bp_reserve.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
+@login_required
+def reserveEquipment():
+    try:
+        year = request.json['year']
+        month = request.json['month']
+        day = request.json['day']
+        strStartTime = request.json['startTime']
+        strEndTime = request.json['endTime']
+        targetType = request.json['equipmentType']
+        targetID = request.json['equipmentID']
+        date = datetime.date(year, month, day)
+        StartTime = ReserveService.strToTime(strStartTime)
+        EndTime = ReserveService.strToTime(strEndTime)
+    except Exception as e:
+        print(e)
+        return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
+    
+    occupations, hasoccupation = ReserveService.get_occupation_of_day(date)
+    if hasoccupation:
+        for item in occupations:
+            print(item)
+            if not (StartTime>=item['endTime'] or EndTime<=item['startTime']):
+                return jsonify({"errCode": 1,"errMsg": "该时间段被占用"}), 200
+    existedRecords = ReserveService.get_record_of_single_equipment(date, targetType, targetID)
+    for record in existedRecords:
+        print(record.startTime)
+        if not (StartTime>=record.endTime or EndTime<=record.startTime):
+            return jsonify({"errCode": 1,"errMsg": "该时间段被占用"}), 200
+    
+    if ReserveService.add_reserve_record(g.userID, date, StartTime, EndTime, targetType, targetID):
+        return jsonify({"errCode": 0,"errMsg": ""}), 200
+    else:
+        return jsonify({"errCode": 1, "errMsg": "设备不存在或已被占用"})

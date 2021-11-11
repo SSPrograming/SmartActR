@@ -50,6 +50,7 @@ def login():
             print(user.identity)
         userjwt = mjwt.generate_jwt({"openID": openid})
         response["jwt"] = userjwt
+        print(userjwt)
         response["errCode"] = 0
         return jsonify(response), 200
 

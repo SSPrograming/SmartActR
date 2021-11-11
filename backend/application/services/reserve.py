@@ -34,3 +34,20 @@ class ReserveService:
                                           "endTime": valid_occupation.endTime})
                     occupy_flag = True
         return occupied_time, occupy_flag
+    
+    def add_reserve_record(userID, reserveDate, startTime, endTime, equipmentType, equipmentID):
+        nrecord = Reserve_Record(userID=userID, postTime=datetime.datetime.now(),reserveDate=reserveDate, startTime=startTime,
+                                endTime=endTime, equipmentType=equipmentType, equipmentID=equipmentID,
+                                status="fine")
+        try:
+            db.session.add(nrecord)
+            db.session.commit()
+            return True
+        except Exception as e:
+            print(e)
+            db.session.rollback()
+            return False
+
+    def strToTime(strTime):
+        timeStruct = datetime.datetime.strptime(strTime, '%H:%M').timetuple()
+        return datetime.time(timeStruct[3], timeStruct[4])
