@@ -1,7 +1,7 @@
 /* pages/reserve/reserve.wxss */
 .container {
     /* 大小 */
-    padding-top: 50rpx;
+    padding-top: 40rpx;
 }
 
 .dates-container {
@@ -92,8 +92,8 @@
     padding: 10rpx 20rpx 10rpx 20rpx;
     margin: 30rpx auto 0 auto;
     /* 文字 */
-    font-size: 32rpx;
-    line-height: 32rpx;
+    font-size: 24rpx;
+    line-height: 24rpx;
     white-space: nowrap;
     /* 背景 */
     background: #ffffff;
@@ -106,8 +106,6 @@
 .notice-title-container {
     /* 位置 */
     display: flex;
-    /* 大小 */
-    padding: 10rpx 0;
 }
 
 .notice-title-image {
@@ -115,6 +113,11 @@
     width: 32rpx;
     height: 32rpx;
     margin-right: 10rpx;
+}
+
+.notice-title-text {
+    /* 大小 */
+    padding: 4rpx 0;
 }
 
 .notice-vertical-delimiter {
@@ -130,8 +133,10 @@
 .notice-content {
     /* 大小 */
     flex: 1;
-    padding: 10rpx 0;
+    padding: 4rpx 0;
     /* 文字 */
+    font-size: 24rpx;
+    line-height: 24rpx;
     overflow: hidden;
 }
 
@@ -139,13 +144,13 @@
     /* 大小 */
     width: 22rpx;
     height: 32rpx;
-    padding: 10rpx 0 10rpx 20rpx;
+    padding-left: 20rpx;
 }
 
 /* 公告滚动动画 */
 @keyframes scroll-notice {
     0% {
-        text-indent: 18em;
+        text-indent: 20em;
     }
 
     100% {
