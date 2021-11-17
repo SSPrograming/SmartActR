@@ -8,12 +8,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    equipmentType2imagePath: app.$api.reserve.equipmentType2imagePath,
     equipmentInfo: {
       year: 0,
       month: 0,
       date: 0,
       equipmentType: 0,
       equipmentID: 0,
+      equipmentStatus: 0,
       equipmentName: '',
       equipmentDescription: '',
     },
@@ -23,19 +25,30 @@ Page({
 
   getEquipmentStatus() {
     const params = this.data.equipmentInfo;
-    console.log(params);
     app.$api.reserve.getEquipmentStatus(params)
       .then((res) => {
         if (res.data.errCode === 0) {
           this.setData({
             equipmentInfo: {
               ...params,
-              equipmentName: res.data.equipmentName,
               equipmentDescription: res.data.equipmentDescription,
             },
-            equipmentSpareTime: res.data.equipmentSpareTime,
+            // equipmentSpareTime: res.data.equipmentSpareTime,
+            equipmentSpareTime: [
+              {
+                startTime: '08:00',
+                endTime: '12:00',
+              },
+              {
+                startTime: '13:00',
+                endTime: '15:00',
+              },
+              {
+                startTime: '08:00',
+                endTime: '22:00',
+              },
+            ]
           });
-          console.log(this.data);
         } else {
           console.error(res.data.errMsg);
         }
@@ -64,6 +77,8 @@ Page({
         date: parseInt(options.date),
         equipmentType: parseInt(options.equipmentType),
         equipmentID: parseInt(options.equipmentID),
+        equipmentName: options.equipmentName,
+        equipmentStatus: parseInt(options.equipmentStatus),
       },
       loading: true,
     });

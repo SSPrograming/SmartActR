@@ -4,5 +4,30 @@
 </page-meta>
 <view class="container">
     <view class="equipment-info-container">
+        <view class="equipment-info-content">
+            <view class="equipment-info-name">
+                <view class="label"> 设备名称： </view>
+                <view class="content">{{ equipmentInfo.equipmentName }}</view>
+            </view>
+            <view class="equipment-info-id">
+                <view class="label"> 设备编号： </view>
+                <view class="content">{{ equipmentInfo.equipmentID }}号</view>
+            </view>
+            <view class="equipment-info-description">
+                <view class="label"> 设备简介： </view>
+                <view class="content">{{ equipmentInfo.eqipmentDescription }}3D打印机通过增材制造的方式打印你所需的模型！</view>
+            </view>
+        </view>
+        <view class="equipment-info-image-containter">
+            <view class="whitespace"></view>
+            <image class="equipment-info-image" src="{{ equipmentType2imagePath[equipmentInfo.equipmentType] }}"></image>
+            <view class="whitespace"></view>
+        </view>
+    </view>
+    <view class="delimeter">目前可预约时间段：</view>
+    <view class="time-available-container">
+        <view class="time-available" wx:for="{{ equipmentSpareTime }}" wx:key="index">
+            {{ item.startTime }} ~ {{ item.endTime }}
+        </view>
     </view>
 </view>

@@ -1,0 +1,24 @@
+{
+    "setting": {},
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "具体预约",
+                    "pathName": "pages/do_reserve/do_reserve",
+                    "query": "equipmentType=1&equipmentID=1&equipmentName=3D打印机&equipmentStatus=0&year=1&month=1&date=1",
+                    "scene": null
+                }
+            ]
+        }
+    }
+}
