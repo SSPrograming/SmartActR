@@ -20,6 +20,10 @@ Page({
       equipmentDescription: '',
     },
     equipmentSpareTime: [],
+    startTime: [],
+    endTime: [],
+    hours: [],
+    minitues: [],
     loading: false,
   },
 
@@ -66,6 +70,16 @@ Page({
       });
   },
 
+  timeChange(e) {
+    if (e.currentTarget.dataset.type === 'startTime') {
+      const val = e.detail.value;
+      this.setData({ startTime: val });
+    } else if (e.currentTarget.dataset.type === 'endTime') {
+      const val = e.detail.value;
+      this.setData({ endTime: val });
+    }
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -81,6 +95,14 @@ Page({
         equipmentStatus: parseInt(options.equipmentStatus),
       },
       loading: true,
+    });
+    const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    const minutes = ['00', '15', '30', '45'];
+    this.setData({
+      hours: hours.map((num) => {
+        return app.$util.fix(num + 8, 2);
+      }),
+      minutes,
     });
     if (app.globalData.login) {
       this.getEquipmentStatus();
