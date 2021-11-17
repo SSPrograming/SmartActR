@@ -91,15 +91,18 @@ const promptBind = () => {
   });
 };
 
-const fix = (num, length) => {
-  // 以固定位数显示整数
-  return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
+const time = {
+  fix(num, length) {
+    // 以固定位数显示整数
+    return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
+  },
 };
+
 
 export default {
   hello,
   login,
   promptBind,
   openBind,
-  fix
+  time,
 };

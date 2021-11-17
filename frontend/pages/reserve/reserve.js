@@ -28,7 +28,7 @@ Page({
             equipmentList: res.data.status,
           });
         } else {
-          console.error(res.data.errMsg);
+          app.dealError(res.data, 'SERVER');
         }
         wx.stopPullDownRefresh();
         this.setData({
@@ -36,7 +36,7 @@ Page({
         });
       })
       .catch((err) => {
-        console.error(err);
+        app.dealError(err, 'API');
         wx.stopPullDownRefresh();
         this.setData({
           loading: false,
@@ -53,11 +53,7 @@ Page({
       this.setData({
         loading: true,
       });
-      if (app.globalData.login) {
-        this.getAllEquipmentStatus();
-      } else {
-        app.loginCallBack.push(this.getAllEquipmentStatus);
-      }
+      app.dealThing(this.getAllEquipmentStatus);
     }
   },
 
@@ -91,11 +87,7 @@ Page({
     this.setData({
       loading: true,
     });
-    if (app.globalData.login) {
-      this.getAllEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getAllEquipmentStatus);
-    }
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**
@@ -142,11 +134,7 @@ Page({
     this.setData({
       loading: true,
     });
-    if (app.globalData.login) {
-      this.getAllEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getAllEquipmentStatus);
-    }
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**

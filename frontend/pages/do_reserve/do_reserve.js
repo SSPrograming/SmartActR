@@ -54,7 +54,7 @@ Page({
             ]
           });
         } else {
-          console.error(res.data.errMsg);
+          app.dealError(res.data, 'SERVER');
         }
         wx.stopPullDownRefresh();
         this.setData({
@@ -62,7 +62,7 @@ Page({
         });
       })
       .catch((err) => {
-        console.error(err);
+        app.dealError(err, 'API');
         wx.stopPullDownRefresh();
         this.setData({
           loading: false,
@@ -100,15 +100,11 @@ Page({
     const minutes = ['00', '15', '30', '45'];
     this.setData({
       hours: hours.map((num) => {
-        return app.$util.fix(num + 8, 2);
+        return app.$util.time.fix(num + 8, 2);
       }),
       minutes,
     });
-    if (app.globalData.login) {
-      this.getEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getEquipmentStatus);
-    }
+    app.dealThing(this.getEquipmentStatus);
   },
 
   /**
