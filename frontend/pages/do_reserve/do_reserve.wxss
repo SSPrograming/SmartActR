@@ -103,6 +103,7 @@
 
 .reserve-time {
     /* 位置 */
+    position: relative;
     display: flex;
     /* 大小 */
     padding: 0 30rpx;
@@ -110,10 +111,102 @@
     /* 文字 */
     font-size: 32rpx;
     text-align: center;
-    line-height: 60rpx;
+    line-height: 80rpx;
     /* 背景 */
     background: #ffffff;
     border: #bb3479 4rpx solid;
     /* CSS3 */
     border-radius: 32rpx;
+}
+
+.hour-up {
+    /* 位置 */
+    position: absolute;
+    top: -40rpx;
+    left: 268rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid transparent;
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid rgba(150, 150, 150, .6);
+}
+
+.hour-down {
+    /* 位置 */
+    position: absolute;
+    top: 80rpx;
+    left: 268rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid rgba(150, 150, 150, .6);
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid transparent;
+}
+
+.minute-up {
+    /* 位置 */
+    position: absolute;
+    top: -40rpx;
+    left: 450rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid transparent;
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid rgba(150, 150, 150, .6);
+}
+
+.minute-down {
+    /* 位置 */
+    position: absolute;
+    top: 80rpx;
+    left: 450rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid rgba(150, 150, 150, .6);
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid transparent;
+}
+
+.reserve-time-label {
+    /* 大小 */
+    width: 180rpx;
+}
+
+.time-picker-container {
+    /* 大小 */
+    flex: 1;
+    height: 80rpx;
+    /* 文字 */
+    overflow: hidden;
+}
+
+.time-picker {
+    /* 大小 */
+    margin-top: -10rpx;
+    /* 文字 */
+    font-size: 48rpx;
+}
+
+.time-picker-item {
+    /* 文字 */
+    line-height: 80rpx;
+}
+
+.button-container {
+    /* 大小 */
+    margin-top: 40rpx;
+    /* 文字 */
+    text-align: center;
 }

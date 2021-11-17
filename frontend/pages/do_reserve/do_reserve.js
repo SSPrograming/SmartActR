@@ -20,8 +20,8 @@ Page({
       equipmentDescription: '',
     },
     equipmentSpareTime: [],
-    startTime: [],
-    endTime: [],
+    startTime: [0, 0],
+    endTime: [0, 0],
     hours: [],
     minitues: [],
     loading: false,
@@ -78,6 +78,18 @@ Page({
       const val = e.detail.value;
       this.setData({ endTime: val });
     }
+  },
+
+  changeTime(e) {
+    let time = e.currentTarget.dataset.type === 'startTime' ? this.data.startTime : this.data.endTime;
+    const subType = e.currentTarget.dataset.subType === 'hour' ? 0 : 1;
+    const length = e.currentTarget.dataset.subType === 'hour' ? this.data.hours.length : this.data.minutes.length;
+    time[subType] = (time[subType] + 1) % length;
+    e.currentTarget.dataset.type === 'startTime' ? this.setData({
+      startTime: time,
+    }) : this.setData({
+      endTime: time,
+    });
   },
 
   /**
