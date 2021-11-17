@@ -33,10 +33,10 @@
     <view class="delimeter">预约选择：</view>
     <view class="reserve-time-container">
         <view class="reserve-time">
-            <view class="hour-up" data-type="startTime" data-sub-type="hour" data-direction="up" bindtap="changeTime"></view>
-            <view class="hour-down" data-type="startTime" data-sub-type="hour" data-direction="down" bindtap="changeTime"></view>
-            <view class="minute-up" data-type="startTime" data-sub-type="minute" data-direction="up" bindtap="changeTime"></view>
-            <view class="minute-down" data-type="startTime" data-sub-type="minute" data-direction="down" bindtap="changeTime"></view>
+            <view class="hour-prev" data-type="startTime" data-sub-type="hour" data-direction="prev" bindtap="changeTime"></view>
+            <view class="hour-next" data-type="startTime" data-sub-type="hour" data-direction="next" bindtap="changeTime"></view>
+            <view class="minute-prev" data-type="startTime" data-sub-type="minute" data-direction="prev" bindtap="changeTime"></view>
+            <view class="minute-next" data-type="startTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
             <view class="reserve-time-label">起始时间：</view>
             <view class="time-picker-container">
                 <picker-view class="time-picker" value="{{ startTime }}" data-type="startTime" bindchange="timeChange">
@@ -52,10 +52,10 @@
         </view>
         <view style="height: 10rpx;"></view>
         <view class="reserve-time">
-            <view class="hour-up" data-type="endTime" data-sub-type="hour" data-direction="up" bindtap="changeTime"></view>
-            <view class="hour-down" data-type="endTime" data-sub-type="hour" data-direction="down" bindtap="changeTime"></view>
-            <view class="minute-up" data-type="endTime" data-sub-type="minute" data-direction="up" bindtap="changeTime"></view>
-            <view class="minute-down" data-type="endTime" data-sub-type="minute" data-direction="down" bindtap="changeTime"></view>
+            <view class="hour-prev" data-type="endTime" data-sub-type="hour" data-direction="prev" bindtap="changeTime"></view>
+            <view class="hour-next" data-type="endTime" data-sub-type="hour" data-direction="next" bindtap="changeTime"></view>
+            <view class="minute-prev" data-type="endTime" data-sub-type="minute" data-direction="prev" bindtap="changeTime"></view>
+            <view class="minute-next" data-type="endTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
             <view class="reserve-time-label">结束时间： </view>
             <view class="time-picker-container">
                 <picker-view class="time-picker" value="{{ endTime }}" data-type="endTime" bindchange="timeChange">

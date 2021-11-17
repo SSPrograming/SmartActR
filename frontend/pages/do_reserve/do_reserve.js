@@ -94,7 +94,7 @@ Page({
     const subType = e.currentTarget.dataset.subType === 'hour' ? 0 : 1;
     const length = e.currentTarget.dataset.subType === 'hour' ? this.data.hours.length :
       e.currentTarget.dataset.type === 'startTime' ? this.data.startMinutes.length : this.data.endMinutes.length;
-    time[subType] = e.currentTarget.dataset.direction === 'up' ? (time[subType] + 1) % length : (time[subType] - 1 + length) % length;
+    time[subType] = e.currentTarget.dataset.direction === 'prev' ? (time[subType] - 1 + length) % length : (time[subType] + 1) % length;
     let minutes = ['00', '15', '30', '45'];
     if (time[0] === this.data.hours.length - 1) {
       time[1] = 0;
