@@ -1,0 +1,8 @@
+<!--pages/reserve/reserve.wxml-->
+<page-meta root-background-color="#ebebeb">
+    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
+</page-meta>
+<view class="container">
+    <view class="equipment-info-container">
+    </view>
+</view>

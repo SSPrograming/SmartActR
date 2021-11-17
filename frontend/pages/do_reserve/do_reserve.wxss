@@ -1,0 +1,20 @@
+/* pages/reserve/reserve.wxss */
+.container {
+    /* 大小 */
+    padding-top: 40rpx;
+}
+
+.equipment-info-container {
+    /* 大小 */
+    width: 592rpx;
+    padding: 30rpx;
+    margin: auto;
+    /* 文字 */
+    text-align: center;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
+}

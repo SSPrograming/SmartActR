@@ -91,6 +91,13 @@ Page({
     }
   },
 
+  doReserve(e) {
+    const target_equipment = this.data.equipmentList[e.currentTarget.dataset.index];
+    wx.navigateTo({
+      url: `/pages/do_reserve/do_reserve?equipmentType=${target_equipment.equipmentType}&equipmentID=${target_equipment.equipmentID}&year=${this.data.dates[this.data.selected].year}&month=${this.data.dates[this.data.selected].month}&date=${this.data.dates[this.data.selected].date}`,
+    });
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
