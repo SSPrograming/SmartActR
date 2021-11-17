@@ -23,7 +23,8 @@ Page({
     startTime: [0, 0],
     endTime: [0, 0],
     hours: [],
-    minitues: [],
+    startMinutes: [],
+    endMinutes: [],
     loading: false,
   },
 
@@ -37,7 +38,6 @@ Page({
               ...params,
               equipmentDescription: res.data.equipmentDescription,
             },
-            // equipmentSpareTime: res.data.equipmentSpareTime,
             equipmentSpareTime: [
               {
                 startTime: '08:00',
@@ -51,7 +51,8 @@ Page({
                 startTime: '08:00',
                 endTime: '22:00',
               },
-            ]
+            ],
+            // equipmentSpareTime: res.data.equipmentSpareTime,
           });
         } else {
           app.dealError(res.data, 'SERVER');
@@ -70,25 +71,41 @@ Page({
       });
   },
 
+  // 当时间滑动改变时
   timeChange(e) {
-    if (e.currentTarget.dataset.type === 'startTime') {
-      const val = e.detail.value;
-      this.setData({ startTime: val });
-    } else if (e.currentTarget.dataset.type === 'endTime') {
-      const val = e.detail.value;
-      this.setData({ endTime: val });
+    let val = e.detail.value;
+    let minutes = ['00', '15', '30', '45'];
+    if (val[0] === this.data.hours.length - 1) {
+      val[1] = 0;
+      minutes = ['00'];
     }
+    e.currentTarget.dataset.type === 'startTime' ? this.setData({
+      startTime: val,
+      startMinutes: minutes,
+    }) : this.setData({
+      endTime: val,
+      endMinutes: minutes
+    });
   },
 
+  // 当点击按钮调整时间时
   changeTime(e) {
     let time = e.currentTarget.dataset.type === 'startTime' ? this.data.startTime : this.data.endTime;
     const subType = e.currentTarget.dataset.subType === 'hour' ? 0 : 1;
-    const length = e.currentTarget.dataset.subType === 'hour' ? this.data.hours.length : this.data.minutes.length;
-    time[subType] = (time[subType] + 1) % length;
+    const length = e.currentTarget.dataset.subType === 'hour' ? this.data.hours.length :
+      e.currentTarget.dataset.type === 'startTime' ? this.data.startMinutes.length : this.data.endMinutes.length;
+    time[subType] = e.currentTarget.dataset.direction === 'up' ? (time[subType] + 1) % length : (time[subType] - 1 + length) % length;
+    let minutes = ['00', '15', '30', '45'];
+    if (time[0] === this.data.hours.length - 1) {
+      time[1] = 0;
+      minutes = ['00'];
+    }
     e.currentTarget.dataset.type === 'startTime' ? this.setData({
       startTime: time,
+      startMinutes: minutes,
     }) : this.setData({
       endTime: time,
+      endMinutes: minutes,
     });
   },
 
@@ -114,7 +131,8 @@ Page({
       hours: hours.map((num) => {
         return app.$util.time.fix(num + 8, 2);
       }),
-      minutes,
+      startMinutes: minutes,
+      endMinutes: minutes,
     });
     app.dealThing(this.getEquipmentStatus);
   },

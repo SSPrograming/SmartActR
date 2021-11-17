@@ -206,7 +206,21 @@
 
 .button-container {
     /* 大小 */
-    margin-top: 40rpx;
+    margin-top: 80rpx;
     /* 文字 */
     text-align: center;
+}
+
+.submit-button {
+    /* 位置 */
+    display: inline-block;
+    /* 大小 */
+    width: 250rpx;
+    /* 文字 */
+    font: 36rpx;
+    color: #ffffff;
+    line-height: 80rpx;
+    /* 背景 */
+    background: #d13c7f;
+    border-radius: 30rpx;
 }

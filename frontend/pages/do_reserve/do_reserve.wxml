@@ -45,7 +45,7 @@
                     </picker-view-column>
                     <view class="reserve-time-colon">:</view>
                     <picker-view-column>
-                        <view class="time-picker-item" wx:for="{{ minutes }}" wx:key="index">{{ item }}</view>
+                        <view class="time-picker-item" wx:for="{{ startMinutes }}" wx:key="index">{{ item }}</view>
                     </picker-view-column>
                 </picker-view>
             </view>
@@ -64,13 +64,13 @@
                     </picker-view-column>
                     <view class="reserve-time-colon">:</view>
                     <picker-view-column>
-                        <view class="time-picker-item" wx:for="{{ minutes }}" wx:key="index">{{ item }}</view>
+                        <view class="time-picker-item" wx:for="{{ endMinutes }}" wx:key="index">{{ item }}</view>
                     </picker-view-column>
                 </picker-view>
             </view>
         </view>
     </view>
     <view class="button-container">
-        <view class="submit-button"></view>
+        <view class="submit-button">提交预约</view>
     </view>
 </view>
