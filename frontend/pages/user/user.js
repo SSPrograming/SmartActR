@@ -27,22 +27,15 @@ Page({
             });
           } else {
             // 如果后端返回错误信息
-            console.error(res.data.errMsg);
+            app.dealError(res.data, 'SERVER');
           }
         })
         .catch((err) => {
           // 如果后端 api 调用失败
-          console.error(err);
+          app.dealError(err, 'API');
         });
     };
-    // 判断登录状态
-    if (app.globalData.login) {
-      // 如果已登录，则直接调用
-      needToDo();
-    } else {
-      // 如果未登录，则置入登录回调队列
-      app.loginCallBack.push(needToDo);
-    }
+    app.dealThing(needToDo);
   },
 
   /**
