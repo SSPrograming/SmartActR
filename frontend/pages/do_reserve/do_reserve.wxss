@@ -1,0 +1,226 @@
+/* pages/reserve/reserve.wxss */
+.container {
+    /* 大小 */
+    padding-top: 40rpx;
+}
+
+.equipment-info-container {
+    /* 位置 */
+    display: flex;
+    /* 大小 */
+    width: 592rpx;
+    padding: 30rpx;
+    margin: auto;
+    /* 文字 */
+    font-size: 32rpx;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
+}
+
+.equipment-info-content {
+    /* 大小 */
+    flex: 1;
+    margin-right: 20rpx;
+}
+
+.equipment-info-name,
+.equipment-info-id,
+.equipment-info-description {
+    /* 位置 */
+    display: flex;
+}
+
+.label {
+    /* 大小 */
+    min-width: 160rpx;
+}
+
+.equipment-info-image-containter {
+    /* 位置 */
+    display: flex;
+    flex-direction: column;
+}
+
+.equipment-info-image {
+    /* 大小 */
+    width: 220rpx;
+    height: 160rpx;
+}
+
+.whitespace {
+    /* 大小 */
+    flex: 1;
+}
+
+.delimeter {
+    /* 大小 */
+    padding: 10rpx 0 10rpx 60rpx;
+    margin-top: 40rpx;
+    /* 文字 */
+    color: #ffffff;
+    /* 背景 */
+    background: linear-gradient(#a52d72, #cf3c7e);
+}
+
+.time-available-container {
+    /* 位置 */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* 大小 */
+    width: 600rpx;
+    margin: auto;
+}
+
+.time-available {
+    /* 大小 */
+    width: 222rpx;
+    padding: 0 30rpx;
+    margin-top: 30rpx;
+    /* 文字 */
+    font-size: 32rpx;
+    text-align: center;
+    line-height: 60rpx;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    border-radius: 32rpx;
+}
+
+.reserve-time-container {
+    /* 位置 */
+    display: flex;
+    flex-direction: column;
+    /* 大小 */
+    width: 600rpx;
+    margin: auto;
+}
+
+.reserve-time {
+    /* 位置 */
+    position: relative;
+    display: flex;
+    /* 大小 */
+    padding: 0 30rpx;
+    margin-top: 50rpx;
+    /* 文字 */
+    font-size: 32rpx;
+    text-align: center;
+    line-height: 80rpx;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    border-radius: 32rpx;
+}
+
+.hour-prev {
+    /* 位置 */
+    position: absolute;
+    top: -40rpx;
+    left: 268rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid transparent;
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid rgba(150, 150, 150, .6);
+}
+
+.hour-next {
+    /* 位置 */
+    position: absolute;
+    top: 80rpx;
+    left: 268rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid rgba(150, 150, 150, .6);
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid transparent;
+}
+
+.minute-prev {
+    /* 位置 */
+    position: absolute;
+    top: -40rpx;
+    left: 450rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid transparent;
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid rgba(150, 150, 150, .6);
+}
+
+.minute-next {
+    /* 位置 */
+    position: absolute;
+    top: 80rpx;
+    left: 450rpx;
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 背景 */
+    border-top: 20rpx solid rgba(150, 150, 150, .6);
+    border-left: 30rpx solid transparent;
+    border-right: 30rpx solid transparent;
+    border-bottom: 20rpx solid transparent;
+}
+
+.reserve-time-label {
+    /* 大小 */
+    width: 180rpx;
+}
+
+.time-picker-container {
+    /* 大小 */
+    flex: 1;
+    height: 80rpx;
+    /* 文字 */
+    overflow: hidden;
+}
+
+.time-picker {
+    /* 大小 */
+    margin-top: -10rpx;
+    /* 文字 */
+    font-size: 48rpx;
+}
+
+.time-picker-item {
+    /* 文字 */
+    line-height: 80rpx;
+}
+
+.button-container {
+    /* 大小 */
+    margin-top: 80rpx;
+    /* 文字 */
+    text-align: center;
+}
+
+.submit-button {
+    /* 位置 */
+    display: inline-block;
+    /* 大小 */
+    width: 250rpx;
+    /* 文字 */
+    font: 36rpx;
+    color: #ffffff;
+    line-height: 80rpx;
+    /* 背景 */
+    background: #d13c7f;
+    border-radius: 30rpx;
+}
