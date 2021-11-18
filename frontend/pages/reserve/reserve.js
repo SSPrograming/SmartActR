@@ -8,39 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    equipmentType2imagePath: [
-      '',
-      '/resources/images/3DPrinter.jpg',
-      '/resources/images/experimentTable.jpg',
-      '/resources/images/laserCutter.jpg',
-    ],
-    equipmentStatus2String: [
-      '空闲',
-      '拥挤',
-      '已满',
-    ],
-    equipmentList: [
-      /*
-      {
-        equipmentType: 2,
-        equipmentName: '实验台',
-        equipmentID: 1,
-        equipmentStatus: 0,
-      },
-      {
-        equipmentType: 2,
-        equipmentName: '实验台',
-        equipmentID: 2,
-        equipmentStatus: 1,
-      },
-      {
-        equipmentType: 1,
-        equipmentName: '3D打印机',
-        equipmentID: 1,
-        equipmentStatus: 2,
-      },
-      */
-    ],
+    equipmentType2imagePath: app.$api.reserve.equipmentType2imagePath,
+    equipmentStatus2String: app.$api.reserve.equipmentStatus2String,
+    equipmentList: [],
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
@@ -58,7 +28,7 @@ Page({
             equipmentList: res.data.status,
           });
         } else {
-          console.error(res.data.errMsg);
+          app.dealError(res.data, 'SERVER');
         }
         wx.stopPullDownRefresh();
         this.setData({
@@ -66,7 +36,7 @@ Page({
         });
       })
       .catch((err) => {
-        console.error(err);
+        app.dealError(err, 'API');
         wx.stopPullDownRefresh();
         this.setData({
           loading: false,
@@ -83,12 +53,15 @@ Page({
       this.setData({
         loading: true,
       });
-      if (app.globalData.login) {
-        this.getAllEquipmentStatus();
-      } else {
-        app.loginCallBack.push(this.getAllEquipmentStatus);
-      }
+      app.dealThing(this.getAllEquipmentStatus);
     }
+  },
+
+  doReserve(e) {
+    const target_equipment = this.data.equipmentList[e.currentTarget.dataset.index];
+    wx.navigateTo({
+      url: `/pages/do_reserve/do_reserve?equipmentType=${target_equipment.equipmentType}&equipmentID=${target_equipment.equipmentID}&equipmentName=${target_equipment.equipmentName}&equipmentStatus=${target_equipment.equipmentStatus}&year=${this.data.dates[this.data.selected].year}&month=${this.data.dates[this.data.selected].month}&date=${this.data.dates[this.data.selected].date}`,
+    });
   },
 
   /**
@@ -114,11 +87,7 @@ Page({
     this.setData({
       loading: true,
     });
-    if (app.globalData.login) {
-      this.getAllEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getAllEquipmentStatus);
-    }
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**
@@ -165,11 +134,7 @@ Page({
     this.setData({
       loading: true,
     });
-    if (app.globalData.login) {
-      this.getAllEquipmentStatus();
-    } else {
-      app.loginCallBack.push(this.getAllEquipmentStatus);
-    }
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**

@@ -10,6 +10,37 @@ App({
   },
   login_timer: null,
   loginCallBack: [],
+  // 处理事务
+  dealThing(func) {
+    if (this.globalData.login) {
+      func();
+    } else {
+      this.loginCallBack.push(func);
+    }
+  },
+  // 处理错误
+  dealError(err, type) {
+    console.error(err);
+    if (type === 'API') {
+      wx.showToast({
+        title: '网络超时',
+        icon: 'error',
+        duration: 1000,
+      });
+    } else if (type === 'SERVER') {
+      wx.showToast({
+        title: '服务器错误',
+        icon: 'error',
+        duration: 1000,
+      });
+    } else if (type === 'LOGIN') {
+      wx.showToast({
+        title: '登录失败',
+        icon: 'error',
+        duration: 1000,
+      });
+    }
+  },
   login() {
     const needToDo = () => {
       if (!this.globalData.login) {
@@ -25,12 +56,7 @@ App({
           })
           .catch((err) => {
             // 如果登录失败
-            wx.showToast({
-              title: '登录失败',
-              icon: 'error',
-              duration: 1000,
-            });
-            console.error(err);
+            this.dealError(err, 'LOGIN');
           });
       }
     };
@@ -53,7 +79,7 @@ App({
           console.log(res);
         })
         .catch((err) => {
-          console.error(err);
+          this.dealError(err, 'API');
         });
     });
     */
@@ -67,31 +93,15 @@ App({
             if (!res.data.isBind) {
               // 如果没有绑定身份，则打开绑定提示
               this.$util.promptBind();
-            } else {
-              // 如果绑定身份，测试返回信息
-              this.$api.user.getIdentity()
-                .then((res) => {
-                  console.log(res.data.identity);
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-              this.$api.user.getStudentInfo()
-                .then((res) => {
-                  console.log(res.data);
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
             }
           } else {
             // 如果后端返回错误信息
-            console.error(res.data.errMsg);
+            this.dealError(res.data, 'SERVER');
           }
         })
         .catch((err) => {
           // 如果后端 api 调用失败
-          console.error(err);
+          this.dealError(err, 'API');
         });
     });
     // 登录
@@ -122,12 +132,12 @@ App({
               });
             } else {
               // 如果后端返回错误信息
-              console.error(res.data.errMsg);
+              this.dealError(res.data, 'SERVER');
             }
           })
           .catch((err) => {
             // 如果后端 api 调用失败
-            console.error(err);
+            this.dealError(err, 'API');
           });
       }
     }

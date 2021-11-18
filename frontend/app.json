@@ -2,6 +2,7 @@
     "entryPagePath": "pages/reserve/reserve",
     "pages": [
         "pages/reserve/reserve",
+        "pages/do_reserve/do_reserve",
         "pages/user/user",
         "pages/instruction/instruction"
     ],
