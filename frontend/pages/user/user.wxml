@@ -5,14 +5,8 @@
 <view class="user_info_wrap">
     <image class="background" src='/resources/backgrounds/user.png'></image>
     <view class="user_info">
-        <view wx:if="{{ false }}" class="normal">
-            <open-data type="userAvatarUrl" class="user_icon" default-avatar="/resources/images/anonymous.png"></open-data>
-            <open-data type="userNickName" class="user_name"></open-data>
-        </view>
-        <view wx:else class="annonymous">
-            <image class="user_icon" src="/resources/images/anonymous.png"></image>
-            <text class="user_name">未登录</text>
-        </view>
+        <open-data type="userAvatarUrl" class="user_icon" default-avatar="/resources/images/anonymous.png"></open-data>
+        <open-data type="userNickName" class="user_name" default-text="匿名"></open-data>
     </view>
     <view class="user_content">
         <view class="room_notice content">
@@ -33,6 +27,11 @@
         <view class="identity_check content">
             <image class="icon" src="/resources/icons/user/bind.png"></image>
             <div class="text">身份认证</div>
+            <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
+        </view>
+        <view class="feedback content">
+            <image class="icon" src="/resources/icons/user/feedback.png"></image>
+            <div class="text">意见反馈</div>
             <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
         </view>
 

@@ -14,7 +14,7 @@
   /* 位置 */
   position: absolute;
   left: 50%;
-  top: 10%;
+  top: 15%;
   transform: translateX(-50%);
   /* 大小 */
   height: 50vw;
@@ -82,6 +82,6 @@
   height: 60rpx;
   margin: 5rpx 45rpx;
 }
-.user_info_wrap .user_content .identity_check {
+.user_info_wrap .user_content .feedback {
   border-bottom: 0rpx;
 }
