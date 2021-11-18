@@ -22,6 +22,15 @@ const time = {
     });
     return intersect;
   },
+  isAvailable(timeInterval0, timeIntervals) {
+    let available = false;
+    timeIntervals.forEach((timeInterval) => {
+      if (timeInterval0.startTime >= timeInterval.startTime && timeInterval0.endTime <= timeInterval.endTime) {
+        available = true;
+      }
+    });
+    return available;
+  },
   // 判断所给定时间区间在给定区间集时是否有效
   isValid(timeIntervalStr, timeIntervalStrs) {
     const timeInterval0 = {
@@ -40,7 +49,7 @@ const time = {
         endTime: this.timeStr2minutes(timeIntervalStr.endTime),
       };
     });
-    return !this.isIntersect(timeInterval0, timeIntervals);
+    return this.isAvailable(timeInterval0, timeIntervals);
   }
 };
 
