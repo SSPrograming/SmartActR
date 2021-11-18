@@ -1,9 +1,87 @@
 /* pages/user/user.wxss */
-.background {
-    /* 位置 */
-    position: fix;
-    z-index: -1;
-    /* 大小 */
-    width: 100vw;
-    height: 100vw;
+.user_info_wrap {
+  /* 位置 */
+  position: relative;
+  /* 大小 */
+  height: 100vw;
+}
+.user_info_wrap .background {
+  /* 大小 */
+  width: 100vw;
+  height: 100vw;
+}
+.user_info_wrap .user_info {
+  /* 位置 */
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  transform: translateX(-50%);
+  /* 大小 */
+  height: 50vw;
+  /* 文字 */
+  text-align: center;
+}
+.user_info_wrap .user_info .user_icon {
+  /* 位置 */
+  margin: 20rpx;
+  margin-top: 50rpx;
+  /* 大小 */
+  width: 180rpx;
+  height: 180rpx;
+  /* css3 */
+  overflow: hidden;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+.user_info_wrap .user_info .user_name {
+  color: white;
+  font-size: 14px;
+}
+.user_info_wrap .user_content {
+  /* 位置 */
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translateX(-50%);
+  /* 大小 */
+  width: 85%;
+  /* css3 */
+  color: #807f7f;
+  line-height: 15px;
+  background-color: white;
+  border-radius: 7%;
+  box-shadow: 5px 5px 0 rgba(248, 181, 220, 0.404);
+}
+.user_info_wrap .user_content .content {
+  padding: 15rpx;
+  border-bottom: 1rpx solid #ccc;
+  display: flex;
+}
+.user_info_wrap .user_content .text {
+  flex: 1;
+  line-height: 80rpx;
+}
+.user_info_wrap .user_content .icon {
+  margin-right: 50rpx;
+  margin-left: 50rpx;
+  margin-top: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
+}
+.user_info_wrap .user_content .notice-look {
+  /* 大小 */
+  width: 22rpx;
+  height: 32rpx;
+  float: right;
+  margin-top: 30rpx;
+  margin-right: 30rpx;
+}
+.user_info_wrap .user_content #need_know_icon {
+  width: 60rpx;
+  height: 60rpx;
+  margin: 5rpx 45rpx;
+}
+.user_info_wrap .user_content .feedback {
+  border-bottom: 0rpx;
 }
