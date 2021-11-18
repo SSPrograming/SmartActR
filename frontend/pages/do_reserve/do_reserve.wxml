@@ -1,0 +1,76 @@
+<!--pages/reserve/reserve.wxml-->
+<page-meta root-background-color="#ebebeb">
+    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
+</page-meta>
+<view class="container">
+    <view class="equipment-info-container">
+        <view class="equipment-info-content">
+            <view class="equipment-info-name">
+                <view class="label"> 设备名称： </view>
+                <view class="content">{{ equipmentInfo.equipmentName }}</view>
+            </view>
+            <view class="equipment-info-id">
+                <view class="label"> 设备编号： </view>
+                <view class="content">{{ equipmentInfo.equipmentID }}号</view>
+            </view>
+            <view class="equipment-info-description">
+                <view class="label"> 设备简介： </view>
+                <view class="content">{{ equipmentInfo.eqipmentDescription }}3D打印机通过增材制造的方式打印你所需的模型！</view>
+            </view>
+        </view>
+        <view class="equipment-info-image-containter">
+            <view class="whitespace"></view>
+            <image class="equipment-info-image" src="{{ equipmentType2imagePath[equipmentInfo.equipmentType] }}"></image>
+            <view class="whitespace"></view>
+        </view>
+    </view>
+    <view class="delimeter">目前可预约时间段：</view>
+    <view class="time-available-container">
+        <view class="time-available" wx:for="{{ equipmentSpareTime }}" wx:key="index">
+            {{ item.startTime }} ~ {{ item.endTime }}
+        </view>
+    </view>
+    <view class="delimeter">预约选择：</view>
+    <view class="reserve-time-container">
+        <view class="reserve-time">
+            <view class="hour-prev" data-type="startTime" data-sub-type="hour" data-direction="prev" bindtap="changeTime"></view>
+            <view class="hour-next" data-type="startTime" data-sub-type="hour" data-direction="next" bindtap="changeTime"></view>
+            <view class="minute-prev" data-type="startTime" data-sub-type="minute" data-direction="prev" bindtap="changeTime"></view>
+            <view class="minute-next" data-type="startTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
+            <view class="reserve-time-label">起始时间：</view>
+            <view class="time-picker-container">
+                <picker-view class="time-picker" value="{{ startTime }}" data-type="startTime" bindchange="timeChange">
+                    <picker-view-column>
+                        <view class="time-picker-item" wx:for="{{ hours }}" wx:key="index">{{ item }}</view>
+                    </picker-view-column>
+                    <view class="reserve-time-colon">:</view>
+                    <picker-view-column>
+                        <view class="time-picker-item" wx:for="{{ startMinutes }}" wx:key="index">{{ item }}</view>
+                    </picker-view-column>
+                </picker-view>
+            </view>
+        </view>
+        <view style="height: 10rpx;"></view>
+        <view class="reserve-time">
+            <view class="hour-prev" data-type="endTime" data-sub-type="hour" data-direction="prev" bindtap="changeTime"></view>
+            <view class="hour-next" data-type="endTime" data-sub-type="hour" data-direction="next" bindtap="changeTime"></view>
+            <view class="minute-prev" data-type="endTime" data-sub-type="minute" data-direction="prev" bindtap="changeTime"></view>
+            <view class="minute-next" data-type="endTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
+            <view class="reserve-time-label">结束时间： </view>
+            <view class="time-picker-container">
+                <picker-view class="time-picker" value="{{ endTime }}" data-type="endTime" bindchange="timeChange">
+                    <picker-view-column>
+                        <view class="time-picker-item" wx:for="{{ hours }}" wx:key="index">{{ item }}</view>
+                    </picker-view-column>
+                    <view class="reserve-time-colon">:</view>
+                    <picker-view-column>
+                        <view class="time-picker-item" wx:for="{{ endMinutes }}" wx:key="index">{{ item }}</view>
+                    </picker-view-column>
+                </picker-view>
+            </view>
+        </view>
+    </view>
+    <view class="button-container">
+        <view class="submit-button">提交预约</view>
+    </view>
+</view>

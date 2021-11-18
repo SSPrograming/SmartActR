@@ -6,6 +6,20 @@ import {
   request
 } from './common';
 
+const reserve_config = {
+  equipmentType2imagePath: [
+    '',
+    '/resources/images/3DPrinter.jpg',
+    '/resources/images/experimentTable.jpg',
+    '/resources/images/laserCutter.jpg',
+  ],
+  equipmentStatus2String: [
+    '空闲',
+    '拥挤',
+    '已满',
+  ],
+};
+
 const reserve = {
   getAllEquipmentStatus(params) {
     return request({
@@ -49,4 +63,7 @@ const reserve = {
   },
 };
 
-export default reserve;
+export default {
+  ...reserve_config,
+  ...reserve,
+};

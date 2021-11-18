@@ -1,6 +1,6 @@
 <!--pages/reserve/reserve.wxml-->
 <page-meta root-background-color="#ebebeb">
-    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#000000" background-color="#ebebeb" />
+    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
 </page-meta>
 <view class="container">
     <view class="dates-container">
@@ -24,7 +24,7 @@
     </view>
     <view class="equipments-container">
         <scroll-view class="equipment-scroll" scroll-y="true">
-            <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}">
+            <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}" bindtap="doReserve">
                 <image class="equipment-image" src="{{ equipmentType2imagePath[item.equipmentType] }}"></image>
                 <view class="equipment-vertical-delimiter"></view>
                 <view class="equipment-content">
