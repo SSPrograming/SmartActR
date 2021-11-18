@@ -40,8 +40,8 @@ App({
   },
 
   /**
-  * 生命周期函数--监听小程序启动
-  */
+   * 生命周期函数--监听小程序启动
+   */
   onLaunch() {
     // 调用API
     this.$util.hello();
@@ -99,14 +99,14 @@ App({
   },
 
   /**
-  * 生命周期函数--监听小程序显示
-  */
+   * 生命周期函数--监听小程序显示
+   */
   onShow(options) {
     // 如果是从其他小程序返回（绑定过程）
     if (options.scene === 1038) {
       if (
-        options.referrerInfo.extraData
-        && options.referrerInfo.extraData.token
+        options.referrerInfo.extraData &&
+        options.referrerInfo.extraData.token
       ) {
         const params = {
           token: options.referrerInfo.extraData.token,
