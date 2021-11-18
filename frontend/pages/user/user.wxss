@@ -80,7 +80,7 @@
 .user_info_wrap .user_content #need_know_icon {
   width: 60rpx;
   height: 60rpx;
-  margin: 5rpx 45rpx;
+  margin: 15rpx 45rpx 0rpx;
 }
 .user_info_wrap .user_content .feedback {
   border-bottom: 0rpx;
