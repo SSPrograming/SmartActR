@@ -20,7 +20,7 @@ def getEquipmentStatus():
         targetID = request.json['equipmentID']
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         date = datetime.date(year, month, day)
     except Exception as e:
         print(e)
@@ -94,7 +94,7 @@ def getAllEquipmentStatus():
     try:
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         date = datetime.date(year, month, day)
     except Exception as e:
         print(e)
@@ -136,7 +136,7 @@ def reserveEquipment():
     try:
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         strStartTime = request.json['startTime']
         strEndTime = request.json['endTime']
         targetType = request.json['equipmentType']
@@ -164,3 +164,18 @@ def reserveEquipment():
         return jsonify({"errCode": 0,"errMsg": ""}), 200
     else:
         return jsonify({"errCode": 1, "errMsg": "设备不存在或已被占用"})
+
+
+@bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
+@login_required
+def cancelReserve():
+    try:
+        recordID = request.json['reserveID']
+    except Exception as e:
+        print(e)
+        return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
+    msg, status = ReserveService.delete_reserve_record(g.userID, recordID)
+    if status:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200
