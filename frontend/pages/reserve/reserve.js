@@ -14,6 +14,7 @@ Page({
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
+    isShowNotice: true,
     loading: false,
   },
 
@@ -42,6 +43,16 @@ Page({
         });
       });
   },
+
+  showNotice(e) {
+    this.setData({ isShowNotice: true });
+  },
+
+  hideNotice(e) {
+    this.setData({ isShowNotice: false });
+  },
+
+  onEnter(e) { },
 
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {

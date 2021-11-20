@@ -4,6 +4,74 @@
     padding-top: 40rpx;
 }
 
+.notice-page-container {
+    /* 位置 */
+    display: flex;
+    flex-direction: column;
+    /* 大小 */
+    height: calc(100% - 222rpx);
+}
+
+.notice-page-box {
+    /* 大小 */
+    width: 80%;
+    padding: 40rpx 0 80rpx 0;
+    margin: auto;
+    /* 背景 */
+    background: #ffffff;
+    /* CSS3 */
+    box-shadow: 5rpx 5rpx 20rpx rgba(240, 194, 214, .6);
+    border-radius: 40rpx;
+}
+
+.notice-page-title {
+    /* 大小 */
+    margin-bottom: 10rpx;
+    /* 文字 */
+    text-align: center;
+    font-size: 64rpx;
+}
+
+.notice-page-time-container {
+    /* 文字 */
+    text-align: center;
+}
+
+.notice-page-time-icon {
+    /* 大小 */
+    width: 32rpx;
+    height: 32rpx;
+    margin: 0 5rpx -6rpx 0;
+}
+
+.notice-page-time {
+    /* 位置 */
+    display: inline-block;
+    /* 文字 */
+    font-size: 28rpx;
+    text-decoration: underline;
+}
+
+.notice-page-content {
+    /* 大小 */
+    width: 80%;
+    margin: 30rpx auto;
+    /* 文字 */
+    text-indent: 2em;
+    font-size: 36rpx;
+}
+
+.notice-page-confirm {
+    /* 大小 */
+    margin-top: 50rpx;
+    /* 文字 */
+    font: 36rpx;
+    color: #ffffff;
+    /* 背景 */
+    background: #d13c7f;
+    border-radius: 30rpx;
+}
+
 .dates-container {
     /* 位置 */
     position: relative;
@@ -224,14 +292,14 @@
     text-align: right;
 }
 
-.equipments-whitespace {
-    /* 大小 */
-    flex: 1;
-}
-
 .equipment-status {
     /* 文字 */
     font-size: 48rpx;
+}
+
+.whitespace {
+    /* 大小 */
+    flex: 1;
 }
 
 ::-webkit-scrollbar {
