@@ -14,7 +14,7 @@ bp_reserve = Blueprint(
 )
 
 @bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
-#@login_required
+@login_required
 def getEquipmentStatus():
     try:
         targetType = request.json['equipmentType']
@@ -91,6 +91,8 @@ def getEquipmentStatus():
             item_startTime = item_startTime.replace(hour=hour, minute=minute_round)
             print(item_startTime)
             spareTime[0]["startTime"] = item_startTime.strftime("%H:%M")
+            if spareTime[0]["startTime"] == spareTime[0]["endTime"]:
+                del spareTime[0]
 
     return jsonify({
             "errCode": 0,
