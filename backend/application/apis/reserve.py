@@ -5,6 +5,7 @@ from config import query_yaml
 from application.services import UserService, EquipmentService, ReserveService
 from .login_decorator import login_required
 import operator, datetime
+import math
 
 
 bp_reserve = Blueprint(
@@ -13,7 +14,7 @@ bp_reserve = Blueprint(
 )
 
 @bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
-@login_required
+#@login_required
 def getEquipmentStatus():
     try:
         targetType = request.json['equipmentType']
@@ -38,29 +39,16 @@ def getEquipmentStatus():
         occupation.append({"startTime": record.startTime,
                                           "endTime": record.endTime})
     occupation = sorted(occupation, key=operator.itemgetter('startTime'))
-    if len(occupation)<1:
-        return jsonify({
-            "errCode": 0,
-            "equipmentName": targetEquipmentType.equipmentName,
-            "equipmentDescription": targetEquipmentType.equipmentDescription,
-            "equipmentSpareTime": [
-                {
-                    "startTime": "08:00",
-                    "endTime": "22:00"
-                }
-            ],
-            "equipmentOccupiedTime": []
-        })
-    print(occupation)
     occupation_merged = []
-    cur_item = occupation[0] #to be merged
-    for item in occupation:
-        if item["startTime"]<=cur_item["endTime"]:
-            cur_item["endTime"] = max(cur_item["endTime"], item["endTime"])
-        else:
-            occupation_merged.append(cur_item)
-            cur_item = item
-    occupation_merged.append(cur_item)
+    if len(occupation):
+        cur_item = occupation[0] #to be merged
+        for item in occupation:
+            if item["startTime"]<=cur_item["endTime"]:
+                cur_item["endTime"] = max(cur_item["endTime"], item["endTime"])
+            else:
+                occupation_merged.append(cur_item)
+                cur_item = item
+        occupation_merged.append(cur_item)
     spareTime=[{"startTime": "08:00", "endTime":"22:00"}]
 
     for i in range(len(occupation_merged)):
@@ -77,14 +65,39 @@ def getEquipmentStatus():
         if splitTime_2["startTime"] != splitTime_2["endTime"]:
             spareTime.append(splitTime_2)
 
+    remove_end = 0
+    # 转化为本地时间
+    now = datetime.datetime.now() + datetime.timedelta(hours=8)
+    for item in spareTime:
+        item_endTime = datetime.datetime.strptime(item["endTime"],'%H:%M')
+        item_endTime = item_endTime.replace(year=year, month=month, day=day)
+        print(item_endTime)
+        print(now)
+        if item_endTime < now:
+            remove_end += 1
+        else:
+            break
+    del spareTime[:remove_end]
+    print(len(spareTime))
+    if len(spareTime):
+        item_startTime = datetime.datetime.strptime(spareTime[0]["startTime"], '%H:%M')
+        item_startTime = item_startTime.replace(year=year, month=month, day=day)
+        if item_startTime < now:
+            minute_round = math.ceil(now.minute / 15) * 15
+            hour = now.hour
+            if minute_round == 60:
+                hour += 1
+                minute_round = 0
+            item_startTime = item_startTime.replace(hour=hour, minute=minute_round)
+            print(item_startTime)
+            spareTime[0]["startTime"] = item_startTime.strftime("%H:%M")
+
     return jsonify({
             "errCode": 0,
             "equipmentName": targetEquipmentType.equipmentName,
             "equipmentDescription": targetEquipmentType.equipmentDescription,
             "equipmentSpareTime": 
             spareTime,
-            "equipmentOccupiedTime":
-            occupation_merged
         }), 200
 
 
