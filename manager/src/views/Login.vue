@@ -1,5 +1,8 @@
 <template>
   <div class="login">
+    <div class="title">
+      智慧活动室
+    </div>
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="用户名">
         <el-input v-model="form.username"></el-input>
@@ -34,10 +37,18 @@ export default {
 </script>
 
 <style scoped>
+
+.title {
+  margin: calc(50vh - 300px) auto 50px;
+  color: hotpink;
+  font-size: 48px;
+}
+
 .form {
   width: 300px;
-  padding: 20px;
-  margin: calc(50vh - 200px) auto 0;
+  padding: 40px 20px 20px;
+  margin: 0 auto;
   box-shadow: hotpink 0 0 10px;
+  border-radius: 20px;
 }
 </style>
