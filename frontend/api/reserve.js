@@ -61,6 +61,13 @@ const reserve = {
       data: params,
     });
   },
+  getNotice() {
+    return request({
+      url: '/reserve/getNotice',
+      method: 'GET',
+      data: params,
+    });
+  },
 };
 
 export default {

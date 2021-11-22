@@ -1,5 +1,6 @@
 // utils/util.js
 import $api from '../api/api';
+import time from './time';
 
 const hello = () => {
   console.log('Hello, world!');
@@ -90,14 +91,6 @@ const promptBind = () => {
     },
   });
 };
-
-const time = {
-  fix(num, length) {
-    // 以固定位数显示整数
-    return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
-  },
-};
-
 
 export default {
   hello,

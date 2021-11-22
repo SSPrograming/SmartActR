@@ -39,7 +39,7 @@
             <view class="minute-next" data-type="startTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
             <view class="reserve-time-label">起始时间：</view>
             <view class="time-picker-container">
-                <picker-view class="time-picker" value="{{ startTime }}" data-type="startTime" bindchange="timeChange">
+                <picker-view class="time-picker" value="{{ startTime }}" data-type="startTime" bindchange="timeChange" bindpickstart="pickStart" bindpickend="pickEnd">
                     <picker-view-column>
                         <view class="time-picker-item" wx:for="{{ hours }}" wx:key="index">{{ item }}</view>
                     </picker-view-column>
@@ -58,7 +58,7 @@
             <view class="minute-next" data-type="endTime" data-sub-type="minute" data-direction="next" bindtap="changeTime"></view>
             <view class="reserve-time-label">结束时间： </view>
             <view class="time-picker-container">
-                <picker-view class="time-picker" value="{{ endTime }}" data-type="endTime" bindchange="timeChange">
+                <picker-view class="time-picker" value="{{ endTime }}" data-type="endTime" bindchange="timeChange" bindpickstart="pickStart" bindpickend="pickEnd">
                     <picker-view-column>
                         <view class="time-picker-item" wx:for="{{ hours }}" wx:key="index">{{ item }}</view>
                     </picker-view-column>
@@ -71,6 +71,6 @@
         </view>
     </view>
     <view class="button-container">
-        <view class="submit-button">提交预约</view>
+        <view class="submit-button" bindtap="doReserve">提交预约</view>
     </view>
 </view>

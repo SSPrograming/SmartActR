@@ -14,12 +14,12 @@ Page({
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
+    isShowNotice: true,
     loading: false,
   },
 
   // 后端数据获取
   getAllEquipmentStatus() {
-    const date = new Date();
     const params = this.data.dates[this.data.selected];
     app.$api.reserve.getAllEquipmentStatus(params)
       .then((res) => {
@@ -44,13 +44,20 @@ Page({
       });
   },
 
+  showNotice(e) {
+    this.setData({ isShowNotice: true });
+  },
+
+  hideNotice(e) {
+    this.setData({ isShowNotice: false });
+  },
+
+  onEnter(e) { },
+
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {
       this.setData({
         selected: e.currentTarget.dataset.index,
-      });
-      // 判断登录状态
-      this.setData({
         loading: true,
       });
       app.dealThing(this.getAllEquipmentStatus);
@@ -81,10 +88,7 @@ Page({
           date: date.getDate(),
           day: day2string[date.getDay()],
         };
-      })
-    });
-    // 判断登录状态
-    this.setData({
+      }),
       loading: true,
     });
     app.dealThing(this.getAllEquipmentStatus);
@@ -130,7 +134,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    // 判断登录状态
     this.setData({
       loading: true,
     });
