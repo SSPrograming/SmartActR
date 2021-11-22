@@ -16,9 +16,9 @@ bp_notice = Blueprint(
 @bp_notice.route('/api/v1/reserve/getNotice', methods=['GET'])
 #@login_required
 def notice():
-    notice_list = NoticeService.get_notice()
-    print(type(notice_list))
-    if (len(notice_list) == 0):
+    notice = NoticeService.get_notice()
+    print(type(notice))
+    if notice is None:
         return jsonify({
 	    "errCode": 1,
 	    "errMsg": "无可获取公告",
@@ -27,7 +27,6 @@ def notice():
         "expireDate": "", #格式的样例："2021-11-12"
         }) 
     else:
-        notice = notice_list[0]
         print("Date:")
         print(notice.noticeDate)
         noticeDate_str = str(notice.noticeDate)
