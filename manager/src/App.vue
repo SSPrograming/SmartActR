@@ -1,22 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-      |
-      <router-link to="/about">About</router-link>
-    </div>
-    <el-menu :default-active="0" class="el-menu-demo" mode="horizontal">
-      <router-link to="/">
-        <el-menu-item index="1">
-          Home
-        </el-menu-item>
-      </router-link>
-      <router-link to="/about">
-        <el-menu-item index="2">
-          About
-        </el-menu-item>
-      </router-link>
-    </el-menu>
     <router-view/>
   </div>
 </template>
