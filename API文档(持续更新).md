@@ -218,7 +218,8 @@ ret:
 ret:
 
 ```
-{
+{	"errCode": number,
+	"info":
 	[
 		"reserveID": number,
 		"startTime": "",
@@ -242,15 +243,18 @@ ret:
 ret:
 
 ```
-{
-	[
-		"reserveID": number,
-		"startTime": "",
-		"endTime": "",
-		"year": number,
-		"month": number,
-		"day": number,
-		"status": ""
+{	"errCode": number,
+	"info":
+	[	
+		{
+			"reserveID": number,
+			"startTime": "",
+			"endTime": "",
+			"year": number,
+			"month": number,
+			"date": number,
+			"status": ""
+		}
 	]
 }
 ```
