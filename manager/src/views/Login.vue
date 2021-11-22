@@ -8,7 +8,7 @@
         <el-input v-model="form.password" show-password></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">登录</el-button>
+        <el-button type="primary" @click="onSubmit">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -24,15 +24,20 @@ export default {
         password: ''
       }
     }
+  },
+  methods: {
+    onSubmit() {
+
+    }
   }
 }
 </script>
 
 <style scoped>
-  .form {
-    width: 300px;
-    padding: 20px;
-    margin: calc(50vh - 200px) auto 0;
-    box-shadow: hotpink 0 0 10px;
-  }
+.form {
+  width: 300px;
+  padding: 20px;
+  margin: calc(50vh - 200px) auto 0;
+  box-shadow: hotpink 0 0 10px;
+}
 </style>
