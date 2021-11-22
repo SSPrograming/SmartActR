@@ -1,5 +1,6 @@
 from logging import exception
 from flask import request, jsonify, Blueprint, g
+from flask.wrappers import Response
 import mjwt
 from config import query_yaml
 from application.services import UserService, EquipmentService, ReserveService
@@ -194,3 +195,24 @@ def cancelReserve():
         return jsonify({"errCode": 0}), 200
     else:
         return jsonify({"errCode": 1,"errMsg": msg}), 200
+
+
+@bp_reserve.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+@login_required
+def getHistoryReserveInfo():
+    history_record = ReserveService.get_history_record(g.userID)
+    resp_record = []
+    for item in history_record:
+        resp_record.append({
+            "reserveID": item.recordID,
+            "startTime": item.startTime.strftime("%H:%M"),
+            "endTime": item.endTime.strftime("%H:%M"),
+            "year": item.reserveDate.year,
+            "month": item.reserveDate.month,
+            "date": item.reserveDate.day,
+            "status": item.status
+        })
+    return jsonify({
+        "errCode": 0,
+        "info": resp_record
+    }), 200
