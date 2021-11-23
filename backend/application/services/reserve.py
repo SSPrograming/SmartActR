@@ -48,6 +48,65 @@ class ReserveService:
             db.session.rollback()
             return False
 
+
+    def delete_reserve_record(userID, recordID, strict=True):
+        """
+        当strict==True时
+        无法删除当前时间之前的预约
+        """
+        query_reserve_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
+                                                            Reserve_Record.recordID==recordID).first()
+        if strict:
+            now = datetime.datetime.now()
+            reserveDate = query_reserve_record.reserveDate
+            startTime = query_reserve_record.startTime
+            target_startTime = datetime.datetime(reserveDate.year, reserveDate.month, reserveDate.day,
+                                                startTime.hour, startTime.minute, startTime.second)
+            if target_startTime<=now:
+                return '超时，不可取消',False
+        if query_reserve_record==None:
+            return '无匹配记录',False
+        try:
+            db.session.delete(query_reserve_record)
+            db.session.commit()
+            return 'ok',True
+        except Exception as e:
+            print('删除预约记录时出错:',e)
+            db.session.rollback()
+            return '数据库错误',False
+
+    def get_history_record(userID):
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
+        rem_start = len(query_record)
+        now = datetime.datetime.now()
+        today = datetime.date(now.year, now.month, now.day)
+        for i in range(len(query_record)-1, -1, -1):
+            if query_record[i].reserveDate >= today:
+                rem_start = i
+            else:
+                break
+        if rem_start < len(query_record):
+            del query_record[rem_start:]
+        
+        return query_record     
+
+    def get_current_record(userID):
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
+        rem_start = len(query_record)
+        now = datetime.datetime.now()
+        today = datetime.date(now.year, now.month, now.day)
+        for i in range(len(query_record)-1, -1, -1):
+            if query_record[i].reserveDate >= today:
+                rem_start = i
+            else:
+                break
+        if rem_start < len(query_record):
+            del query_record[:rem_start]
+        return query_record     
+
     def strToTime(strTime):
+        """
+        输入必须为 'hh:mm'的形式
+        """
         timeStruct = datetime.datetime.strptime(strTime, '%H:%M').timetuple()
         return datetime.time(timeStruct[3], timeStruct[4])
