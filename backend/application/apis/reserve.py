@@ -216,3 +216,24 @@ def getHistoryReserveInfo():
         "errCode": 0,
         "info": resp_record
     }), 200
+
+
+@bp_reserve.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+@login_required
+def getCurrentReserveInfo():
+    current_record = ReserveService.get_current_record(g.userID)
+    resp_record = []
+    for item in current_record:
+        resp_record.append({
+            "reserveID": item.recordID,
+            "startTime": item.startTime.strftime("%H:%M"),
+            "endTime": item.endTime.strftime("%H:%M"),
+            "year": item.reserveDate.year,
+            "month": item.reserveDate.month,
+            "date": item.reserveDate.day,
+            "status": item.status
+        })
+    return jsonify({
+        "errCode": 0,
+        "info": resp_record
+    }), 200
