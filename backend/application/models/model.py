@@ -102,4 +102,11 @@ class Instruction(db.Model):
     instructionID = db.Column(db.Integer, autoincrement=True, primary_key=True, doc="ID")
     instructionName = db.Column(db.String(64), doc="说明标题")
 
+class Admin(db.Model):
+    """
+    管理员信息
+    """
+    __tablename__ = 'admin'
+    userName = db.Column(db.String(64), doc="用户名", primary_key=True)
+    password = db.Column(db.String(64), doc="密码")
 
