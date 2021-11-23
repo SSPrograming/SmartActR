@@ -4,6 +4,17 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    // 在卸载前删除本地存储的登陆状态
+    window.addEventListener('beforeunload', () => {
+      localStorage.removeItem('jwt');
+    })
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

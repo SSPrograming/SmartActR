@@ -30,7 +30,13 @@ export default {
   },
   methods: {
     onSubmit() {
-
+      this.$store.commit({
+        type: 'login',
+        jwt: 'jwt'
+      })
+      this.$router.push({
+        name: 'Home'
+      })
     }
   }
 }
