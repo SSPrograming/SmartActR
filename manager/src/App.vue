@@ -44,10 +44,11 @@ export default {
 
 h1 {
   display: flex;
+  padding-left: calc(5% + 10px);
   font-family: '微软雅黑', sans-serif;
   color: hotpink;
   line-height: 50px;
-  padding-left: calc(5% + 10px);
+  cursor: default;
 }
 
 .logo {
