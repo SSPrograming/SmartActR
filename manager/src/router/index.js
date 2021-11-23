@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store'
 import Login from '../views/Login.vue'
 import Home from '../views/Home'
+import Notice from '../views/Notice'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/notice',
+    name: 'Notice',
+    component: Notice
   }
 ]
 
