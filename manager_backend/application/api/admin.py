@@ -10,7 +10,7 @@ bp_admin = Blueprint(
     __name__
 )
 
-@bp_admin.route('/api/v1/amdin/getAdminName', methods=['GET'])
+@bp_admin.route('/api/v1/admin/getAdminName', methods=['GET'])
 def getAdminName():
     admin_name = Admin.query.first()
     print(admin_name.userName)
