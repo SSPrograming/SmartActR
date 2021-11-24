@@ -45,7 +45,8 @@ export default {
 <style scoped>
 
 .title {
-  margin: 10vh auto 30px;
+  padding: 10vh 0 30px;
+  margin: auto;
   color: hotpink;
   font-size: 36px;
 }

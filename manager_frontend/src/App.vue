@@ -8,9 +8,11 @@
           <Sidebar></Sidebar>
         </aside>
       </transition>
-        <main class="main">
+      <main class="main">
+        <transition name="router-view">
           <router-view></router-view>
-        </main>
+        </transition>
+      </main>
     </div>
   </div>
 </template>
@@ -81,6 +83,15 @@ main {
 
 .sidebar-enter, .sidebar-leave-to {
   margin-left: -240px;
+  opacity: 0;
+}
+
+.router-view-enter-active, .router-view-leave-active {
+  transition: all .5s ease-in-out;
+}
+
+.router-view-enter, .router-view-leave-to {
+  height: 0;
   opacity: 0;
 }
 
