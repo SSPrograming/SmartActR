@@ -15,7 +15,7 @@ export default {
   padding-left: 20%;
   padding-top: 20vh;
   font-size: 36px;
-  color: blueviolet;
+  color: deeppink;
   text-align: left;
 }
 </style>

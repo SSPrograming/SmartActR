@@ -22,16 +22,13 @@ export default {
   },
   computed: {
     isLogin() {
-      return this.$route.name === 'Login';
+      return this.$route.name === 'Login'
     }
   },
   mounted() {
     // 在卸载前删除本地存储的登陆状态
     window.addEventListener('beforeunload', () => {
-      localStorage.removeItem('jwt');
-    })
-    this.$api.admin.getAdminName().then((res) => {
-      console.log(res)
+      localStorage.removeItem('jwt')
     })
   }
 }

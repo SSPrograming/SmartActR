@@ -4,10 +4,12 @@ import './plugins/element.js'
 import router from './router'
 import store from './store'
 import api from './api'
+import utils from './utils'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$api = api
+Vue.prototype.$utils = utils
 
 new Vue({
   router,
