@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
+    <header>
+      <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
+      <el-button type="primary" @click="logout" plain>登出</el-button>
+    </header>
     <el-divider></el-divider>
     <div class="container">
       <transition name="sidebar">
@@ -9,9 +12,7 @@
         </aside>
       </transition>
       <main class="main">
-        <transition name="router-view">
-          <router-view></router-view>
-        </transition>
+        <router-view></router-view>
       </main>
     </div>
   </div>
@@ -34,11 +35,29 @@ export default {
     window.addEventListener('beforeunload', () => {
       localStorage.removeItem('jwt')
     })
+  },
+  methods: {
+    logout() {
+      this.$store.commit('logout')
+      if (this.$route.name !== 'Login') {
+        this.$router.replace({name: 'Login'})
+        this.$message({
+          message: '登出成功',
+          type: 'success'
+        })
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 h1 {
   display: flex;
   padding-left: 10px;
@@ -73,15 +92,6 @@ main {
 
 .sidebar-enter, .sidebar-leave-to {
   margin-left: -240px;
-  opacity: 0;
-}
-
-.router-view-enter-active, .router-view-leave-active {
-  transition: all .5s ease-in-out;
-}
-
-.router-view-enter, .router-view-leave-to {
-  height: 0;
   opacity: 0;
 }
 </style>

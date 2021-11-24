@@ -14,8 +14,8 @@ export default {
 
 <style scoped>
 .content {
-  padding-left: 20%;
-  padding-top: 20vh;
+  padding-top: 5vh;
+  padding-left: 5%;
   font-size: 36px;
   color: deeppink;
   text-align: left;
