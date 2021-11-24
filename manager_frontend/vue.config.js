@@ -7,4 +7,13 @@ module.exports = {
           return args
         })
   },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://120.53.231.51:8888/',
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  }
 }

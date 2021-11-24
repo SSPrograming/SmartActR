@@ -22,9 +22,11 @@ export default {
   name: "Sidebar",
   methods: {
     handleSelect(index) {
-      this.$router.push({
-        name: index
-      })
+      if (this.$route.name !== index) {
+        this.$router.push({
+          name: index
+        })
+      }
     }
   }
 }

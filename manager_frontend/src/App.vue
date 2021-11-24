@@ -29,6 +29,9 @@ export default {
     window.addEventListener('beforeunload', () => {
       localStorage.removeItem('jwt');
     })
+    this.$api.admin.getAdminName().then((res) => {
+      console.log(res)
+    })
   }
 }
 </script>

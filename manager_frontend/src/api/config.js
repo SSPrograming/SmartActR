@@ -3,7 +3,7 @@
  */
 
 const config = {
-  baseUrl: ''
+  baseUrl: process.env.VUE_APP_BASEURL
 }
 
 export default config
