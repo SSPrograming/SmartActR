@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1 v-if="!isLogin"><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
+    <el-divider></el-divider>
     <div class="container">
       <aside v-if="!isLogin">
         <Sidebar></Sidebar>
@@ -38,6 +39,8 @@ export default {
 
 <style lang="scss">
 #app {
+  width: 90%;
+  margin: 0 auto;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -47,7 +50,7 @@ export default {
 
 h1 {
   display: flex;
-  padding-left: calc(5% + 10px);
+  padding-left: 10px;
   font-family: '微软雅黑', sans-serif;
   color: hotpink;
   line-height: 50px;
@@ -61,7 +64,6 @@ h1 {
 
 .container {
   display: flex;
-  width: 90%;
   margin: 0 auto;
 }
 
@@ -71,6 +73,7 @@ aside {
 
 main {
   flex: 1;
+  padding: 20px;
 }
 
 </style>
