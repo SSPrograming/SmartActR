@@ -1,19 +1,21 @@
 <template>
   <div class="login">
-    <div class="title">
-      管理员登录
+    <div class="container">
+      <div class="title">
+        管理员登录
+      </div>
+      <el-form class="form" ref="form" :model="form" label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="form.password" show-password></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">登录</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <el-form class="form" ref="form" :model="form" label-width="80px">
-      <el-form-item label="用户名">
-        <el-input v-model="form.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="form.password" show-password></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">登录</el-button>
-      </el-form-item>
-    </el-form>
   </div>
 </template>
 
@@ -43,6 +45,9 @@ export default {
 </script>
 
 <style scoped>
+.login {
+  text-align: center;
+}
 
 .title {
   padding: 10vh 0 30px;

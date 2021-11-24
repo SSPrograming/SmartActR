@@ -1,6 +1,8 @@
 <template>
   <div class="not-found">
-    对不起，你当前访问的页面不存在！
+    <h2 class="content">
+      对不起，你当前访问的页面不存在！
+    </h2>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ export default {
 </script>
 
 <style scoped>
-.not-found {
+.content {
   padding-left: 20%;
   padding-top: 20vh;
   font-size: 36px;

@@ -38,17 +38,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-#app {
-  width: 90%;
-  margin: 0 auto;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
+<style scoped>
 h1 {
   display: flex;
   padding-left: 10px;
@@ -74,7 +64,7 @@ aside {
 
 main {
   flex: 1;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .sidebar-enter-active, .sidebar-leave-active {
@@ -94,5 +84,21 @@ main {
   height: 0;
   opacity: 0;
 }
+</style>
 
+<style>
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  width: 90%;
+  padding: 20px 5px;
+  margin: 0 auto;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
 </style>
