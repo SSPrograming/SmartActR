@@ -85,7 +85,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "src/element-variables";
+
 .content {
   white-space: nowrap;
 }
@@ -95,15 +97,15 @@ export default {
 }
 
 .delete {
-  color: #f56c6c;
-}
+  color: $--color-danger;
 
-.delete:hover {
-  color: #ff7c7c;
-}
+  &:focus, &:hover {
+    color: mix($--color-danger, $--color-white, 75%);
+  }
 
-.delete:active {
-  color: #e06060;
+  &:active {
+    color: $--color-danger;
+  }
 }
 
 </style>

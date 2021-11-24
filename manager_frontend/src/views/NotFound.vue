@@ -1,8 +1,8 @@
 <template>
   <div class="not-found">
-    <h2 class="content">
+    <div class="content">
       对不起，你当前访问的页面不存在！
-    </h2>
+    </div>
   </div>
 </template>
 
@@ -12,12 +12,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "src/element-variables";
+
 .content {
   padding-top: 5vh;
   padding-left: 5%;
-  font-size: 36px;
-  color: deeppink;
+  font-size: $--my-font-size-extra-large;
+  color: $--color-danger;
   text-align: left;
 }
 </style>

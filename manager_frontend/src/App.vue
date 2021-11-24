@@ -51,7 +51,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "src/element-variables";
+
 header {
   display: flex;
   justify-content: space-between;
@@ -62,7 +64,7 @@ h1 {
   display: flex;
   padding-left: 10px;
   font-family: '微软雅黑', sans-serif;
-  color: hotpink;
+  color: $--color-primary;
   line-height: 50px;
   cursor: default;
 }

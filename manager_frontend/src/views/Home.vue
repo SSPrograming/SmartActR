@@ -49,23 +49,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "src/element-variables";
+
 .container {
   padding-top: 5vh;
   padding-left: 5%;
 }
 
 p {
-  font-size: 24px;
+  font-size: $--my-font-size-medium;
   padding-bottom: 16px;
 }
 
 span {
-  font-size: 28px;
-  color: deeppink;
+  font-size: $--my-font-size-large;
+  color: mix($--color-primary, $--color-danger);
 }
 
 .time span {
-  font-size: 32px;
+  font-size: $--my-font-size-extra-large;
 }
 </style>

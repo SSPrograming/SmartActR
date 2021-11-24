@@ -48,7 +48,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "src/element-variables";
+
 .login {
   text-align: center;
 }
@@ -56,15 +58,15 @@ export default {
 .title {
   padding: 10vh 0 30px;
   margin: auto;
-  color: hotpink;
-  font-size: 36px;
+  color: $--color-primary;
+  font-size: $--my-font-size-huge;
 }
 
 .form {
   width: 300px;
   padding: 40px 20px 20px;
   margin: 0 auto;
-  box-shadow: hotpink 0 0 10px;
+  box-shadow: $--color-primary 0 0 10px;
   border-radius: 20px;
 }
 </style>
