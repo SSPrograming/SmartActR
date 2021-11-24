@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="title">
-      智慧活动室
+      管理员登录
     </div>
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="用户名">
@@ -45,9 +45,9 @@ export default {
 <style scoped>
 
 .title {
-  margin: calc(50vh - 300px) auto 50px;
+  margin: 10vh auto 30px;
   color: hotpink;
-  font-size: 48px;
+  font-size: 36px;
 }
 
 .form {

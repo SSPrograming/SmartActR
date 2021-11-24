@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1 v-if="!isLogin"><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
+    <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
     <el-divider></el-divider>
     <div class="container">
       <aside v-if="!isLogin">
