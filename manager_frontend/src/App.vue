@@ -3,12 +3,14 @@
     <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
     <el-divider></el-divider>
     <div class="container">
-      <aside v-if="!isLogin">
-        <Sidebar></Sidebar>
-      </aside>
-      <main class="main">
-        <router-view/>
-      </main>
+      <transition name="sidebar">
+        <aside v-if="!isLogin">
+          <Sidebar></Sidebar>
+        </aside>
+      </transition>
+        <main class="main">
+          <router-view></router-view>
+        </main>
     </div>
   </div>
 </template>
@@ -71,6 +73,15 @@ aside {
 main {
   flex: 1;
   padding: 20px;
+}
+
+.sidebar-enter-active, .sidebar-leave-active {
+  transition: all .5s ease-in-out;
+}
+
+.sidebar-enter, .sidebar-leave-to {
+  margin-left: -240px;
+  opacity: 0;
 }
 
 </style>
