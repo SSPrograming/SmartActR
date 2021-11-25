@@ -1,0 +1,12 @@
+<!--custom-tab-bar/index.wxml-->
+<view class="tab-bar">
+    <view class="radius-shadow"></view>
+    <view class="tab-bar-containter">
+        <view class="tab-bar-item" wx:for="{{ list }}" wx:key="index" data-path="{{ item.pagePath }}" data-index="{{ index }}" bindtap="switchTab">
+            <view class="tab-bar-item-image-container">
+                <image class="tab-bar-item-image" src="{{ selected === index ? item.selectedIconPath : item.iconPath }}"></image>
+            </view>
+            <view class="tab-bar-item-text" style="color: {{ selected === index ? selectedColor : color }}">{{ item.text }}</view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,38 @@
+<!--pages/reserve/reserve.wxml-->
+<page-meta root-background-color="#ebebeb">
+    <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
+</page-meta>
+<view class="container">
+    <view class="dates-container">
+        <image class="left-arrow" src="/resources/icons/reserve/arrow.png"></image>
+        <image class="right-arrow" src="/resources/icons/reserve/arrow.png"></image>
+        <scroll-view scroll-x="true">
+            <view class="date-container" wx:for="{{ dates }}" wx:key="index" data-index="{{ index }}" bindtap="switchDate">
+                <view class="date-day">{{ item.day }}</view>
+                <view class="{{ selected === index ? 'date-date date-data__selected' : 'date-date' }}">{{ item.date }}</view>
+            </view>
+        </scroll-view>
+    </view>
+    <view class="notice-container">
+        <view class="notice-title-container">
+            <image class="notice-title-image" src="/resources/icons/reserve/notice.png"></image>
+            <view class="notice-title-text">公告</view>
+        </view>
+        <view class="notice-vertical-delimiter"></view>
+        <view class="notice-content">{{ notice }}</view>
+        <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
+    </view>
+    <view class="equipments-container">
+        <scroll-view class="equipment-scroll" scroll-y="true">
+            <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}" bindtap="doReserve">
+                <image class="equipment-image" src="{{ equipmentType2imagePath[item.equipmentType] }}"></image>
+                <view class="equipment-vertical-delimiter"></view>
+                <view class="equipment-content">
+                    <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>
+                    <view class="equipments-whitespace"></view>
+                    <view class="equipment-status" style="{{ item.equipmentStatus === 0 ? 'color: green' : item.equipmentStatus === 1 ? 'color: orange' : 'color: red' }}">{{ equipmentStatus2String[item.equipmentStatus] }}</view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</view>
