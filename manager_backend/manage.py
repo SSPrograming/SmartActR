@@ -4,6 +4,7 @@ from flask_script import Manager
 from config import query_yaml
 from application import db
 from application.api import bp
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = query_yaml('db.MYSQL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
