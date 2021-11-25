@@ -120,7 +120,7 @@ class QRCode(db.Model):
                                 doc="设备种类", nullable=False)                      
     equipmentID = db.Column(db.Integer,
                             doc="设备号",nullable=False)
-    hashCode = db.Column(db.String(256), primary_key=True)
+    hashCode = db.Column(db.String(512), primary_key=True)
     # 复合外键约束
     __table_args__ = (
         db.ForeignKeyConstraint(
