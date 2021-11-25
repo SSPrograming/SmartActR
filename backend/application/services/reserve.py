@@ -38,7 +38,7 @@ class ReserveService:
     def add_reserve_record(userID, reserveDate, startTime, endTime, equipmentType, equipmentID):
         nrecord = Reserve_Record(userID=userID, postTime=datetime.datetime.now(),reserveDate=reserveDate, startTime=startTime,
                                 endTime=endTime, equipmentType=equipmentType, equipmentID=equipmentID,
-                                status="fine")
+                                status="success")
         try:
             db.session.add(nrecord)
             db.session.commit()
@@ -56,6 +56,8 @@ class ReserveService:
         """
         query_reserve_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
                                                             Reserve_Record.recordID==recordID).first()
+        if query_reserve_record==None:
+            return '无匹配记录',False
         if strict:
             now = datetime.datetime.now()
             reserveDate = query_reserve_record.reserveDate
@@ -64,10 +66,8 @@ class ReserveService:
                                                 startTime.hour, startTime.minute, startTime.second)
             if target_startTime<=now:
                 return '超时，不可取消',False
-        if query_reserve_record==None:
-            return '无匹配记录',False
         try:
-            db.session.delete(query_reserve_record)
+            query_reserve_record.status = 'cancel'
             db.session.commit()
             return 'ok',True
         except Exception as e:
