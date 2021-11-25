@@ -110,3 +110,21 @@ class Admin(db.Model):
     userName = db.Column(db.String(64), doc="用户名", primary_key=True)
     password = db.Column(db.String(64), doc="密码")
 
+
+class QRCode(db.Model):
+    """
+    用于存储设备种类，设备ID以及对应的hash码信息
+    """
+    __tablename__ = 'qrcode'
+    equipmentType = db.Column(db.Integer,
+                                doc="设备种类", nullable=False)                      
+    equipmentID = db.Column(db.Integer,
+                            doc="设备号",nullable=False)
+    hashCode = db.Column(db.String(256), primary_key=True)
+    # 复合外键约束
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            [equipmentType, equipmentID],
+            [Equipment.equipmentType, Equipment.equipmentID]
+        ),
+    )
