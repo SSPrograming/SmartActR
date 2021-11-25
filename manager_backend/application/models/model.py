@@ -110,3 +110,4 @@ class Admin(db.Model):
     userName = db.Column(db.String(64), doc="用户名", primary_key=True)
     password = db.Column(db.String(64), doc="密码")
 
+

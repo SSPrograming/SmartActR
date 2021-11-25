@@ -48,6 +48,7 @@ class ReserveService:
             db.session.rollback()
             return False
 
+
     def delete_reserve_record(userID, recordID, strict=True):
         """
         当strict==True时
@@ -104,5 +105,8 @@ class ReserveService:
         return query_record     
 
     def strToTime(strTime):
+        """
+        输入必须为 'hh:mm'的形式
+        """
         timeStruct = datetime.datetime.strptime(strTime, '%H:%M').timetuple()
         return datetime.time(timeStruct[3], timeStruct[4])
