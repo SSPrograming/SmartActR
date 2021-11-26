@@ -77,3 +77,15 @@ class NoticeService():
             print(e)
             db.session.rollback()
             return False
+    
+    def delete_notice(notice_id):
+        target_notice = TableNotcie.query.filter(TableNotcie.noticeID==notice_id).first()
+        if target_notice is None:
+            return "无此公告", False
+        try:
+            db.session.delete(target_notice)
+            db.session.commit()
+            return "ok", True
+        except:
+            db.session.rollback()
+            return "bad arguments", False

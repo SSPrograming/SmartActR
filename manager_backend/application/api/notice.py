@@ -13,7 +13,7 @@ bp_notice = Blueprint(
 )
 
 @bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
-#@login_required
+@login_required
 def getNoticeList():
     try:
         num = request.json['num']
@@ -66,7 +66,7 @@ def createNotice():
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
 
 @bp_notice.route('/api/v1/notice/updateNotice', methods=['POST'])
-#@login_required
+@login_required
 def updateNotice():
     try:
         notice_content = request.json['noticeContent']
@@ -81,3 +81,17 @@ def updateNotice():
         return jsonify({"errCode": 0}), 200
     else:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+
+@bp_notice.route('/api/v1/notice/deleteNotice', methods=['POST'])
+@login_required
+def deleteNotice():
+    try:
+        notice_id = request.json['noticeID']
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    msg, delete_status = NoticeService.delete_notice(notice_id)
+    if delete_status:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200

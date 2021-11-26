@@ -3,7 +3,7 @@ from flask import request, jsonify, Blueprint, g
 from config import query_yaml
 from application.models import Admin
 from application.database import db
-from application.service import UserService
+from application.service import AdminService
 from application.utils import generate_jwt
 import requests
 
@@ -34,10 +34,10 @@ def login():
         pswd = request.json['password']
     except:
         return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
-    admin_user = UserService.get_admin(username, pswd)
+    admin_user = AdminService.get_admin(username, pswd)
     if admin_user is None:
         return jsonify({"errCode": 1,"errMsg": "用户名或密码无效"}), 200
-    adminjwt = generate_jwt({"username": admin_user.username})
+    adminjwt = generate_jwt({"username": admin_user.userName})
 
     return jsonify({"errCode": 0, "jwt": adminjwt})
 
