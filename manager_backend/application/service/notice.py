@@ -60,3 +60,20 @@ class NoticeService():
             print(e)
             db.session.rollback()
             return False
+    
+    def update_notice(notice_content, expire_date, notice_id):
+        target_notice = TableNotcie.query.filter(TableNotcie.noticeID==notice_id).first()
+        if target_notice is None:
+            return False
+        try:
+            target_notice.expireDate = strToDate(expire_date)
+            target_notice.noticeContent = notice_content
+            now_datetime = now()
+            now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+            target_notice.noticeDate = now_date
+            db.session.commit()
+            return True
+        except Exception as e:
+            print(e)
+            db.session.rollback()
+            return False

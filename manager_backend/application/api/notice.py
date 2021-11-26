@@ -51,7 +51,7 @@ def getNoticeList():
         
 
 @bp_notice.route('/api/v1/notice/createNotice', methods=['POST'])
-#@login_required
+@login_required
 def createNotice():
     try:
         notice_content = request.json['noticeContent']
@@ -61,6 +61,23 @@ def createNotice():
 
     create_status = NoticeService.create_notice(notice_content, expire_date)
     if create_status:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+
+@bp_notice.route('/api/v1/notice/updateNotice', methods=['POST'])
+#@login_required
+def updateNotice():
+    try:
+        notice_content = request.json['noticeContent']
+        expire_date = request.json['expireDate']
+        notice_id = request.json['noticeID']
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    update_status = NoticeService.update_notice(notice_content, expire_date, notice_id)
+
+    if update_status:
         return jsonify({"errCode": 0}), 200
     else:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
