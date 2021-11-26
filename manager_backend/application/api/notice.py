@@ -12,7 +12,7 @@ bp_notice = Blueprint(
     __name__
 )
 
-@bp_notice.route('/api/v1/notice/getNoticeList', methods=['GET'])
+@bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
 #@login_required
 def getNoticeList():
     try:
@@ -24,22 +24,24 @@ def getNoticeList():
         if query_type==1 or query_type==3:
             query_startDate = request.json['queryStartDate']
             query_endDate = request.json['queryEndDate']
-        elif query_type==2 or query_type==3:
+        if query_type==2 or query_type==3:
             query_str = request.json['queryStr']
-    except:
+    except Exception as e:
+        print(e)
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     
     try:
         query_result = NoticeService.query_notice(num, query_type, query_startDate, query_endDate, query_str)
-    except:
+    except Exception as e:
+        print(e)
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     
     noticeList = []
     for item in query_result:
         noticeList.append({
             "noticeID": item.noticeID,
-			"postDate": item.noticeDate,
-			"expireDate": item.expireDate,
+			"postDate": item.noticeDate.strftime("%Y-%m-%d"),
+			"expireDate": item.expireDate.strftime("%Y-%m-%d"),
 			"content": item.noticeContent
         })
     
@@ -47,3 +49,18 @@ def getNoticeList():
         "noticeList":noticeList, "errCode": 0
     }), 200
         
+
+@bp_notice.route('/api/v1/notice/createNotice', methods=['POST'])
+#@login_required
+def createNotice():
+    try:
+        notice_content = request.json['noticeContent']
+        expire_date = request.json['expireDate']
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+
+    create_status = NoticeService.create_notice(notice_content, expire_date)
+    if create_status:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200

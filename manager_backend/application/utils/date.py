@@ -7,3 +7,7 @@ def strToDate(strDate):
 def strToTime(strTime):
     m_datetime = datetime.datetime.strptime(strTime, "%H:%M")
     return datetime.time(m_datetime.hour, m_datetime.minute)
+
+def now():
+    now = datetime.datetime.now() + datetime.timedelta(hours=8)
+    return now
