@@ -95,7 +95,7 @@ main {
 }
 </style>
 
-<style>
+<style lang="scss">
 * {
   padding: 0;
   margin: 0;
@@ -110,4 +110,13 @@ main {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
+.pointer {
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+}
+
 </style>

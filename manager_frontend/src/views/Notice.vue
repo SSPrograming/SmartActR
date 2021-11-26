@@ -1,7 +1,18 @@
 <template>
   <div class="notice">
     <div class="container">
-      <div class="header">
+      <div class="toolbar">
+        <el-select v-model="showNums" placeholder="请选择">
+          <el-option v-for="item in numOptions" :key="item.num"
+                     :label="item.label" :value="item.num">
+          </el-option>
+        </el-select>
+        <el-date-picker v-model="queryStartDate" type="date" :editable="false"
+                        placeholder="选择开始日期" class="pointer">
+        </el-date-picker>
+        <el-date-picker v-model="queryEndDate" type="date" :editable="false"
+                        placeholder="选择结束日期" class="pointer">
+        </el-date-picker>
         <el-button type="primary" plain>新建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData"
@@ -37,7 +48,33 @@ export default {
     return {
       noticeData: [],
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      numOptions: [
+        {
+          label: '查看近20条',
+          num: 20
+        },
+        {
+          label: '查看近50条',
+          num: 50
+        },
+        {
+          label: '查看近100条',
+          num: 100
+        },
+        {
+          label: '查看近500条',
+          num: 500
+        },
+        {
+          label: '查看全部',
+          num: -1
+        }
+      ],
+      showNums: 20,
+      queryStartDate: '',
+      queryEndDate: '',
+      queryStr: ''
     }
   },
   computed: {
@@ -83,6 +120,12 @@ export default {
 
 <style scoped lang="scss">
 @import "src/element-variables";
+
+.toolbar {
+  * {
+    margin: 0 5px;
+  }
+}
 
 .content {
   white-space: nowrap;
