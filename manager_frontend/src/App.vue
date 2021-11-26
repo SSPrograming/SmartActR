@@ -41,10 +41,7 @@ export default {
       this.$store.commit('logout')
       if (this.$route.name !== 'Login') {
         this.$router.replace({name: 'Login'})
-        this.$message({
-          message: '登出成功',
-          type: 'success'
-        })
+        this.$utils.alertMessage(this, '登出成功', 'success');
       }
     }
   }

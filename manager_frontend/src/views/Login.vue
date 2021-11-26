@@ -32,14 +32,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      console.log(this.$utils.password.getHash(this.form.username, this.form.password))
       this.$store.commit({
         type: 'login',
         jwt: 'jwt'
       })
-      this.$message({
-        message: '登录成功',
-        type: 'success'
-      })
+      this.$utils.alertMessage(this, '登录成功', 'success');
       this.$router.push({
         name: 'Home'
       })

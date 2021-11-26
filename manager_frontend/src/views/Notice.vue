@@ -5,11 +5,10 @@
         <el-button type="primary" plain>新建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData"
-                :default-sort="{prop: 'noticeID', order: 'descending'}" stripe>
-        <el-table-column prop="noticeID" label="ID" width="80"></el-table-column>
-        <el-table-column prop="noticeTitle" label="标题" width="150"></el-table-column>
-        <el-table-column prop="noticeDate" label="发布时间" width="200"></el-table-column>
-        <el-table-column prop="expireDate" label="过期时间" width="200"></el-table-column>
+                :default-sort="{prop: 'noticeDate', order: 'descending'}" stripe>
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="noticeDate" label="发布时间" width="150" sortable></el-table-column>
+        <el-table-column prop="expireDate" label="过期时间" width="150" sortable></el-table-column>
         <el-table-column prop="noticeContent" label="概要" width="auto">
           <template slot-scope="scope">
             <el-scrollbar class="content">
@@ -55,20 +54,17 @@ export default {
     this.noticeData = [
       {
         noticeID: 1,
-        noticeTitle: '大家好',
         noticeDate: '2021-11-24',
         expireDate: '2021-11-31',
         noticeContent: '大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！'
       },
       {
         noticeID: 2,
-        noticeTitle: '闲来没事',
         noticeDate: '2021-11-25',
         expireDate: '2021-11-31'
       },
       {
         noticeID: 3,
-        noticeTitle: '玩游戏吧',
         noticeDate: '2021-11-26',
         expireDate: '2021-11-30'
       },
