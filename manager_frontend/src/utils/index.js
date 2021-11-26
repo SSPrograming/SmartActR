@@ -3,10 +3,12 @@
  */
 import time from './time'
 import password from './password'
-import alertMessage from './alertMessage';
+import error from './error'
+import alertMessage from './alertMessage'
 
 export default {
   time,
   password,
+  error,
   alertMessage
 }

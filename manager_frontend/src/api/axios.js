@@ -23,10 +23,7 @@ axios.interceptors.request.use(
  * 响应拦截器
  */
 axios.interceptors.response.use(
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
-    error => {
-      console.log(error)
-    }
+    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res)
 )
 
 export default axios

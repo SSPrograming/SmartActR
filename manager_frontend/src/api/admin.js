@@ -4,11 +4,11 @@
 import config from './config'
 import axios from './axios'
 
-const subUrl = 'amdin'
+const subUrl = 'admin'
 
 const admin = {
-  getAdminName() {
-    return axios.get(`${config.baseUrl}/${subUrl}/getAdminName`)
+  login(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/login`, params)
   }
 }
 

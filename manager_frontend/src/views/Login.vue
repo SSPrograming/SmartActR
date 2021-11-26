@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" v-loading.fullscreen="loading">
     <div class="container">
       <div class="title">
         管理员登录
@@ -27,19 +27,34 @@ export default {
       form: {
         username: '',
         password: ''
-      }
+      },
+      loading: false
     }
   },
   methods: {
     onSubmit() {
-      console.log(this.$utils.password.getHash(this.form.username, this.form.password))
-      this.$store.commit({
-        type: 'login',
-        jwt: 'jwt'
-      })
-      this.$utils.alertMessage(this, '登录成功', 'success');
-      this.$router.push({
-        name: 'Home'
+      const params = {
+        username: this.form.username,
+        password: this.$utils.password.getHash(this.form.username, this.form.password)
+      }
+      this.loading = true
+      this.$api.admin.login(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$store.commit({
+            type: 'login',
+            jwt: res.data.jwt
+          })
+          this.$utils.alertMessage(this, '登录成功', 'success')
+          this.$router.push({
+            name: 'Home'
+          })
+        } else {
+          this.$utils.error.APIError(this, res.data)
+          this.loading = false
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.loading = false
       })
     }
   }
