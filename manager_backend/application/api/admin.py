@@ -7,12 +7,15 @@ from application.service import UserService
 from application.utils import generate_jwt
 import requests
 
+from .login_decorator import login_required
+
 bp_admin = Blueprint(
     'admin',
     __name__
 )
 
 @bp_admin.route('/api/v1/admin/getAdminName', methods=['GET'])
+@login_required
 def getAdminName():
     admin_name = Admin.query.first()
     try:
