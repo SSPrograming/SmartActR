@@ -275,13 +275,25 @@ params:
 }
 ```
 
-
-
 ret:
 
 ```
 {
 	"errCode": number
+}
+```
+
+
+
+@bp_user.route('/api/v1/checkIn', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType": "",	#已加密
 }
 ```
 
@@ -306,4 +318,200 @@ ret:
     "expireDate": "", #格式的样例："2021-11-12"
 }
 ```
+
+****
+
+**管理端**
+
+
+
+**登录**
+
+@bp_notice.route('/api/v1/admin/login', methods=['POST'])
+
+params
+
+```
+{
+	"username":"",
+	"password":"" "加盐散列"
+}
+```
+
+ret:
+
+```
+{
+	"errCode":number,
+	"jwt": "",
+	"errMsg":""
+}
+```
+
+****
+
+**公告相关**
+
+
+
+@bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
+
+params:
+
+````
+{
+	"num": number, #-1表示全部
+	"queryType": number,	#时间为1，内容为2，不搜索为0，结合为3
+	"queryStartDate": "",
+	"queryEndDate": "",
+	"queryStr": ""
+}
+````
+
+ret:
+
+```
+{
+	noticeList:
+	[
+		{
+			"noticeID": number,
+			"postDate": "",
+			"expireDate": "",
+			"content": ""
+		}
+	]
+}
+```
+
+
+
+@bp_notice.route('/api/v1/notice/createNotice', methods=['POST'])
+
+params:
+
+```
+{
+	"noticeContent": "",
+	"expireDate": ""
+}
+```
+
+ret:
+
+```
+{
+	"errCode": "",
+	"errMsg": ""
+}
+```
+
+
+
+@bp_notice.route('/api/v1/notice/updateNotice', methods=['POST'])
+
+params:
+
+```
+{
+	"noticeContent": "",
+	"expireDate": "",	#例如2021-11-25
+	"noticeID": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode": "",
+	"errMsg": ""
+}
+```
+
+
+
+@bp_notice.route('/api/v1/notice/deleteNotice', methods=['POST'])
+
+params:
+
+```
+{
+	"noticeID": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode": "",
+	"errMsg": ""
+}
+```
+
+
+
+**预约管理**
+
+@bp_notice.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
+
+@login_required
+
+ret:
+
+```
+{
+	"recordList":
+	[
+		{
+			"recordID":number,
+			"postTime": "",
+			"reserveDate": "",
+			"startTime": "",
+			"endTime": "",
+			"userName": "",
+			"status": "",
+			"equipmentName": ""
+		}
+	]
+}
+```
+
+
+
+@bp_notice.route('/api/v1/reserve/getHistoryRecord', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"startDate": "",
+	"endDate": ""
+}
+```
+
+ret:
+
+```
+{
+	"recordList":
+	[
+		{
+			"recordID":number,
+			"postTime": "",
+			"reserveDate": "",
+			"startTime": "",
+			"endTime": "",
+			"userID": "",
+			"status": "",
+			"equipmentName": ""
+		}
+	]
+}
+```
+
+****
 
