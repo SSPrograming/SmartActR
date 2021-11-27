@@ -77,11 +77,13 @@ h1 {
 }
 
 aside {
-  width: 240px;
+  box-sizing: border-box;
+  width: 15%;
 }
 
 main {
-  flex: 1;
+  box-sizing: border-box;
+  width: 85%;
   padding: 0 20px;
 }
 

@@ -38,7 +38,5 @@ export default {
 </script>
 
 <style scoped>
-.sidebar {
-  min-width: 160px;
-}
+
 </style>

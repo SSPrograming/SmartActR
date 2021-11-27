@@ -2,17 +2,11 @@
   <div class="notice">
     <div class="container">
       <div class="toolbar">
-        <el-select v-model="showNums" placeholder="请选择">
-          <el-option v-for="item in numOptions" :key="item.num"
-                     :label="item.label" :value="item.num">
-          </el-option>
-        </el-select>
-        <el-date-picker v-model="queryStartDate" type="date" :editable="false"
-                        placeholder="选择开始日期" class="pointer">
-        </el-date-picker>
-        <el-date-picker v-model="queryEndDate" type="date" :editable="false"
-                        placeholder="选择结束日期" class="pointer">
-        </el-date-picker>
+        <Toolbar :show-nums="showNums" :query-start-date="queryStartDate" :query-end-date="queryEndDate"
+                 :query-str="queryStr" choose-num choose-date query
+                 @showNumsChange="showNumsChange" @queryStartDateChange="queryStartDateChange"
+                 @queryEndDateChange="queryEndDateChange" @queryStrChange="queryStrChange">
+        </Toolbar>
         <el-button type="primary" plain>新建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData"
@@ -42,38 +36,21 @@
 </template>
 
 <script>
+import Toolbar from '../components/Toolbar';
+
 export default {
   name: "Notice",
+  components: {
+    Toolbar
+  },
   data() {
     return {
       noticeData: [],
       pageSize: 10,
       currentPage: 1,
-      numOptions: [
-        {
-          label: '查看近20条',
-          num: 20
-        },
-        {
-          label: '查看近50条',
-          num: 50
-        },
-        {
-          label: '查看近100条',
-          num: 100
-        },
-        {
-          label: '查看近500条',
-          num: 500
-        },
-        {
-          label: '查看全部',
-          num: -1
-        }
-      ],
       showNums: 20,
-      queryStartDate: '',
-      queryEndDate: '',
+      queryStartDate: null,
+      queryEndDate: null,
       queryStr: ''
     }
   },
@@ -108,6 +85,18 @@ export default {
     ]
   },
   methods: {
+    showNumsChange(val) {
+      this.showNums = val
+    },
+    queryStartDateChange(val) {
+      this.queryStartDate = val
+    },
+    queryEndDateChange(val) {
+      this.queryEndDate = val
+    },
+    queryStrChange(val) {
+      this.queryStr = val
+    },
     handleEdit(row) {
       console.log(row)
     },
@@ -122,9 +111,8 @@ export default {
 @import "src/element-variables";
 
 .toolbar {
-  * {
-    margin: 0 5px;
-  }
+  display: flex;
+  justify-content: space-between;
 }
 
 .content {
