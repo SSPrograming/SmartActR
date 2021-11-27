@@ -12,11 +12,11 @@
         </Toolbar>
         <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
-      <el-table class="table" :data="slicedData" v-loading="tableLoading"
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
                 :default-sort="{prop: 'postDate', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="postDate" label="发布时间" width="150" sortable></el-table-column>
-        <el-table-column prop="expireDate" label="过期时间" width="150" sortable></el-table-column>
+        <el-table-column prop="postDate" label="发布时间" width="150" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="expireDate" label="过期时间" width="150" :sortable="'custom'"></el-table-column>
         <el-table-column prop="content" label="概要" width="auto">
           <template slot-scope="scope">
             <el-scrollbar class="content">
@@ -58,6 +58,10 @@ export default {
         expireDate: '',
         content: ''
       }],
+      sortType: {
+        prop: 'noticeID',
+        order: 'descending'
+      },
       pageSize: 10,
       currentPage: 1,
       showNums: 20,
@@ -86,6 +90,34 @@ export default {
     this.getNoticeList()
   },
   methods: {
+    doSort(event) {
+      if (event) {
+        this.sortType.prop = event.prop
+        this.sortType.order = event.order
+      }
+      if (!this.sortType.order) {
+        this.sortType.prop = 'noticeID'
+        this.sortType.order = 'descending'
+      }
+      this.noticeList.sort((a, b) => {
+        const var1 = a[this.sortType.prop]
+        const var2 = b[this.sortType.prop]
+        const asc = this.sortType.order === 'ascending'
+        if (var1 < var2) {
+          return asc ? -1 : 1
+        } else if (var1 > var2) {
+          return asc ? 1 : -1
+        } else {
+          if (a['noticeID'] < b['noticeID']) {
+            return asc ? -1 : 1
+          } else if (a['noticeID'] > b['noticeID']) {
+            return asc ? 1 : -1
+          } else {
+            return 0
+          }
+        }
+      })
+    },
     getNoticeList() {
       let params = {
         num: this.showNums,
@@ -124,6 +156,7 @@ export default {
       this.$api.notice.getNoticeList(params).then((res) => {
         if (res.data.errCode === 0) {
           this.noticeList = res.data.noticeList
+          this.doSort()
         } else {
           this.$utils.error.APIError(this, res.data)
         }
