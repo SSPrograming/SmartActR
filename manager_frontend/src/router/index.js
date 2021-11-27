@@ -4,13 +4,14 @@ import store from '../store'
 import Login from '../views/Login.vue'
 import Home from '../views/Home'
 import Notice from '../views/Notice'
+import NotFound from '../views/NotFound';
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: {name: 'Login'}
+    redirect: {name: 'Home'}
   },
   {
     path: '/login',
@@ -26,6 +27,15 @@ const routes = [
     path: '/notice',
     name: 'Notice',
     component: Notice
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: {name: 'NotFound'}
   }
 ]
 

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <el-menu
-        default-active="this.show"
+        :default-active="routeName"
         class="el-menu-vertical-demo"
         @select="handleSelect"
     >
@@ -20,18 +20,23 @@
 <script>
 export default {
   name: "Sidebar",
+  computed: {
+    routeName() {
+      return this.$route.name;
+    }
+  },
   methods: {
     handleSelect(index) {
-      this.$router.push({
-        name: index
-      })
+      if (this.$route.name !== index) {
+        this.$router.push({
+          name: index
+        })
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.sidebar {
-  min-width: 160px;
-}
+
 </style>
