@@ -1,0 +1,243 @@
+/* pages/reserve/reserve.wxss */
+.container {
+    /* 大小 */
+    padding-top: 40rpx;
+}
+
+.dates-container {
+    /* 位置 */
+    position: relative;
+    /* 大小 */
+    width: 592rpx;
+    padding: 30rpx;
+    margin: auto;
+    /* 文字 */
+    text-align: center;
+    white-space: nowrap;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
+}
+
+.left-arrow {
+    /* 位置 */
+    position: absolute;
+    top: 95rpx;
+    left: -50rpx;
+    /* 大小 */
+    width: 65rpx;
+    height: 80rpx;
+    /* CSS3 */
+    transform: scaleX(-1);
+}
+
+.right-arrow {
+    /* 位置 */
+    position: absolute;
+    top: 95rpx;
+    right: -50rpx;
+    /* 大小 */
+    width: 65rpx;
+    height: 80rpx;
+}
+
+.date-container {
+    /* 位置 */
+    display: inline-block;
+    /* 大小 */
+    padding: 0 15rpx 0 15rpx;
+}
+
+.date-day {
+    /* 大小 */
+    width: 150rpx;
+    padding-bottom: 10rpx;
+    /* 文字 */
+    font-size: 32rpx;
+}
+
+.date-date {
+    /* 大小 */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 150rpx;
+    height: 150rpx;
+    /* 文字 */
+    font-size: 60rpx;
+    color: #ffffff;
+    line-height: 150rpx;
+    /* 背景 */
+    background: linear-gradient(#a52d72, #cf3c7e);
+    /* CSS3 */
+    border-radius: 50%;
+}
+
+.date-data__selected {
+    /* 文字 */
+    color: #bb3479;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+}
+
+.notice-container {
+    /* 位置 */
+    display: flex;
+    /* 大小 */
+    width: 612rpx;
+    padding: 10rpx 20rpx 10rpx 20rpx;
+    margin: 30rpx auto 0 auto;
+    /* 文字 */
+    font-size: 24rpx;
+    line-height: 24rpx;
+    white-space: nowrap;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
+}
+
+.notice-title-container {
+    /* 位置 */
+    display: flex;
+}
+
+.notice-title-image {
+    /* 大小 */
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 10rpx;
+}
+
+.notice-title-text {
+    /* 大小 */
+    padding: 4rpx 0;
+}
+
+.notice-vertical-delimiter {
+    /* 大小 */
+    flex-basis: 4rpx;
+    margin: 0 20rpx 0 20rpx;
+    /* 背景 */
+    background: linear-gradient(#a52d72, #cf3c7e);
+    /* CSS3 */
+    border-radius: 2rpx;
+}
+
+.notice-content {
+    /* 大小 */
+    flex: 1;
+    padding: 4rpx 0;
+    /* 文字 */
+    font-size: 24rpx;
+    line-height: 24rpx;
+    overflow: hidden;
+}
+
+.notice-look {
+    /* 大小 */
+    width: 22rpx;
+    height: 32rpx;
+    padding-left: 20rpx;
+}
+
+/* 公告滚动动画 */
+@keyframes scroll-notice {
+    0% {
+        text-indent: 20em;
+    }
+
+    100% {
+        text-indent: -34em;
+    }
+}
+
+.notice-content {
+    /* CSS3 */
+    animation-name: scroll-notice;
+    animation-timing-function: linear;
+    animation-duration: 12s;
+    animation-iteration-count: infinite;
+}
+
+.equipments-container {
+    /* 大小 */
+    margin-top: 30rpx;
+}
+
+.equipment-scroll {
+    /* 大小 */
+    max-height: calc(100vh - 585rpx);
+}
+
+.equipment-container {
+    /* 位置 */
+    display: flex;
+    /* 大小 */
+    width: 612rpx;
+    padding: 20rpx;
+    margin: 0 auto 30rpx auto;
+    /* 文字 */
+    font-size: 32rpx;
+    /* 背景 */
+    background: #ffffff;
+    border: #bb3479 4rpx solid;
+    /* CSS3 */
+    box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+    border-radius: 20rpx;
+}
+
+.equipment-container:last-child {
+    /* 大小 */
+    margin-bottom: 200rpx;
+}
+
+.equipment-image {
+    /* 大小 */
+    width: 220rpx;
+    height: 180rpx;
+}
+
+.equipment-vertical-delimiter {
+    /* 大小 */
+    flex-basis: 4rpx;
+    margin: 0 20rpx 0 20rpx;
+    /* 背景 */
+    background: linear-gradient(#a52d72, #cf3c7e);
+    /* CSS3 */
+    border-radius: 2rpx;
+}
+
+.equipment-content {
+    /* 位置 */
+    display: flex;
+    flex-direction: column;
+    /* 大小 */
+    flex: 1;
+    /* 文字 */
+    text-align: right;
+}
+
+.equipments-whitespace {
+    /* 大小 */
+    flex: 1;
+}
+
+.equipment-status {
+    /* 文字 */
+    font-size: 48rpx;
+}
+
+::-webkit-scrollbar {
+    /* 大小 */
+    width: 0;
+    height: 0;
+    /* 文字 */
+    color: transparent;
+}
