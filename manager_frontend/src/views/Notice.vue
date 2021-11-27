@@ -10,17 +10,17 @@
                  @showNumsChange="showNumsChange" @queryStartDateChange="queryStartDateChange"
                  @queryEndDateChange="queryEndDateChange" @queryStrChange="queryStrChange" @query="query">
         </Toolbar>
-        <el-button type="primary" plain @click="handleCreate">新建公告</el-button>
+        <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
-      <el-table class="table" :data="slicedData"
-                :default-sort="{prop: 'noticeDate', order: 'descending'}">
+      <el-table class="table" :data="slicedData" v-loading="tableLoading"
+                :default-sort="{prop: 'postDate', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="noticeDate" label="发布时间" width="150" sortable></el-table-column>
+        <el-table-column prop="postDate" label="发布时间" width="150" sortable></el-table-column>
         <el-table-column prop="expireDate" label="过期时间" width="150" sortable></el-table-column>
-        <el-table-column prop="noticeContent" label="概要" width="auto">
+        <el-table-column prop="content" label="概要" width="auto">
           <template slot-scope="scope">
             <el-scrollbar class="content">
-              {{ scope.row.noticeContent }}
+              {{ scope.row.content }}
             </el-scrollbar>
           </template>
         </el-table-column>
@@ -51,7 +51,13 @@ export default {
   data() {
     return {
       dialogLoading: false,
-      noticeData: [],
+      tableLoading: false,
+      noticeList: [{
+        noticeID: 0,
+        postDate: '',
+        expireDate: '',
+        content: ''
+      }],
       pageSize: 10,
       currentPage: 1,
       showNums: 20,
@@ -68,67 +74,113 @@ export default {
   },
   computed: {
     dataLength() {
-      return this.noticeData.length
+      return this.noticeList.length
     },
     slicedData() {
-      return this.noticeData.slice(this.pageSize * (this.currentPage - 1),
-          this.pageSize * this.currentPage < this.noticeData.length ?
-              this.pageSize * this.currentPage : this.noticeData.length)
+      return this.noticeList.slice(this.pageSize * (this.currentPage - 1),
+          this.pageSize * this.currentPage <= this.noticeList.length ?
+              this.pageSize * this.currentPage : this.noticeList.length)
     }
   },
   mounted() {
-    this.noticeData = [
-      {
-        noticeID: 1,
-        noticeDate: '2021-11-24',
-        expireDate: '2021-11-31',
-        noticeContent: '大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！大家好！'
-      },
-      {
-        noticeID: 2,
-        noticeDate: '2021-11-25',
-        expireDate: '2021-11-31'
-      },
-      {
-        noticeID: 3,
-        noticeDate: '2021-11-26',
-        expireDate: '2021-11-30'
-      },
-    ]
+    this.getNoticeList()
   },
   methods: {
     getNoticeList() {
-
+      let params = {
+        num: this.showNums,
+        queryStartDate: this.queryStartDate && this.$utils.time.format(this.queryStartDate, 'yyyy-MM-dd'),
+        queryEndDate: this.queryEndDate && this.$utils.time.format(this.queryEndDate, 'yyyy-MM-dd'),
+        queryStr: this.queryStr
+      }
+      if (this.queryStartDate && this.queryEndDate && this.queryStr) {
+        params = {
+          ...params,
+          queryType: 3
+        }
+      } else if (this.queryStartDate && this.queryEndDate) {
+        delete params.queryStr
+        params = {
+          ...params,
+          queryType: 1
+        }
+      } else if (this.queryStr) {
+        delete params.queryStartDate
+        delete params.queryEndDate
+        params = {
+          ...params,
+          queryType: 2
+        }
+      } else {
+        delete params.queryStartDate
+        delete params.queryEndDate
+        delete params.queryStr
+        params = {
+          ...params,
+          queryType: 0
+        }
+      }
+      this.tableLoading = true
+      this.$api.notice.getNoticeList(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.noticeList = res.data.noticeList
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
+      })
     },
     showNumsChange(val) {
       this.showNums = val
+      this.getNoticeList()
     },
     queryStartDateChange(val) {
       this.queryStartDate = val
+      this.getNoticeList()
     },
     queryEndDateChange(val) {
       this.queryEndDate = val
+      this.getNoticeList()
     },
     queryStrChange(val) {
       this.queryStr = val
     },
     query() {
-
+      this.getNoticeList()
     },
     handleCreate() {
-      this.editNoticeID = null
-      this.form = {
-        expireDate: null,
-        noticeContent: '',
+      if (this.editNoticeID) {
+        this.editNoticeID = null
+        this.form = {
+          expireDate: null,
+          noticeContent: '',
+        }
       }
       this.showNoticeEditor = true
     },
     handleEdit(row) {
       this.editNoticeID = row.noticeID
+      this.form = {
+        expireDate: new Date(row.expireDate),
+        noticeContent: row.content,
+      }
       this.showNoticeEditor = true
     },
     handleDelete(row) {
-      console.log(row)
+      this.tableLoading = true
+      this.$api.notice.deleteNotice({noticeID: row.noticeID}).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '删除成功', 'success')
+          this.getNoticeList()
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+      })
     },
     editorCancel() {
       this.showNoticeEditor = false
@@ -139,7 +191,7 @@ export default {
         return
       }
       let params = {
-        expireDate: this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd'),
+        expireDate: this.form.expireDate && this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd'),
         noticeContent: this.form.noticeContent
       }
       this.dialogLoading = true
@@ -147,6 +199,7 @@ export default {
         this.$api.notice.createNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '创建成功', 'success')
+            this.getNoticeList()
           } else {
             this.$utils.error.APIError(this, res.data)
           }
@@ -158,7 +211,24 @@ export default {
           this.showNoticeEditor = false
         })
       } else {
-        console.log('edit: ' + this.editNoticeID + '!')
+        params = {
+          ...params,
+          noticeID: this.editNoticeID
+        }
+        this.$api.notice.updateNotice(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '编辑成功', 'success')
+            this.getNoticeList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showNoticeEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showNoticeEditor = false
+        })
       }
     }
   }
