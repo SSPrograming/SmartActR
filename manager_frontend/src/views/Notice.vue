@@ -210,9 +210,11 @@ export default {
           this.getNoticeList()
         } else {
           this.$utils.error.APIError(this, res.data)
+          this.tableLoading = false
         }
       }).catch((err) => {
         this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
       })
     },
     editorCancel() {
