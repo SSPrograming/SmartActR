@@ -24,11 +24,11 @@ export default {
   name: "Login",
   data() {
     return {
+      loading: false,
       form: {
         username: '',
         password: ''
-      },
-      loading: false
+      }
     }
   },
   methods: {
@@ -50,8 +50,8 @@ export default {
           })
         } else {
           this.$utils.error.APIError(this, res.data)
-          this.loading = false
         }
+        this.loading = false
       }).catch((err) => {
         this.$utils.error.ServerError(this, err)
         this.loading = false

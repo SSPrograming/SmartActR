@@ -11,7 +11,7 @@
           <Sidebar></Sidebar>
         </aside>
       </transition>
-      <main class="main">
+      <main class="main" :style="isLogin?'width: 100%;':'width: 85%;'">
         <router-view></router-view>
       </main>
     </div>
@@ -83,7 +83,6 @@ aside {
 
 main {
   box-sizing: border-box;
-  width: 85%;
   padding: 0 20px;
 }
 

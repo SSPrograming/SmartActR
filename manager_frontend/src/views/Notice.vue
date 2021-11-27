@@ -1,16 +1,19 @@
 <template>
   <div class="notice">
+    <el-dialog title="公告编辑" :visible.sync="showNoticeEditor" v-loading="dialogLoading">
+      <NoticeEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></NoticeEditor>
+    </el-dialog>
     <div class="container">
       <div class="toolbar">
         <Toolbar :show-nums="showNums" :query-start-date="queryStartDate" :query-end-date="queryEndDate"
                  :query-str="queryStr" choose-num choose-date query
                  @showNumsChange="showNumsChange" @queryStartDateChange="queryStartDateChange"
-                 @queryEndDateChange="queryEndDateChange" @queryStrChange="queryStrChange">
+                 @queryEndDateChange="queryEndDateChange" @queryStrChange="queryStrChange" @query="query">
         </Toolbar>
-        <el-button type="primary" plain>新建公告</el-button>
+        <el-button type="primary" plain @click="handleCreate">新建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData"
-                :default-sort="{prop: 'noticeDate', order: 'descending'}" stripe>
+                :default-sort="{prop: 'noticeDate', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="noticeDate" label="发布时间" width="150" sortable></el-table-column>
         <el-table-column prop="expireDate" label="过期时间" width="150" sortable></el-table-column>
@@ -36,22 +39,31 @@
 </template>
 
 <script>
-import Toolbar from '../components/Toolbar';
+import NoticeEditor from '../components/NoticeEditor'
+import Toolbar from '../components/Toolbar'
 
 export default {
   name: "Notice",
   components: {
+    NoticeEditor,
     Toolbar
   },
   data() {
     return {
+      dialogLoading: false,
       noticeData: [],
       pageSize: 10,
       currentPage: 1,
       showNums: 20,
       queryStartDate: null,
       queryEndDate: null,
-      queryStr: ''
+      queryStr: '',
+      editNoticeID: null,
+      showNoticeEditor: false,
+      form: {
+        expireDate: null,
+        noticeContent: '',
+      }
     }
   },
   computed: {
@@ -85,6 +97,9 @@ export default {
     ]
   },
   methods: {
+    getNoticeList() {
+
+    },
     showNumsChange(val) {
       this.showNums = val
     },
@@ -97,11 +112,54 @@ export default {
     queryStrChange(val) {
       this.queryStr = val
     },
+    query() {
+
+    },
+    handleCreate() {
+      this.editNoticeID = null
+      this.form = {
+        expireDate: null,
+        noticeContent: '',
+      }
+      this.showNoticeEditor = true
+    },
     handleEdit(row) {
-      console.log(row)
+      this.editNoticeID = row.noticeID
+      this.showNoticeEditor = true
     },
     handleDelete(row) {
       console.log(row)
+    },
+    editorCancel() {
+      this.showNoticeEditor = false
+    },
+    editorConfirm() {
+      if (!this.form.expireDate) {
+        this.$utils.alertMessage(this, '请设置过期时间', 'warning')
+        return
+      }
+      let params = {
+        expireDate: this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd'),
+        noticeContent: this.form.noticeContent
+      }
+      this.dialogLoading = true
+      if (!this.editNoticeID) {
+        this.$api.notice.createNotice(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '创建成功', 'success')
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showNoticeEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showNoticeEditor = false
+        })
+      } else {
+        console.log('edit: ' + this.editNoticeID + '!')
+      }
     }
   }
 }
