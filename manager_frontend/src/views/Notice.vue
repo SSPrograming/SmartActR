@@ -106,6 +106,10 @@ export default {
         num: this.toolbar.showNums
       }
       if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStr) {
+        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+          return
+        }
         params = {
           ...params,
           queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
@@ -114,6 +118,10 @@ export default {
           queryType: 3
         }
       } else if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
+        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+          return
+        }
         params = {
           ...params,
           queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
@@ -137,6 +145,7 @@ export default {
         if (res.data.errCode === 0) {
           this.noticeList = res.data.noticeList
           this.doSort()
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
         }

@@ -1,8 +1,8 @@
 <template>
-  <div class="today-record">
+  <div class="history-record">
     <div class="container">
       <div class="toolbar">
-        <Toolbar refresh @refresh="getRecordList"></Toolbar>
+        <Toolbar :toolbar="toolbar" choose-date refresh @refresh="getRecordList" @query="query"></Toolbar>
       </div>
     </div>
     <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
@@ -33,19 +33,14 @@ export default {
   data() {
     return {
       tableLoading: false,
-      recordList: [{
-        recordID: 0,
-        postTime: '',
-        reserveDate: '',
-        startTime: '',
-        endTime: '',
-        username: '',
-        status: '',
-        equipmentName: ''
-      }],
+      recordList: [],
       sortType: {
         prop: 'recordID',
         order: 'descending'
+      },
+      toolbar: {
+        queryStartDate: null,
+        queryEndDate: null
       },
       pageSize: 10,
       currentPage: 1
@@ -62,6 +57,10 @@ export default {
     }
   },
   mounted() {
+    this.toolbar.queryStartDate = new Date()
+    this.toolbar.queryStartDate.setDate(this.toolbar.queryStartDate.getDate() - 8)
+    this.toolbar.queryEndDate = new Date()
+    this.toolbar.queryEndDate.setDate(this.toolbar.queryEndDate.getDate() - 1)
     this.getRecordList()
   },
   methods: {
@@ -77,8 +76,17 @@ export default {
       this.$utils.sort(this.recordList, this.sortType, 'recordID')
     },
     getRecordList() {
+      if (!this.toolbar.queryStartDate || !this.toolbar.queryEndDate ||
+          this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+        this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+        return
+      }
+      const params = {
+        startDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
+        endDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd')
+      }
       this.tableLoading = true
-      this.$api.reserve.getTodayRecord().then((res) => {
+      this.$api.reserve.getHistoryRecord(params).then((res) => {
         if (res.data.errCode === 0) {
           this.recordList = res.data.recordList
           this.doSort()
@@ -91,6 +99,11 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.tableLoading = false
       })
+    },
+    query() {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
+        this.getRecordList()
+      }
     }
   }
 }

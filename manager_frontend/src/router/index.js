@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import Home from '@/views/Home'
 import Notice from '@/views/Notice'
 import TodayRecord from '@/views/reserve/TodayRecord'
+import HistoryRecord from '@/views/reserve/HistoryRecord'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -42,7 +43,7 @@ const routes = [
   {
     path: '/reserve/history',
     name: 'HistoryRecord',
-    component: NotFound
+    component: HistoryRecord
   },
   {
     path: '/equipment',
