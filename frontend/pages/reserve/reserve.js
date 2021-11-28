@@ -164,6 +164,7 @@ Page({
       loading: true,
     });
     app.dealThing(this.getAllEquipmentStatus);
+    app.dealThing(this.getNotice);
   },
 
   /**
