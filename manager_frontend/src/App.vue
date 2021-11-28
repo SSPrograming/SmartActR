@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
-      <el-button type="primary" @click="logout" plain>登出</el-button>
+      <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
     </header>
     <el-divider></el-divider>
     <div class="container">
