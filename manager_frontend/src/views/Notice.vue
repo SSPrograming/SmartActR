@@ -5,15 +5,13 @@
     </el-dialog>
     <div class="container">
       <div class="toolbar">
-        <Toolbar :show-nums="showNums" :query-start-date="queryStartDate" :query-end-date="queryEndDate"
-                 :query-str="queryStr" choose-num choose-date query
-                 @showNumsChange="showNumsChange" @queryStartDateChange="queryStartDateChange"
-                 @queryEndDateChange="queryEndDateChange" @queryStrChange="queryStrChange" @query="query">
+        <Toolbar :toolbar="toolbar" choose-num choose-date query
+                 @query="query">
         </Toolbar>
         <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
-                :default-sort="{prop: 'postDate', order: 'descending'}">
+                :default-sort="{prop: 'noticeID', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="postDate" label="发布时间" width="150" :sortable="'custom'"></el-table-column>
         <el-table-column prop="expireDate" label="过期时间" width="150" :sortable="'custom'"></el-table-column>
@@ -62,12 +60,14 @@ export default {
         prop: 'noticeID',
         order: 'descending'
       },
+      toolbar: {
+        showNums: 20,
+        queryStartDate: null,
+        queryEndDate: null,
+        queryStr: '',
+      },
       pageSize: 10,
       currentPage: 1,
-      showNums: 20,
-      queryStartDate: null,
-      queryEndDate: null,
-      queryStr: '',
       editNoticeID: null,
       showNoticeEditor: false,
       form: {
@@ -120,33 +120,30 @@ export default {
     },
     getNoticeList() {
       let params = {
-        num: this.showNums,
-        queryStartDate: this.queryStartDate && this.$utils.time.format(this.queryStartDate, 'yyyy-MM-dd'),
-        queryEndDate: this.queryEndDate && this.$utils.time.format(this.queryEndDate, 'yyyy-MM-dd'),
-        queryStr: this.queryStr
+        num: this.toolbar.showNums
       }
-      if (this.queryStartDate && this.queryEndDate && this.queryStr) {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStr) {
         params = {
           ...params,
+          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
+          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
+          queryStr: this.toolbar.queryStr,
           queryType: 3
         }
-      } else if (this.queryStartDate && this.queryEndDate) {
-        delete params.queryStr
+      } else if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
         params = {
           ...params,
+          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
+          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
           queryType: 1
         }
-      } else if (this.queryStr) {
-        delete params.queryStartDate
-        delete params.queryEndDate
+      } else if (this.toolbar.queryStr) {
         params = {
           ...params,
+          queryStr: this.toolbar.queryStr,
           queryType: 2
         }
       } else {
-        delete params.queryStartDate
-        delete params.queryEndDate
-        delete params.queryStr
         params = {
           ...params,
           queryType: 0
@@ -165,21 +162,6 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.tableLoading = false
       })
-    },
-    showNumsChange(val) {
-      this.showNums = val
-      this.getNoticeList()
-    },
-    queryStartDateChange(val) {
-      this.queryStartDate = val
-      this.getNoticeList()
-    },
-    queryEndDateChange(val) {
-      this.queryEndDate = val
-      this.getNoticeList()
-    },
-    queryStrChange(val) {
-      this.queryStr = val
     },
     query() {
       this.getNoticeList()
@@ -234,6 +216,10 @@ export default {
         this.$api.notice.createNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '创建成功', 'success')
+            this.form = {
+              expireDate: null,
+              noticeContent: '',
+            }
             this.getNoticeList()
           } else {
             this.$utils.error.APIError(this, res.data)
