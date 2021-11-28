@@ -8,10 +8,10 @@ const subUrl = 'reserve'
 
 const reserve = {
   getTodayRecord() {
-    return axios.get(`${config.baseUrl}/${subUrl}/getNoticeList`)
+    return axios.get(`${config.baseUrl}/${subUrl}/getTodayRecord`)
   },
   getHistoryRecord(params) {
-    return axios.post(`${config.baseUrl}/${subUrl}/getNoticeList`, params)
+    return axios.post(`${config.baseUrl}/${subUrl}/getHistoryRecord`, params)
   }
 }
 

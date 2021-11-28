@@ -99,24 +99,7 @@ export default {
         this.sortType.prop = 'noticeID'
         this.sortType.order = 'descending'
       }
-      this.noticeList.sort((a, b) => {
-        const var1 = a[this.sortType.prop]
-        const var2 = b[this.sortType.prop]
-        const asc = this.sortType.order === 'ascending'
-        if (var1 < var2) {
-          return asc ? -1 : 1
-        } else if (var1 > var2) {
-          return asc ? 1 : -1
-        } else {
-          if (a['noticeID'] < b['noticeID']) {
-            return asc ? -1 : 1
-          } else if (a['noticeID'] > b['noticeID']) {
-            return asc ? 1 : -1
-          } else {
-            return 0
-          }
-        }
-      })
+      this.$utils.sort(this.noticeList, this.sortType, 'noticeID')
     },
     getNoticeList() {
       let params = {

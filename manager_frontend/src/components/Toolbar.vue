@@ -16,6 +16,7 @@
               v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')">
     </el-input>
     <el-button type="info" v-if="query" @click="$emit('query')">查找</el-button>
+    <el-button type="primary" plain v-if="refresh" @click="$emit('refresh')">刷新</el-button>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ export default {
     chooseNum: Boolean,
     chooseDate: Boolean,
     query: Boolean,
+    refresh: Boolean,
     toolbar: {
       showNums: Number,
       queryStartDate: Date,

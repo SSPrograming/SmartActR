@@ -4,7 +4,8 @@ import store from '@/store'
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home'
 import Notice from '@/views/Notice'
-import NotFound from '@/views/NotFound';
+import TodayRecord from '@/views/reserve/TodayRecord'
+import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
 
@@ -29,9 +30,14 @@ const routes = [
     component: Notice
   },
   {
+    path: '/reserve',
+    name: 'Reserve',
+    redirect: {name: 'TodayRecord'}
+  },
+  {
     path: '/reserve/today',
     name: 'TodayRecord',
-    component: NotFound
+    component: TodayRecord
   },
   {
     path: '/reserve/history',
