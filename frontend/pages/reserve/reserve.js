@@ -14,7 +14,9 @@ Page({
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
-    isShowNotice: true,
+    noticeDate: '',
+    noticeContents: [],
+    isShowNotice: false,
     loading: false,
   },
 
@@ -42,6 +44,29 @@ Page({
           loading: false,
         });
       });
+  },
+
+  // 后端获取公告
+  getNotice() {
+    app.$api.reserve.getNotice()
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          let show = false;
+          if (new Date() <= new Date(res.data.expireDate)) {
+            show = true;
+          }
+          this.setData({
+            noticeDate: res.data.noticeDate,
+            noticeContents: res.data.noticeContent.trim().split('\n'),
+            isShowNotice: show
+          });
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
   },
 
   showNotice(e) {
@@ -92,6 +117,7 @@ Page({
       loading: true,
     });
     app.dealThing(this.getAllEquipmentStatus);
+    app.dealThing(this.getNotice);
   },
 
   /**

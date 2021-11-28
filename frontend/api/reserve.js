@@ -65,7 +65,6 @@ const reserve = {
     return request({
       url: '/reserve/getNotice',
       method: 'GET',
-      data: params,
     });
   },
 };
