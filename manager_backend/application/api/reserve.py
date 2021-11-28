@@ -26,7 +26,8 @@ def getTodayRecord():
 			"endTime": item.endTime.strftime("%H:%M"),
 			"userName": UserService.get_name_by_id(item.userID),
 			"status": item.status,
-			"equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0]
+			"equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0] 
+                            + str(item.equipmentID) + "号"
         })
     return jsonify({"errCode": 0, "recordList": record_list}), 200
 
@@ -54,5 +55,6 @@ def getHistoryRecord():
 			"userName": UserService.get_name_by_id(item.userID),
 			"status": item.status,
 			"equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0]
+                            +str(item.equipmentID) + "号"
         })
     return jsonify({"errCode": 0, "recordList": record_list}), 200
