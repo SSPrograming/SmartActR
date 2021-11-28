@@ -7,11 +7,11 @@
     <el-divider></el-divider>
     <div class="container">
       <transition name="sidebar">
-        <aside v-if="!isLogin">
+        <aside v-if="!isLogin" style="width: 240px">
           <Sidebar></Sidebar>
         </aside>
       </transition>
-      <main class="main" :style="isLogin?'width: 100%;':'width: 85%;'">
+      <main class="main" :style="isLogin?'width: 100%;':'width: calc(100% - 240px);'">
         <router-view></router-view>
       </main>
     </div>
@@ -78,7 +78,6 @@ h1 {
 
 aside {
   box-sizing: border-box;
-  width: 15%;
 }
 
 main {
