@@ -52,7 +52,9 @@ Page({
       .then((res) => {
         if (res.data.errCode === 0) {
           let show = false;
-          if (new Date() <= new Date(res.data.expireDate)) {
+          const date = new Date(res.data.expireDate);
+          date.setDate(date.getDate() + 1);
+          if (new Date() <= date) {
             show = true;
           }
           this.setData({
