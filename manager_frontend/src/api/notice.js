@@ -1,5 +1,5 @@
 /**
- * 管理员接口
+ * 公告管理接口
  */
 import config from './config'
 import axios from './axios'

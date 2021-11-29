@@ -1,0 +1,26 @@
+/**
+ * 排序的统一入口
+ */
+
+const sort = (array, sortType, primaryKey) => {
+  array.sort((a, b) => {
+    const var1 = a[sortType.prop]
+    const var2 = b[sortType.prop]
+    const asc = sortType.order === 'ascending'
+    if (var1 < var2) {
+      return asc ? -1 : 1
+    } else if (var1 > var2) {
+      return asc ? 1 : -1
+    } else {
+      if (a[primaryKey] < b[primaryKey]) {
+        return asc ? -1 : 1
+      } else if (a[primaryKey] > b[primaryKey]) {
+        return asc ? 1 : -1
+      } else {
+        return 0
+      }
+    }
+  })
+}
+
+export default sort

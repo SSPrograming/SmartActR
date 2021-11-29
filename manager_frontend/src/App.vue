@@ -2,16 +2,16 @@
   <div id="app">
     <header>
       <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
-      <el-button type="primary" @click="logout" plain>登出</el-button>
+      <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
     </header>
     <el-divider></el-divider>
     <div class="container">
       <transition name="sidebar">
-        <aside v-if="!isLogin">
+        <aside v-if="!isLogin" style="width: 240px">
           <Sidebar></Sidebar>
         </aside>
       </transition>
-      <main class="main" :style="isLogin?'width: 100%;':'width: 85%;'">
+      <main class="main" :style="isLogin?'width: 100%;':'width: calc(100% - 240px);'">
         <router-view></router-view>
       </main>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Sidebar from "./components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 
 export default {
   components: {
@@ -78,7 +78,6 @@ h1 {
 
 aside {
   box-sizing: border-box;
-  width: 15%;
 }
 
 main {

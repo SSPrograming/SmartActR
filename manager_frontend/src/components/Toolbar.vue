@@ -1,21 +1,22 @@
 <template>
   <div class="toolbar">
-    <el-select class="choose-num"
-               v-model="_showNums" placeholder="请选择" v-if="chooseNum">
+    <el-select class="choose-num" v-model="toolbar.showNums" placeholder="请选择" v-if="chooseNum"
+               @change="$emit('query')">
       <el-option v-for="item in numOptions" :key="item.num"
                  :label="item.label" :value="item.num">
       </el-option>
     </el-select>
-    <el-date-picker class="choose-date pointer" v-model="_queryStartDate" type="date" :editable="false"
-                    placeholder="选择开始日期" v-if="chooseDate">
+    <el-date-picker class="choose-date pointer" v-model="toolbar.queryStartDate" type="date" :editable="false"
+                    placeholder="选择开始日期" v-if="chooseDate" @change="$emit('query')">
     </el-date-picker>
-    <el-date-picker class="choose-date pointer" v-model="_queryEndDate" type="date" :editable="false"
-                    placeholder="选择结束日期" v-if="chooseDate">
+    <el-date-picker class="choose-date pointer" v-model="toolbar.queryEndDate" type="date" :editable="false"
+                    placeholder="选择结束日期" v-if="chooseDate" @change="$emit('query')">
     </el-date-picker>
     <el-input class="input-query" placeholder="请输入查找内容" prefix-icon="el-icon-search"
-              v-model="_queryStr" v-if="query" @keyup.enter.native="$emit('query')">
+              v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')">
     </el-input>
-    <el-button type="info" @click="$emit('query')" v-if="query">查找</el-button>
+    <el-button type="info" v-if="query" @click="$emit('query')">查找</el-button>
+    <el-button type="primary" plain v-if="refresh" @click="$emit('refresh')">刷新</el-button>
   </div>
 </template>
 
@@ -26,10 +27,13 @@ export default {
     chooseNum: Boolean,
     chooseDate: Boolean,
     query: Boolean,
-    showNums: Number,
-    queryStartDate: Date,
-    queryEndDate: Date,
-    queryStr: String
+    refresh: Boolean,
+    toolbar: {
+      showNums: Number,
+      queryStartDate: Date,
+      queryEndDate: Date,
+      queryStr: String
+    }
   },
   data() {
     return {
@@ -56,40 +60,6 @@ export default {
         }
       ]
     }
-  },
-  computed: {
-    _showNums: {
-      get() {
-        return this.showNums
-      },
-      set(val) {
-        this.$emit('showNumsChange', val)
-      }
-    },
-    _queryStartDate: {
-      get() {
-        return this.queryStartDate
-      },
-      set(val) {
-        this.$emit('queryStartDateChange', val)
-      }
-    },
-    _queryEndDate: {
-      get() {
-        return this.queryEndDate
-      },
-      set(val) {
-        this.$emit('queryEndDateChange', val)
-      }
-    },
-    _queryStr: {
-      get() {
-        return this.queryStr
-      },
-      set(val) {
-        this.$emit('queryStrChange', val)
-      }
-    }
   }
 }
 </script>
@@ -104,15 +74,16 @@ export default {
 }
 
 .choose-num {
-  flex-basis: 300px;
+  flex-shrink: 0;
+  flex-basis: 160px;
 }
 
 .choose-date {
-  flex-basis: 400px;
+  flex-basis: 300px;
 }
 
 .input-query {
-  flex-basis: 400px;
+  flex-basis: 300px;
 }
 
 </style>

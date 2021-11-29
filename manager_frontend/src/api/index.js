@@ -3,8 +3,10 @@
  */
 import admin from './admin'
 import notice from './notice'
+import reserve from './reserve';
 
 export default {
   admin,
-  notice
+  notice,
+  reserve
 }
