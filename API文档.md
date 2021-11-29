@@ -1,3 +1,5 @@
+
+
 **用户相关**
 
 /api/v1/user/login
@@ -130,7 +132,8 @@ ret:
 			"equipmentType": number,
 			"equipmentName": "name",
 			"equipmentID": number,
-			"equipmentStatus": number #0空闲，1拥挤，2已满
+			"equipmentStatus": number, #0空闲，1拥挤，2已满
+			"equipmentImageURL": ""
 		}
 	]
 }
@@ -164,6 +167,7 @@ ret:
 	"errMsg": "",
 	"equipmentName": "name",
 	"equipmentDescription": "",
+	"equipmentImageURL": "",
 	"equipmentSpareTime": 
 	[
 		{
@@ -261,6 +265,32 @@ ret:
 
 
 
+@bp_user.route('/api/v1/reserve/checkIn', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"hashCode": "",	#已加密
+}
+```
+
+ret:
+
+```
+{
+	"checkInStatus": number,		#0为签到成功，1为码无效，2为无相关记录
+	"errCode": number,
+	"errMsg": ""
+}
+```
+
+
+
+
+
 @bp_user.route('/api/v1/reserve/cancelReserve', methods=['POST'])
 
 @login_required
@@ -282,22 +312,6 @@ ret:
 	"errCode": number
 }
 ```
-
-
-
-@bp_user.route('/api/v1/checkIn', methods=['POST'])
-
-@login_required
-
-params:
-
-```
-{
-	"equipmentType": "",	#已加密
-}
-```
-
-
 
 ****
 
@@ -450,7 +464,7 @@ ret:
 }
 ```
 
-
+****
 
 **预约管理**
 
@@ -513,5 +527,204 @@ ret:
 }
 ```
 
+
+
+
+
 ****
+
+设备详情：
+
+展示有哪些种类的设备：
+
+@bp_equipment.route('/api/v1/reserve/getAllEquipmentType', methods=['GET'])
+
+@login_required
+
+ret:
+
+```
+{
+	"TypeList":
+	[
+		{
+			"equipmentType": number,
+			"equipmentName": "",
+			"equipmentDescription": "",
+			"equipmentCount": number
+			"equipmentImage": ""		#图床路径
+		}
+	]
+}
+```
+
+
+
+添加新的设备种类：
+
+@bp_equipment.route('/api/v1/reserve/AddEquipmentType', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentName": "",
+	"equipmentCount": "",
+	"equipmentDescription": "",
+	"equipmentImage": ""	
+}
+```
+
+ret:
+
+```
+{
+	"errCode":number
+}
+```
+
+
+
+
+
+编辑设备种类：
+
+@bp_equipment.route('/api/v1/reserve/AddEquipmentType', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType": number,
+	"equipmentName": "",						#optional
+	"equipmentCount": "",						#optional
+	"equipmentDescription": "",					#optional
+	"equipmentImage": ""						#optional
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+	"errMsg":
+}
+```
+
+
+
+删除设备种类：
+
+@bp_equipment.route('/api/v1/reserve/DeleteEquipmentType', methods=['POST'])
+
+@login_required
+
+```
+{
+	"equipmentType": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+}
+```
+
+
+
+添加设备：
+
+@bp_equipment.route('/api/v1/reserve/AddEquipment', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType":number
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+	"errMsg":
+}
+```
+
+
+
+删除设备：
+
+@bp_equipment.route('/api/v1/reserve/AddEquipment', methods=['POST'])
+
+@login_required
+
+```
+{
+	
+}
+```
+
+
+
+****
+
+二维码查看：
+
+@bp_equipment.route('/api/v1/qrcode/getQRCode', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType":
+	"equipmentID":
+}
+```
+
+ret:
+
+```
+{
+	"qrcodeURL": ""
+}
+```
+
+
+
+@bp_equipment.route('/api/v1/qrcode/refreshQRCode', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType":
+	"equipmentID":
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+	"qrcodeURL":
+}
+```
 
