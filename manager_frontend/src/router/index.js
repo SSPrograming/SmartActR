@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store'
-import Login from '../views/Login.vue'
-import Home from '../views/Home'
-import Notice from '../views/Notice'
+import store from '@/store'
+import Login from '@/views/Login.vue'
+import Home from '@/views/Home'
+import Notice from '@/views/Notice'
+import TodayRecord from '@/views/reserve/TodayRecord'
+import HistoryRecord from '@/views/reserve/HistoryRecord'
+import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: {name: 'Login'}
+    redirect: {name: 'Home'}
   },
   {
     path: '/login',
@@ -26,6 +29,60 @@ const routes = [
     path: '/notice',
     name: 'Notice',
     component: Notice
+  },
+  {
+    path: '/reserve',
+    name: 'Reserve',
+    redirect: {name: 'TodayRecord'}
+  },
+  {
+    path: '/reserve/today',
+    name: 'TodayRecord',
+    component: TodayRecord
+  },
+  {
+    path: '/reserve/history',
+    name: 'HistoryRecord',
+    component: HistoryRecord
+  },
+  {
+    path: '/equipment',
+    name: 'Equipment',
+    component: NotFound
+  },
+  {
+    path: '/equipment/rules',
+    name: 'EquipmentRules',
+    component: NotFound
+  },
+  {
+    path: '/instruction',
+    name: 'Instruction',
+    component: NotFound
+  },
+  {
+    path: '/instruction/editor',
+    name: 'InstructionEditor',
+    component: NotFound
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: NotFound
+  },
+  {
+    path: '/user/feedback',
+    name: 'FeedBack',
+    component: NotFound
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: {name: 'NotFound'}
   }
 ]
 
