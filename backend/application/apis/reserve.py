@@ -1,10 +1,12 @@
 from logging import exception
 from flask import request, jsonify, Blueprint, g
+from flask.wrappers import Response
 import mjwt
 from config import query_yaml
 from application.services import UserService, EquipmentService, ReserveService
 from .login_decorator import login_required
 import operator, datetime
+import math
 
 
 bp_reserve = Blueprint(
@@ -20,7 +22,7 @@ def getEquipmentStatus():
         targetID = request.json['equipmentID']
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         date = datetime.date(year, month, day)
     except Exception as e:
         print(e)
@@ -38,29 +40,16 @@ def getEquipmentStatus():
         occupation.append({"startTime": record.startTime,
                                           "endTime": record.endTime})
     occupation = sorted(occupation, key=operator.itemgetter('startTime'))
-    if len(occupation)<1:
-        return jsonify({
-            "errCode": 0,
-            "equipmentName": targetEquipmentType.equipmentName,
-            "equipmentDescription": targetEquipmentType.equipmentDescription,
-            "equipmentSpareTime": [
-                {
-                    "startTime": "08:00",
-                    "endTime": "22:00"
-                }
-            ],
-            "equipmentOccupiedTime": []
-        })
-    print(occupation)
     occupation_merged = []
-    cur_item = occupation[0] #to be merged
-    for item in occupation:
-        if item["startTime"]<=cur_item["endTime"]:
-            cur_item["endTime"] = max(cur_item["endTime"], item["endTime"])
-        else:
-            occupation_merged.append(cur_item)
-            cur_item = item
-    occupation_merged.append(cur_item)
+    if len(occupation):
+        cur_item = occupation[0] #to be merged
+        for item in occupation:
+            if item["startTime"]<=cur_item["endTime"]:
+                cur_item["endTime"] = max(cur_item["endTime"], item["endTime"])
+            else:
+                occupation_merged.append(cur_item)
+                cur_item = item
+        occupation_merged.append(cur_item)
     spareTime=[{"startTime": "08:00", "endTime":"22:00"}]
 
     for i in range(len(occupation_merged)):
@@ -77,14 +66,41 @@ def getEquipmentStatus():
         if splitTime_2["startTime"] != splitTime_2["endTime"]:
             spareTime.append(splitTime_2)
 
+    remove_end = 0
+    # 转化为本地时间
+    now = datetime.datetime.now() + datetime.timedelta(hours=8)
+    for item in spareTime:
+        item_endTime = datetime.datetime.strptime(item["endTime"],'%H:%M')
+        item_endTime = item_endTime.replace(year=year, month=month, day=day)
+        print(item_endTime)
+        print(now)
+        if item_endTime < now:
+            remove_end += 1
+        else:
+            break
+    del spareTime[:remove_end]
+    print(len(spareTime))
+    if len(spareTime):
+        item_startTime = datetime.datetime.strptime(spareTime[0]["startTime"], '%H:%M')
+        item_startTime = item_startTime.replace(year=year, month=month, day=day)
+        if item_startTime < now:
+            minute_round = math.ceil(now.minute / 15) * 15
+            hour = now.hour
+            if minute_round == 60:
+                hour += 1
+                minute_round = 0
+            item_startTime = item_startTime.replace(hour=hour, minute=minute_round)
+            print(item_startTime)
+            spareTime[0]["startTime"] = item_startTime.strftime("%H:%M")
+            if spareTime[0]["startTime"] == spareTime[0]["endTime"]:
+                del spareTime[0]
+
     return jsonify({
             "errCode": 0,
             "equipmentName": targetEquipmentType.equipmentName,
             "equipmentDescription": targetEquipmentType.equipmentDescription,
-            "equipmentSpareTime": 
-            spareTime,
-            "equipmentOccupiedTime":
-            occupation_merged
+            "equipmentSpareTime": spareTime,
+            "equipmentImageURL": targetEquipmentType.equipmentImageURL
         }), 200
 
 
@@ -94,7 +110,7 @@ def getAllEquipmentStatus():
     try:
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         date = datetime.date(year, month, day)
     except Exception as e:
         print(e)
@@ -122,6 +138,7 @@ def getAllEquipmentStatus():
         equipmentStatuses.append({"equipmentType": equipment.equipmentType,
                                   "equipmentName": targetEquipmentType.equipmentName,
                                   "equipmentID": equipment.equipmentID,
+                                  "equipmentImageURL": targetEquipmentType.equipmentImageURL,
                                   "equipmentStatus": 0})
     
     return jsonify({
@@ -136,7 +153,7 @@ def reserveEquipment():
     try:
         year = request.json['year']
         month = request.json['month']
-        day = request.json['day']
+        day = request.json['date']
         strStartTime = request.json['startTime']
         strEndTime = request.json['endTime']
         targetType = request.json['equipmentType']
@@ -164,3 +181,60 @@ def reserveEquipment():
         return jsonify({"errCode": 0,"errMsg": ""}), 200
     else:
         return jsonify({"errCode": 1, "errMsg": "设备不存在或已被占用"})
+
+
+@bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
+@login_required
+def cancelReserve():
+    try:
+        recordID = request.json['reserveID']
+    except Exception as e:
+        print(e)
+        return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
+    msg, status = ReserveService.delete_reserve_record(g.userID, recordID)
+    if status:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200
+
+
+@bp_reserve.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+@login_required
+def getHistoryReserveInfo():
+    history_record = ReserveService.get_history_record(g.userID)
+    resp_record = []
+    for item in history_record:
+        resp_record.append({
+            "reserveID": item.recordID,
+            "startTime": item.startTime.strftime("%H:%M"),
+            "endTime": item.endTime.strftime("%H:%M"),
+            "year": item.reserveDate.year,
+            "month": item.reserveDate.month,
+            "date": item.reserveDate.day,
+            "status": item.status
+        })
+    return jsonify({
+        "errCode": 0,
+        "info": resp_record
+    }), 200
+
+
+@bp_reserve.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+@login_required
+def getCurrentReserveInfo():
+    current_record = ReserveService.get_current_record(g.userID)
+    resp_record = []
+    for item in current_record:
+        resp_record.append({
+            "reserveID": item.recordID,
+            "startTime": item.startTime.strftime("%H:%M"),
+            "endTime": item.endTime.strftime("%H:%M"),
+            "year": item.reserveDate.year,
+            "month": item.reserveDate.month,
+            "date": item.reserveDate.day,
+            "status": item.status
+        })
+    return jsonify({
+        "errCode": 0,
+        "info": resp_record
+    }), 200
