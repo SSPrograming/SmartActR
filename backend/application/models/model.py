@@ -22,6 +22,7 @@ class equipmentType(db.Model):
     equipmentType = db.Column(db.Integer,primary_key=True,autoincrement=True)
     equipmentName = db.Column(db.String(256))
     equipmentDescription = db.Column(db.String(1024))
+    equipmentImageURL = db.Column(db.String(1024))
 
 class Equipment(db.Model):
     __tablename__ = 'equipment'

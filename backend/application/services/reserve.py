@@ -1,6 +1,7 @@
 from application.database import db
 from application.models import User, Student, Reserve_Record, Equipment, equipmentType, OccupationInfo
 import datetime
+from application.utils import now
 import time
 
 class ReserveService:
@@ -36,7 +37,7 @@ class ReserveService:
         return occupied_time, occupy_flag
     
     def add_reserve_record(userID, reserveDate, startTime, endTime, equipmentType, equipmentID):
-        nrecord = Reserve_Record(userID=userID, postTime=datetime.datetime.now(),reserveDate=reserveDate, startTime=startTime,
+        nrecord = Reserve_Record(userID=userID, postTime=now(),reserveDate=reserveDate, startTime=startTime,
                                 endTime=endTime, equipmentType=equipmentType, equipmentID=equipmentID,
                                 status="success")
         try:

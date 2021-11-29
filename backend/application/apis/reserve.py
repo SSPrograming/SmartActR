@@ -99,8 +99,8 @@ def getEquipmentStatus():
             "errCode": 0,
             "equipmentName": targetEquipmentType.equipmentName,
             "equipmentDescription": targetEquipmentType.equipmentDescription,
-            "equipmentSpareTime": 
-            spareTime,
+            "equipmentSpareTime": spareTime,
+            "equipmentImageURL": targetEquipmentType.equipmentImageURL
         }), 200
 
 
@@ -138,6 +138,7 @@ def getAllEquipmentStatus():
         equipmentStatuses.append({"equipmentType": equipment.equipmentType,
                                   "equipmentName": targetEquipmentType.equipmentName,
                                   "equipmentID": equipment.equipmentID,
+                                  "equipmentImageURL": targetEquipmentType.equipmentImageURL,
                                   "equipmentStatus": 0})
     
     return jsonify({
