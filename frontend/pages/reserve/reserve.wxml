@@ -11,15 +11,17 @@
                 <image class="notice-page-time-icon" src="/resources/icons/reserve/calendar.png"></image>
                 <view class="notice-page-time">{{ noticeDate }}</view>
             </view>
-            <view class="notice-page-content">
-                <!--
+            <scroll-view class="notice-page-scroll" scroll-y="true">
+                <view class="notice-page-content">
+                    <!--
                 大家好，欢迎来到科协活动室！在这里，你可以体验实践的快乐，用自己的双手创造属于自己的东西；在这里，你可以和朋友共同成长，一起取得荣耀与辉煌；在这里，你可以非常快乐，快乐地放飞自我。科协活动室欢迎你们的到来！
                 -->
-                <view wx:for="{{ noticeContents }}" wx:key="index">
-                    {{ item }}
+                    <view wx:for="{{ noticeContents }}" wx:key="index">
+                        {{ item }}
+                    </view>
                 </view>
-            </view>
-            <button class="notice-page-confirm" bindtap="hideNotice">确认</button>
+                <button class="notice-page-confirm" bindtap="hideNotice">确认</button>
+            </scroll-view>
         </view>
         <view class="whitespace"></view>
     </view>
