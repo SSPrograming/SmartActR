@@ -24,12 +24,26 @@ def refreshQRCode():
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     raw_str = str(equipment_type) + '-' + str(equipment_id) + '-' + str(datetime.datetime.now())
     raw_code = hash_code(raw_str)
-    msg, refreshStatus = EquipmentService.update_hashcode(equipment_type, equipment_id,raw_code)
+    img_name = str(equipment_type)+"-"+str(equipment_id)+".png"
+    img_url = query_yaml("app.MANAGERSERVERURL")+"image/qrcode/"+img_name
+    msg, refreshStatus = EquipmentService.update_hashcode(equipment_type, equipment_id,raw_code, img_url)
     if refreshStatus==False:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     qr_img = qrcode.make(raw_code)
     print(os.getcwd())
-    img_name = str(equipment_type)+"-"+str(equipment_id)+".png"
     qr_img.save("./application/static/qrcode/"+img_name)
-    img_url = query_yaml("app.MANAGERSERVERURL")+"image/qrcode/"+img_name
     return jsonify({"errCode": 0,"qrcodeURL": img_url}), 200
+
+@bp_qrcode.route('/api/v1/qrcode/getQRCode', methods=['POST'])
+@login_required
+def getQRCode():
+    try:
+        equipment_type = request.json['equipmentType']
+        equipment_id = request.json['equipmentID']
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    msg, status = EquipmentService.get_qrcodeURL(equipment_type, equipment_id)
+    if status:
+        return jsonify({"errCode": 0, "qrcodeURL": msg}), 200
+    else:
+        return jsonify({"errCode": 0, "errMsg": msg}), 200
