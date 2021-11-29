@@ -114,4 +114,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
+.table {
+  margin: 10px auto 10px;
+}
 </style>

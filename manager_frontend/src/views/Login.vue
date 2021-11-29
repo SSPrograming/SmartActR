@@ -5,10 +5,10 @@
         管理员登录
       </div>
       <el-form class="form" ref="form" :model="form" label-width="80px">
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" @keyup.enter.native="onSubmit">
           <el-input v-model="form.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" @keyup.enter.native="onSubmit">
           <el-input v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item>

@@ -177,18 +177,25 @@ export default {
       this.showNoticeEditor = true
     },
     handleDelete(row) {
-      this.tableLoading = true
-      this.$api.notice.deleteNotice({noticeID: row.noticeID}).then((res) => {
-        if (res.data.errCode === 0) {
-          this.$utils.alertMessage(this, '删除成功', 'success')
-          this.getNoticeList()
-        } else {
-          this.$utils.error.APIError(this, res.data)
+      this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.tableLoading = true
+        this.$api.notice.deleteNotice({noticeID: row.noticeID}).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '删除成功', 'success')
+            this.getNoticeList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
           this.tableLoading = false
-        }
-      }).catch((err) => {
-        this.$utils.error.ServerError(this, err)
-        this.tableLoading = false
+        })
+      }).catch(() => {
       })
     },
     editorCancel() {
