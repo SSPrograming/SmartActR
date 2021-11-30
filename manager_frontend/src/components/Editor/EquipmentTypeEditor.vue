@@ -1,6 +1,16 @@
 <template>
   <div class="equipment-type-editor">
     <el-form class="form" ref="form" :model="form" label-width="80px">
+      <el-form-item label="设备名称" required>
+        <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称"></el-input>
+      </el-form-item>
+      <el-form-item label="设备数量" required>
+        <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>
+      </el-form-item>
+      <el-form-item label="设备描述" required>
+        <el-input type="textarea" :rows="5" placeholder="请输入设备描述" v-model="form.equipmentDescription">
+        </el-input>
+      </el-form-item>
       <el-form-item label="图片" required>
         <el-upload
             class="image-uploader" ref="uploader"
@@ -12,10 +22,10 @@
           <i v-else class="el-icon-plus image-uploader-icon"></i>
         </el-upload>
       </el-form-item>
-      <el-form-item style="text-align: center;">
+      <div style="text-align: center;">
         <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
         <el-button class="button" type="primary" plain @click="submit">提交</el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
@@ -25,29 +35,43 @@ export default {
   name: "EquipmentTypeEditor",
   props: {
     form: Object,
-  },
-  data() {
-    return {
-      file: null
-    }
+    add: Boolean
   },
   computed: {
     imageUrl() {
-      return this.file && URL.createObjectURL(this.file) || ''
+      if (typeof this.form.equipmentImage === 'object') {
+        return this.form.equipmentImage && URL.createObjectURL(this.form.equipmentImage) || ''
+      } else {
+        return this.form.equipmentImage
+      }
     }
   },
   methods: {
     imageChange(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$utils.alertMessage(this, '上传图片大小不能超过 2MB！', 'error')
+      const isLt1M = file.size / 1024 / 1024 < 1
+      if (!isLt1M) {
+        this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
       } else {
-        this.file = file.raw
+        this.form.equipmentImage = file.raw
       }
-      return isLt2M
+      return isLt1M
     },
     submit() {
-      this.$refs.uploader.submit()
+      this.$refs.form.validate().then((valid) => {
+        if (!this.form.equipmentName) {
+          this.$utils.alertMessage(this, '请输入设备名称', 'warning')
+        } else if (!this.form.equipmentCount) {
+          this.$utils.alertMessage(this, '请输入设备数量', 'warning')
+        } else if (!this.form.equipmentDescription) {
+          this.$utils.alertMessage(this, '请输入设备描述', 'warning')
+        } else if (!this.form.equipmentImage) {
+          this.$utils.alertMessage(this, '请上传图片', 'warning')
+        } else {
+          if (valid) {
+            this.$emit('editorConfirm')
+          }
+        }
+      })
     }
   }
 }
@@ -76,7 +100,8 @@ export default {
 }
 
 .image {
-  width: 178px;
+  height: 178px;
   display: block;
 }
+
 </style>

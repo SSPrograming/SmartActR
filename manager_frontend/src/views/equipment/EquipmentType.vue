@@ -2,7 +2,7 @@
   <div class="equipment-type">
     <el-dialog title="设备种类编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
       <EquipmentTypeEditor :form="form" @editorCancel="editorCancel"
-                           @editorConfirm="editorConfirm"></EquipmentTypeEditor>
+                           @editorConfirm="editorConfirm" :add="editEquipmentType === null"></EquipmentTypeEditor>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -14,7 +14,7 @@
           <div slot="header" class="card-header">
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
-            <el-button class="button" type="text">编辑</el-button>
+            <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
             <el-button class="button delete" type="text">删除</el-button>
             <el-button class="button lookup" type="text">查看详情</el-button>
           </div>
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="right">
-              <img :src="'http://' + item.equipmentImage" class="equipment-image" alt="">
+              <img :src="item.equipmentImage" class="equipment-image" alt="">
             </div>
           </div>
         </el-card>
@@ -59,10 +59,11 @@ export default {
       equipmentTypeList: [],
       form: {
         equipmentName: '',
-        equipmentCount: 0,
+        equipmentCount: 1,
         equipmentDescription: '',
-        equipmentImage: ''
+        equipmentImage: null,
       },
+      editEquipmentType: null,
       dialogLoading: false,
       showEquipmentEditor: false
     }
@@ -86,13 +87,33 @@ export default {
       })
     },
     handleAdd() {
+      if (this.editEquipmentType) {
+        this.editEquipmentType = null
+        this.form = {
+          equipmentName: '',
+          equipmentCount: 1,
+          equipmentDescription: '',
+          equipmentImage: null,
+        }
+      }
+      this.showEquipmentEditor = true
+    },
+    handleEdit(item) {
+      this.editEquipmentType = item.equipmentType
+      this.form = {
+        equipmentName: item.equipmentName,
+        equipmentCount: item.equipmentCount,
+        equipmentDescription: item.equipmentDescription,
+        equipmentImage: item.equipmentImage,
+      }
       this.showEquipmentEditor = true
     },
     editorCancel() {
-
+      this.showEquipmentEditor = false
     },
     editorConfirm() {
-
+      let formData = new FormData()
+      formData.append('testFile', this.form.equipmentImage)
     }
   }
 }

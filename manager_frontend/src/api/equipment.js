@@ -9,6 +9,9 @@ const subUrl = 'equipment'
 const equipment = {
   getAllEquipmentType() {
     return axios.get(`${config.baseUrl}/${subUrl}/getAllEquipmentType`)
+  },
+  testPicUpload(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/testPicUpload`, params)
   }
 }
 

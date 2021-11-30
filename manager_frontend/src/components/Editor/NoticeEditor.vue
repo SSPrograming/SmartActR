@@ -9,10 +9,10 @@
         <el-input type="textarea" :rows="10" placeholder="请输入公告内容" v-model="form.noticeContent">
         </el-input>
       </el-form-item>
-      <el-form-item style="text-align: center;">
+      <div style="text-align: center;">
         <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
         <el-button class="button" type="primary" plain @click="submit">提交</el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
