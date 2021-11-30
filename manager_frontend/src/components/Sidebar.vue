@@ -38,7 +38,7 @@
           <i class="el-icon-setting"></i>
           <span>设备管理</span>
         </template>
-        <el-menu-item index="Equipment">
+        <el-menu-item index="EquipmentType">
           <template slot="title">
             <span>设备详情</span>
           </template>

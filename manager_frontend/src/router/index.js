@@ -6,6 +6,7 @@ import Home from '@/views/Home'
 import Notice from '@/views/Notice'
 import TodayRecord from '@/views/reserve/TodayRecord'
 import HistoryRecord from '@/views/reserve/HistoryRecord'
+import EquipmentType from '@/views/equipment/EquipmentType'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -48,7 +49,12 @@ const routes = [
   {
     path: '/equipment',
     name: 'Equipment',
-    component: NotFound
+    redirect: {name: 'EquipmentType'}
+  },
+  {
+    path: '/equipment/type',
+    name: 'EquipmentType',
+    component: EquipmentType
   },
   {
     path: '/equipment/rules',
