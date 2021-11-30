@@ -49,7 +49,7 @@
     <view class="equipments-container">
         <scroll-view class="equipment-scroll" scroll-y="true">
             <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}" bindtap="doReserve">
-                <image class="equipment-image" src="http://{{ item.equipmentImageURL }}"></image>
+                <image class="equipment-image" src="{{ item.equipmentImageURL }}"></image>
                 <view class="equipment-vertical-delimiter"></view>
                 <view class="equipment-content">
                     <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>

@@ -20,7 +20,7 @@
         </view>
         <view class="equipment-info-image-containter">
             <view class="whitespace"></view>
-            <image class="equipment-info-image" src="http://{{ equipmentInfo.equipmentImageURL }}"></image>
+            <image class="equipment-info-image" src="{{ equipmentInfo.equipmentImageURL }}"></image>
             <view class="whitespace"></view>
         </view>
     </view>
