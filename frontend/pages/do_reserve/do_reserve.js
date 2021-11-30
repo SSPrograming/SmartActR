@@ -8,7 +8,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    equipmentType2imagePath: app.$api.reserve.equipmentType2imagePath,
     equipmentInfo: {
       year: 0,
       month: 0,
@@ -17,6 +16,7 @@ Page({
       equipmentID: 0,
       equipmentStatus: 0,
       equipmentName: '',
+      equipmentImageURL: '',
       equipmentDescription: '',
     },
     equipmentSpareTime: [],
@@ -200,6 +200,7 @@ Page({
         equipmentType: parseInt(options.equipmentType),
         equipmentID: parseInt(options.equipmentID),
         equipmentName: options.equipmentName,
+        equipmentImageURL: options.equipmentImageURL,
         equipmentStatus: parseInt(options.equipmentStatus),
       },
       hours: hours.map((num) => {
