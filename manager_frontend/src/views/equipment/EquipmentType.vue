@@ -1,8 +1,9 @@
 <template>
   <div class="equipment-type">
     <div class="container">
-      <div class="toolbar">
+      <div class="header">
         <Toolbar refresh @refresh="getAllEquipmentType"></Toolbar>
+        <el-button type="primary" plain @click="handleAdd">添加设备</el-button>
       </div>
       <div class="main" v-loading="loading">
         <el-card class="card" v-for="item in equipmentTypeList" :key="item.equipmentType">
@@ -10,6 +11,7 @@
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
             <el-button class="button" type="text">编辑</el-button>
+            <el-button class="button delete" type="text">删除</el-button>
             <el-button class="button lookup" type="text">查看详情</el-button>
           </div>
           <div class="equipment-content">
@@ -68,6 +70,9 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.loading = false
       })
+    },
+    handleAdd() {
+
     }
   }
 }
@@ -76,7 +81,7 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
-.toolbar {
+.header {
   display: flex;
   justify-content: space-between;
   margin-bottom: $--toolbar-margin-bottom;
@@ -85,10 +90,11 @@ export default {
 .main {
   display: flex;
   flex-wrap: wrap;
+  padding-top: 20px;
 
   .card {
     flex-basis: 650px;
-    margin: 10px 30px 30px;
+    margin: 0 30px 30px;
   }
 }
 
@@ -97,6 +103,18 @@ export default {
 
   .button {
     padding: 3px 0;
+  }
+
+  .delete {
+    color: $--color-danger;
+
+    &:focus, &:hover {
+      color: mix($--color-danger, $--color-white, 75%);
+    }
+
+    &:active {
+      color: mix($--color-danger, $--color-black, 75%);
+    }
   }
 
   .lookup {
