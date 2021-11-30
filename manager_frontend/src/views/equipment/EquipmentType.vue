@@ -50,7 +50,13 @@ export default {
   data() {
     return {
       loading: false,
-      equipmentTypeList: []
+      equipmentTypeList: [],
+      form: {
+        equipmentName: '',
+        equipmentCount: 0,
+        equipmentDescription: '',
+        equipmentImage: ''
+      }
     }
   },
   mounted() {

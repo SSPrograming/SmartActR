@@ -202,10 +202,6 @@ export default {
       this.showNoticeEditor = false
     },
     editorConfirm() {
-      if (!this.form.expireDate) {
-        this.$utils.alertMessage(this, '请设置过期时间', 'warning')
-        return
-      }
       let params = {
         expireDate: this.form.expireDate && this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd'),
         noticeContent: this.form.noticeContent
