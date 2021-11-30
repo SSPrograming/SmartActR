@@ -25,3 +25,15 @@ def getAllEquipmentType():
     }   for item in type_all_raw
     ]
     return jsonify({"errCode": 0, "TypeList": type_list}), 200
+
+@bp_equipment.route('/api/v1/equipment/testPicUpload', methods=['POST'])
+@login_required
+def testPicUpload():
+    print(type(request.form))
+    testFile = request.files.get('testFile')
+    testFileName = request.files['testFile'].name
+    print(type(testFile))
+    print(testFile)
+    testFile.save('./application/static/test/testFile.jpg')
+    testFileURL = query_yaml("app.MANAGERSERVERURL")+"image/test/testFile.jpg"
+    return jsonify({"errCode": 0,"testPicURL": testFileURL}), 200
