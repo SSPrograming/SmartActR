@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import NoticeEditor from '@/components/NoticeEditor'
+import NoticeEditor from '@/components/Editor/NoticeEditor'
 import Toolbar from '@/components/Toolbar'
 
 export default {

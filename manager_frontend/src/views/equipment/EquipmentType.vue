@@ -1,5 +1,9 @@
 <template>
   <div class="equipment-type">
+    <el-dialog title="设备种类编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
+      <EquipmentTypeEditor :form="form" @editorCancel="editorCancel"
+                           @editorConfirm="editorConfirm"></EquipmentTypeEditor>
+    </el-dialog>
     <div class="container">
       <div class="header">
         <Toolbar refresh @refresh="getAllEquipmentType"></Toolbar>
@@ -41,10 +45,12 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import EquipmentTypeEditor from '@/components/Editor/EquipmentTypeEditor'
 
 export default {
   name: "EquipmentType",
   components: {
+    EquipmentTypeEditor,
     Toolbar
   },
   data() {
@@ -56,7 +62,9 @@ export default {
         equipmentCount: 0,
         equipmentDescription: '',
         equipmentImage: ''
-      }
+      },
+      dialogLoading: false,
+      showEquipmentEditor: false
     }
   },
   mounted() {
@@ -78,6 +86,12 @@ export default {
       })
     },
     handleAdd() {
+      this.showEquipmentEditor = true
+    },
+    editorCancel() {
+
+    },
+    editorConfirm() {
 
     }
   }
