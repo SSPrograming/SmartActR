@@ -46,4 +46,4 @@ def getQRCode():
     if status:
         return jsonify({"errCode": 0, "qrcodeURL": msg}), 200
     else:
-        return jsonify({"errCode": 0, "errMsg": msg}), 200
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
