@@ -1,7 +1,7 @@
 <template>
   <div class="history-record">
     <div class="container">
-      <div class="toolbar">
+      <div class="header">
         <Toolbar :toolbar="toolbar" choose-date refresh @refresh="getRecordList" @query="query"></Toolbar>
       </div>
     </div>
@@ -112,7 +112,7 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
-.toolbar {
+.header {
   display: flex;
   justify-content: space-between;
   margin-bottom: $--toolbar-margin-bottom;

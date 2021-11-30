@@ -82,7 +82,7 @@ export default {
   name: "Sidebar",
   computed: {
     routeName() {
-      return this.$route.name;
+      return this.$route.name
     }
   },
   methods: {

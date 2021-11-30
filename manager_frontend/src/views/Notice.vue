@@ -4,7 +4,7 @@
       <NoticeEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></NoticeEditor>
     </el-dialog>
     <div class="container">
-      <div class="toolbar">
+      <div class="header">
         <Toolbar :toolbar="toolbar" choose-num choose-date query
                  @query="query">
         </Toolbar>
@@ -258,7 +258,7 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
-.toolbar {
+.header {
   display: flex;
   justify-content: space-between;
   margin-bottom: $--toolbar-margin-bottom;
@@ -280,7 +280,7 @@ export default {
   }
 
   &:active {
-    color: $--color-danger;
+    color: mix($--color-danger, $--color-black, 75%);
   }
 }
 

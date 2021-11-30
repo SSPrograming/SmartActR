@@ -1,7 +1,7 @@
 <template>
   <div class="today-record">
     <div class="container">
-      <div class="toolbar">
+      <div class="header">
         <Toolbar refresh @refresh="getRecordList"></Toolbar>
       </div>
     </div>
@@ -99,7 +99,7 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
-.toolbar {
+.header {
   display: flex;
   justify-content: space-between;
   margin-bottom: $--toolbar-margin-bottom;
