@@ -29,8 +29,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="prev, pager, next" :page-size="pageSize" :current-page.sync="currentPage"
-                     :total="dataLength" background>
+      <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
+                     :current-page.sync="currentPage" :total="dataLength" background>
       </el-pagination>
     </div>
   </div>
@@ -261,14 +261,15 @@ export default {
 .toolbar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: $--toolbar-margin-bottom;
 }
 
 .content {
   white-space: nowrap;
 }
 
-.table {
-  margin: 10px auto 10px;
+.pagination {
+  margin-top: $--pagination-margin-top;
 }
 
 .delete {

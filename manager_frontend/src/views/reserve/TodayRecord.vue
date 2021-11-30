@@ -16,8 +16,8 @@
       <el-table-column prop="postTime" label="提交时间" :sortable="'custom'"></el-table-column>
       <el-table-column prop="status" label="预约状态" :sortable="'custom'"></el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :page-size="pageSize" :current-page.sync="currentPage"
-                   :total="dataLength" background>
+    <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
+                   :current-page.sync="currentPage" :total="dataLength" background>
     </el-pagination>
   </div>
 </template>
@@ -97,12 +97,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/element-variables";
+
 .toolbar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: $--toolbar-margin-bottom;
 }
 
-.table {
-  margin: 10px auto 10px;
+.pagination {
+  margin-top: $--pagination-margin-top;
 }
 </style>
