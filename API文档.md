@@ -537,7 +537,7 @@ ret:
 
 展示有哪些种类的设备：
 
-@bp_equipment.route('/api/v1/reserve/getAllEquipmentType', methods=['GET'])
+@bp_equipment.route('/api/v1/equipment/getAllEquipmentType', methods=['GET'])
 
 @login_required
 
@@ -562,7 +562,7 @@ ret:
 
 添加新的设备种类：
 
-@bp_equipment.route('/api/v1/reserve/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -591,7 +591,7 @@ ret:
 
 编辑设备种类：
 
-@bp_equipment.route('/api/v1/reserve/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -620,7 +620,7 @@ ret:
 
 删除设备种类：
 
-@bp_equipment.route('/api/v1/reserve/DeleteEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/DeleteEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -642,7 +642,7 @@ ret:
 
 添加设备：
 
-@bp_equipment.route('/api/v1/reserve/AddEquipment', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/AddEquipment', methods=['POST'])
 
 @login_required
 
@@ -667,7 +667,7 @@ ret:
 
 删除设备：
 
-@bp_equipment.route('/api/v1/reserve/AddEquipment', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/AddEquipment', methods=['POST'])
 
 @login_required
 
