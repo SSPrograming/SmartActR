@@ -15,8 +15,8 @@
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
             <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
-            <el-button class="button delete" type="text">删除</el-button>
-            <el-button class="button lookup" type="text">查看详情</el-button>
+            <el-button class="button delete" type="text" @click="handleDelete(item)">删除</el-button>
+            <el-button class="button lookup" type="text" @click="handleDetail(item)">查看详情</el-button>
           </div>
           <div class="equipment-content">
             <div class="left">
@@ -107,6 +107,32 @@ export default {
         equipmentImage: item.equipmentImage,
       }
       this.showEquipmentEditor = true
+    },
+    handleDelete(item) {
+      this.$confirm('此操作将删除该类设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        setTimeout(() => {
+          this.$confirm('这将影响到所有的预约记录，是否继续？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            console.log(item)
+          }).catch(() => {
+
+          })
+        }, 500)
+      }).catch(() => {
+      })
+    },
+    handleDetail(item) {
+      this.$router.push({
+        name: 'EquipmentDetail',
+        query: item
+      })
     },
     editorCancel() {
       this.showEquipmentEditor = false

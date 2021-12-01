@@ -7,6 +7,7 @@ import Notice from '@/views/Notice'
 import TodayRecord from '@/views/reserve/TodayRecord'
 import HistoryRecord from '@/views/reserve/HistoryRecord'
 import EquipmentType from '@/views/equipment/EquipmentType'
+import EquipmentDetail from '@/views/equipment/EquipmentDetail'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -55,6 +56,11 @@ const routes = [
     path: '/equipment/type',
     name: 'EquipmentType',
     component: EquipmentType
+  },
+  {
+    path: '/equipment/detail',
+    name: 'EquipmentDetail',
+    component: EquipmentDetail
   },
   {
     path: '/equipment/rules',
