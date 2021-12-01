@@ -15,6 +15,7 @@
         <el-upload
             class="image-uploader" ref="uploader"
             action="/api/v1/equipment/testPicUpload"
+            accept="image/*"
             :show-file-list="false"
             :auto-upload="false"
             :on-change="imageChange">
@@ -49,12 +50,15 @@ export default {
   methods: {
     imageChange(file) {
       const isLt1M = file.size / 1024 / 1024 < 1
-      if (!isLt1M) {
+      const isImage = file.raw.type.match(/image/)
+      if (!isImage) {
+        this.$utils.alertMessage(this, '请上传图片文件', 'error')
+      } else if (!isLt1M) {
         this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
       } else {
         this.form.equipmentImage = file.raw
       }
-      return isLt1M
+      return isImage && isLt1M
     },
     submit() {
       this.$refs.form.validate().then((valid) => {
