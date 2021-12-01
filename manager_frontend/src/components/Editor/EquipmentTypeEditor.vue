@@ -8,7 +8,8 @@
         <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>
       </el-form-item>
       <el-form-item label="设备描述" required>
-        <el-input type="textarea" :rows="5" placeholder="请输入设备描述" v-model="form.equipmentDescription">
+        <el-input type="textarea" :rows="5" maxlength="50" show-word-limit placeholder="请输入设备描述"
+                  v-model="form.equipmentDescription">
         </el-input>
       </el-form-item>
       <el-form-item label="图片" required>
