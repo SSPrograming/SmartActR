@@ -162,7 +162,7 @@ export default {
       }
       this.$api.qrcode.getQRCode(this.qrcodeRef).then((res) => {
         if (res.data.errCode === 0) {
-          this.qrcodeURL = res.data.qrcodeURL
+          this.qrcodeURL = res.data.qrcodeURL + '?time=' + new Date().getTime()
           this.$utils.alertMessage(this, '获取二维码成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -177,7 +177,7 @@ export default {
       this.dialogLoading = true
       this.$api.qrcode.refreshQRCode(this.qrcodeRef).then((res) => {
         if (res.data.errCode === 0) {
-          this.qrcodeURL = res.data.qrcodeURL
+          this.qrcodeURL = res.data.qrcodeURL + '?time=' + new Date().getTime()
           this.$utils.alertMessage(this, '获取二维码成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
