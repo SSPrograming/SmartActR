@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="right">
-              <img :src="item.equipmentImage" class="equipment-image" alt="">
+              <img :src="item.equipmentImage" class="equipment-image" alt=""/>
             </div>
           </div>
         </el-card>
@@ -121,9 +121,20 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            console.log(item)
+            this.loading = true
+            this.$api.equipment.deleteEquipmentType({equipmentType: item.equipmentType}).then((res) => {
+              if (res.data.errCode === 0) {
+                this.$utils.alertMessage(this, '删除成功', 'success')
+                this.getAllEquipmentType()
+              } else {
+                this.$utils.error.APIError(this, res.data)
+                this.loading = false
+              }
+            }).catch((err) => {
+              this.$utils.error.ServerError(this, err)
+              this.loading = false
+            })
           }).catch(() => {
-
           })
         }, 500)
       }).catch(() => {
@@ -141,8 +152,59 @@ export default {
       this.showEquipmentTypeEditor = false
     },
     editorConfirm() {
-      let formData = new FormData()
-      formData.append('testFile', this.form.equipmentImage)
+      this.dialogLoading = true
+      // 创建
+      if (!this.editEquipmentType) {
+        let formData = new FormData()
+        formData.append('equipmentName', this.form.equipmentName)
+        formData.append('equipmentCount', this.form.equipmentCount)
+        formData.append('equipmentDescription', this.form.equipmentDescription)
+        formData.append('equipmentImage', this.form.equipmentImage)
+        this.$api.equipment.addEquipmentType(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '添加成功', 'success')
+            this.form = {
+              equipmentName: '',
+              equipmentCount: 1,
+              equipmentDescription: '',
+              equipmentImage: null,
+            }
+            this.getAllEquipmentType()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showEquipmentTypeEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showEquipmentTypeEditor = false
+        })
+      }
+      // 编辑
+      else {
+        let formData = new FormData()
+        formData.append('equipmentType', this.editEquipmentType)
+        formData.append('equipmentName', this.form.equipmentName)
+        formData.append('equipmentDescription', this.form.equipmentDescription)
+        if (typeof this.form.equipmentImage === "object") {
+          formData.append('equipmentImage', this.form.equipmentImage)
+        }
+        this.$api.equipment.editEquipmentType(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '编辑成功', 'success')
+            this.getAllEquipmentType()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showEquipmentTypeEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showEquipmentTypeEditor = false
+        })
+      }
     }
   }
 }
@@ -160,11 +222,13 @@ export default {
 .main {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-around;
   padding-top: 20px;
 
   .card {
     flex-basis: 650px;
-    margin: 0 30px 30px;
+    margin-bottom: 30px;
   }
 }
 
@@ -231,8 +295,8 @@ export default {
     flex-basis: 200px;
 
     .equipment-image {
-      width: 100%;
       display: block;
+      width: 100%;
     }
   }
 }

@@ -65,18 +65,7 @@ export default {
       qrcodeRef: {},
       tableLoading: false,
       equipmentType: 0,
-      equipmentList: [
-        {
-          equipmentID: 1,
-          equipmentName: '3D打印机',
-          equipmentStatus: 0,
-        },
-        {
-          equipmentID: 2,
-          equipmentName: '3D打印机',
-          equipmentStatus: 0,
-        }
-      ],
+      equipmentList: [],
       sortType: {
         prop: 'equipmentID',
         order: 'ascending'
@@ -121,7 +110,20 @@ export default {
       return this.$api.equipment.status2string[status]
     },
     getEquipmentList() {
-
+      this.tableLoading = true
+      this.$api.equipment.getAllEquipment({equipmentType: this.equipmentType}).then((res) => {
+        if (res.data.errCode === 0) {
+          this.equipmentList = res.data.equipmentList
+          this.doSort()
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
+      })
     },
     handleAdd() {
       this.$confirm('此操作将添加一台该类设备, 是否继续?', '提示', {

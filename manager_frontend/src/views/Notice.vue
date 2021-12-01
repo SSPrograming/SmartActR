@@ -207,6 +207,7 @@ export default {
         noticeContent: this.form.noticeContent
       }
       this.dialogLoading = true
+      // 创建
       if (!this.editNoticeID) {
         this.$api.notice.createNotice(params).then((res) => {
           if (res.data.errCode === 0) {
@@ -226,7 +227,9 @@ export default {
           this.dialogLoading = false
           this.showNoticeEditor = false
         })
-      } else {
+      }
+      // 编辑
+      else {
         params = {
           ...params,
           noticeID: this.editNoticeID

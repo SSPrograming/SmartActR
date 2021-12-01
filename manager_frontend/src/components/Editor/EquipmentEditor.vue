@@ -30,12 +30,12 @@ export default {
     return {
       options: [
         {
-          value: 0,
-          label: this.$api.equipment.status2string[0]
+          value: 'fine',
+          label: this.$api.equipment.status2string['fine']
         },
         {
-          value: 1,
-          label: this.$api.equipment.status2string[1]
+          value: 'broken',
+          label: this.$api.equipment.status2string['broken']
         }
       ]
     }
