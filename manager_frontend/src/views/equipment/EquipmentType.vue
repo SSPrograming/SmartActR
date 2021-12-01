@@ -1,6 +1,6 @@
 <template>
   <div class="equipment-type">
-    <el-dialog title="设备种类编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
+    <el-dialog title="设备种类编辑" :visible.sync="showEquipmentTypeEditor" v-loading="dialogLoading">
       <EquipmentTypeEditor :form="form" @editorCancel="editorCancel"
                            @editorConfirm="editorConfirm" :add="editEquipmentType === null"></EquipmentTypeEditor>
     </el-dialog>
@@ -65,7 +65,7 @@ export default {
       },
       editEquipmentType: null,
       dialogLoading: false,
-      showEquipmentEditor: false
+      showEquipmentTypeEditor: false
     }
   },
   mounted() {
@@ -77,6 +77,7 @@ export default {
       this.$api.equipment.getAllEquipmentType().then((res) => {
         if (res.data.errCode === 0) {
           this.equipmentTypeList = res.data.TypeList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
         }
@@ -96,7 +97,7 @@ export default {
           equipmentImage: null,
         }
       }
-      this.showEquipmentEditor = true
+      this.showEquipmentTypeEditor = true
     },
     handleEdit(item) {
       this.editEquipmentType = item.equipmentType
@@ -106,7 +107,7 @@ export default {
         equipmentDescription: item.equipmentDescription,
         equipmentImage: item.equipmentImage,
       }
-      this.showEquipmentEditor = true
+      this.showEquipmentTypeEditor = true
     },
     handleDelete(item) {
       this.$confirm('此操作将删除该类设备, 是否继续?', '提示', {
@@ -115,7 +116,7 @@ export default {
         type: 'warning'
       }).then(() => {
         setTimeout(() => {
-          this.$confirm('这将影响到所有的预约记录，是否继续？', '提示', {
+          this.$confirm('这将影响到所有的该类设备，是否继续？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -137,7 +138,7 @@ export default {
       })
     },
     editorCancel() {
-      this.showEquipmentEditor = false
+      this.showEquipmentTypeEditor = false
     },
     editorConfirm() {
       let formData = new FormData()

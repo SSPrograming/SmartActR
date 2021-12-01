@@ -1,6 +1,6 @@
 <template>
   <div class="equipment-detail">
-    <el-dialog title="公告编辑" :visible.sync="showQRCode" v-loading="dialogLoading" @closed="clearQRCode">
+    <el-dialog title="设备二维码" :visible.sync="showQRCode" v-loading="dialogLoading" @closed="clearQRCode">
       <div style="text-align: right;">
         <el-button type="primary" plain @click="handleRefresh">重新生成</el-button>
       </div>
@@ -12,9 +12,12 @@
         <el-button class="button" type="primary" plain @click="showQRCode=false">确认</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="设备编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
+      <EquipmentEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></EquipmentEditor>
+    </el-dialog>
     <div class="container">
       <div class="header">
-        <Toolbar refresh></Toolbar>
+        <Toolbar back refresh @back="$router.push({name: 'EquipmentType'})" @refresh="getEquipmentList"></Toolbar>
         <el-button type="primary" plain @click="handleAdd">添加设备</el-button>
       </div>
     </div>
@@ -22,7 +25,11 @@
               :default-sort="{prop: 'equipmentID', order: 'ascending'}">
       <el-table-column prop="equipmentID" label="设备编号" width="150px" :sortable="'custom'"></el-table-column>
       <el-table-column prop="equipmentName" label="设备名称" width="250px" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'"></el-table-column>
+      <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'">
+        <template slot-scope="scope">
+          <span>{{ status2string(scope.row.equipmentStatus) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="150">
         <template slot-scope="scope">
           <div class="operation">
@@ -42,10 +49,12 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import EquipmentEditor from '@/components/Editor/EquipmentEditor'
 
 export default {
   name: "EquipmentDetail",
   components: {
+    EquipmentEditor,
     Toolbar
   },
   data() {
@@ -60,12 +69,12 @@ export default {
         {
           equipmentID: 1,
           equipmentName: '3D打印机',
-          equipmentStatus: '完好',
+          equipmentStatus: 0,
         },
         {
           equipmentID: 2,
           equipmentName: '3D打印机',
-          equipmentStatus: '完好',
+          equipmentStatus: 0,
         }
       ],
       sortType: {
@@ -73,7 +82,13 @@ export default {
         order: 'ascending'
       },
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      showEquipmentEditor: false,
+      form: {
+        equipmentName: '',
+        equipmentID: 0,
+        equipmentStatus: 0,
+      }
     }
   },
   computed: {
@@ -88,6 +103,7 @@ export default {
   },
   mounted() {
     this.equipmentType = this.$route.query.equipmentType
+    this.getEquipmentList()
   },
   methods: {
     doSort(event) {
@@ -101,14 +117,41 @@ export default {
       }
       this.$utils.sort(this.equipmentList, this.sortType, 'equipmentID')
     },
-    handleAdd() {
+    status2string(status) {
+      return this.$api.equipment.status2string[status]
+    },
+    getEquipmentList() {
 
     },
+    handleAdd() {
+      this.$confirm('此操作将添加一台该类设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+
+      }).catch(() => {
+      })
+    },
     handleEdit(row) {
-      console.log(row)
+      this.form = {...row}
+      this.showEquipmentEditor = true
     },
     handleDelete(row) {
-      console.log(row)
+      this.$confirm('此操作将删除该台设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(row)
+      }).catch(() => {
+      })
+    },
+    editorCancel() {
+      this.showEquipmentEditor = false
+    },
+    editorConfirm() {
+      this.showEquipmentEditor = false
     },
     handleShowQRCode(row) {
       this.showQRCode = true
