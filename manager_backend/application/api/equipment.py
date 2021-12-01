@@ -35,7 +35,7 @@ def testPicUpload():
     testFileURL = query_yaml("app.MANAGERSERVERURL")+"image/test/test_"+testFile.filename
     return jsonify({"errCode": 0,"testPicURL": testFileURL}), 200
 
-@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/addEquipmentType', methods=['POST'])
 @login_required
 def AddEquipmentType():
     try:
@@ -93,3 +93,57 @@ def editEquipmentType():
         new_img_file.save("./application/static/equipment/"+str(target_type)+"_"+new_img_file_name)
     return jsonify({"errCode": 0}), 200
     
+@bp_equipment.route('/api/v1/equipment/deleteEquipmentType', methods=['POST'])
+@login_required
+def deleteEquipmentType():
+    try:
+        target_type = request.json["equipmentType"]
+    except:
+        return jsonify({"errCode":1,"errMsg":"bad arguments"})
+    msg, dropStatus = EquipmentService.drop_related_record(target_type)
+    if not dropStatus:
+        return jsonify({"errCode":1, "errMsg": msg}), 200
+    
+    msg, dropStatus = EquipmentService.drop_related_qrCode(target_type)
+    if not dropStatus:
+        return jsonify({"errCode":1, "errMsg": msg}), 200
+
+    msg, dropStatus = EquipmentService.drop_related_equipment(target_type)
+    if not dropStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    
+    msg, dropStatus = EquipmentService.drop_type(target_type)
+    if not dropStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    return jsonify({"errCode": 0}), 200
+
+@bp_equipment.route('/api/v1/equipment/editEquipment', methods=['POST'])
+@login_required
+def editEquipment():
+    try:
+        Type = request.json["equipmentType"]
+        id = request.json["equipmentID"]
+        target_status = request.json["equipmentStatus"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    msg, updateStatus = EquipmentService.update_equipment_status(Type, id, target_status)
+    if not updateStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    return jsonify({"errCode": 0}), 200
+
+@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
+@login_required
+def addEquipment():
+    try:
+        Type = request.json["equipmentType"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    msg_or_id, getStatus = EquipmentService.get_largest_id(Type)
+    if not getStatus:
+        return jsonify({"errCode": 1, "errMsg": msg_or_id}), 200
+    addStatus = EquipmentService.add_equipment(Type,msg_or_id+1)
+    if not addStatus:
+        return jsonify({"errCode": 1, "errMsg": "新增设备失败"}), 200
+    else:
+        return jsonify({"errCode": 0}), 200

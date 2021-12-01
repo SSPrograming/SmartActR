@@ -1,5 +1,5 @@
 from application.database import db
-from application.models import Equipment, equipmentType, QRCode
+from application.models import Equipment, equipmentType, QRCode, Reserve_Record
 from application.utils import strToTime, strToDate, now
 import datetime
 
@@ -82,16 +82,17 @@ class EquipmentService():
         添加对应数量的设备
         """
         for i in range(Count):
-            addstatus = self.add_equipment(target_equipmentType)
+            addstatus = self.add_equipment(target_equipmentType, i+1)
             if not addstatus:
                 return "添加设备失败", False
         return str(target_equipmentType), True
 
 
-    def add_equipment(Type):
+    def add_equipment(Type,id):
         new_equipment = Equipment()
         new_equipment.equipmentType = Type
         new_equipment.equipmentStatus = 'fine'
+        new_equipment.equipmentID = id
         try:
             db.session.add(new_equipment)
             db.session.commit()
@@ -124,3 +125,72 @@ class EquipmentService():
         if target_type is None:
             return "设备种类不存在", False
         return Equipment.query.filter(Equipment.equipmentType==Type).all(), True
+    
+    def drop_related_record(Type):
+        related_records = Reserve_Record.query.filter(Reserve_Record.equipmentType==Type).all()
+        for record in related_records:
+            try:
+                db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关预约记录失败", False
+        return "ok", True
+    
+    def drop_related_qrCode(Type):
+        related_records = QRCode.query.filter(QRCode.equipmentType==Type).all()
+        for record in related_records:
+            try:
+                db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关二维码记录失败", False
+        return "ok", True
+
+    def drop_related_equipment(Type):
+        related_equipments = Equipment.query.filter(Equipment.equipmentType==Type).all()
+        for equipment in related_equipments:
+            try:
+                db.session.delete(equipment)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关设备记录失败", False
+        return "ok", True
+    
+    def drop_type(Type):
+        target_type = equipmentType.query.filter(equipmentType.equipmentType==Type).first()
+        if target_type is None:
+            return "设备种类不存在", False
+        try:
+            db.session.delete(target_type)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "删除设备种类失败", False
+        return "ok", True
+    
+    def update_equipment_status(Type, id, status):
+        target_equipment = Equipment.query.filter(Equipment.equipmentType==Type,
+                                                  Equipment.equipmentID==id)
+        if target_equipment is None:
+            return "设备不存在", False
+        try:
+            target_equipment.equipmentStatus = status
+            db.session.commit()
+            return "ok", True
+        except:
+            db.session.rollback()
+            return "更新设备状态失败",False
+    
+    def get_largest_id(Type):
+        target_type = equipmentType.query.filter(equipmentType.equipmentType==Type).first()
+        if target_type is None:
+            return "设备种类不存在", False
+        target_equipment = Equipment.query.filter(Equipment.equipmentType==Type).order_by(Equipment.equipmentID.desc()).first()
+        if target_equipment is None:
+            return 0, True
+        else:
+            return target_equipment.equipmentID, True
+        
