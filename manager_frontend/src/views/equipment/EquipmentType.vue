@@ -167,6 +167,7 @@ export default {
 
 .card-header {
   display: flex;
+  align-items: center;
 
   .button {
     padding: 3px 0;
