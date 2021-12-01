@@ -7,7 +7,7 @@
     <div class="container">
       <div class="header">
         <Toolbar refresh @refresh="getAllEquipmentType"></Toolbar>
-        <el-button type="primary" plain @click="handleAdd">添加设备</el-button>
+        <el-button type="primary" plain @click="handleAdd">添加设备种类</el-button>
       </div>
       <div class="main" v-loading="loading">
         <el-card class="card" v-for="item in equipmentTypeList" :key="item.equipmentType">
@@ -131,7 +131,9 @@ export default {
     handleDetail(item) {
       this.$router.push({
         name: 'EquipmentDetail',
-        query: item
+        query: {
+          equipmentType: item.equipmentType
+        }
       })
     },
     editorCancel() {
