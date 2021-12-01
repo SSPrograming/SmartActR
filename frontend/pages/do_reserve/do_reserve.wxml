@@ -15,7 +15,7 @@
             </view>
             <view class="equipment-info-description">
                 <view class="label"> 设备简介： </view>
-                <view class="content">{{ equipmentInfo.eqipmentDescription }}3D打印机通过增材制造的方式打印你所需的模型！</view>
+                <view class="content">{{ equipmentInfo.equipmentDescription }}</view>
             </view>
         </view>
         <view class="equipment-info-image-containter">
