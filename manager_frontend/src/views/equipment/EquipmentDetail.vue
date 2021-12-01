@@ -1,13 +1,13 @@
 <template>
   <div class="equipment-detail">
-    <el-dialog title="公告编辑" :visible.sync="showQRCode" v-loading="dialogLoading" destroy-on-close>
+    <el-dialog title="公告编辑" :visible.sync="showQRCode" v-loading="dialogLoading" @closed="clearQRCode">
       <div style="text-align: right;">
         <el-button type="primary" plain @click="handleRefresh">重新生成</el-button>
       </div>
       <div style="text-align: center;">
         <el-image class="qrcode" :src="qrcodeURL"></el-image>
       </div>
-      <div style="text-align: center;">
+      <div style="text-align: center; margin-top: 10px;">
         <el-button class="button" type="info" plain @click="showQRCode=false">取消</el-button>
         <el-button class="button" type="primary" plain @click="showQRCode=false">确认</el-button>
       </div>
@@ -144,6 +144,9 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.dialogLoading = false
       })
+    },
+    clearQRCode() {
+      this.qrcodeURL = ''
     }
   }
 }
@@ -159,8 +162,9 @@ export default {
 }
 
 .qrcode {
-  width: 300px;
-  height: 300px;
+  width: 298px;
+  height: 298px;
+  border: 1px dashed #d9d9d9;
 }
 
 .pagination {
