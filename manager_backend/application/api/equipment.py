@@ -29,11 +29,67 @@ def getAllEquipmentType():
 @bp_equipment.route('/api/v1/equipment/testPicUpload', methods=['POST'])
 @login_required
 def testPicUpload():
-    print(type(request.form))
     testFile = request.files.get('testFile')
-    testFileName = request.files['testFile'].name
-    print(type(testFile))
-    print(testFile)
-    testFile.save('./application/static/test/testFile.jpg')
-    testFileURL = query_yaml("app.MANAGERSERVERURL")+"image/test/testFile.jpg"
+    print(testFile.filename)
+    testFile.save('./application/static/test/'+'test_'+testFile.filename)
+    testFileURL = query_yaml("app.MANAGERSERVERURL")+"image/test/test_"+testFile.filename
     return jsonify({"errCode": 0,"testPicURL": testFileURL}), 200
+
+@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+@login_required
+def AddEquipmentType():
+    try:
+        equipmentImage = request.files.get('equipmentImage')
+        equipmentName = request.form['equipmentName']
+        equipmentCount = int(request.form['equipmentCount'])
+        equipmentDescription = request.form['equipmentDescription']
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    imgName = equipmentImage.filename
+    msg, addStatus = EquipmentService.add_equipmentType(EquipmentService, equipmentName,
+                                                        equipmentCount, equipmentDescription,imgName)
+    if not addStatus:
+        return jsonify({"errCode": 1, "errMsg": msg})
+    equipmentImage.save('./application/static/equipment/'+msg+'_'+imgName)
+    return jsonify({"errCode":0}), 200
+
+@bp_equipment.route('/api/v1/equipment/getAllEquipment', methods=['POST'])
+@login_required
+def getAllEquipment():
+    try:
+        target_type = request.json["equipmentType"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"})
+    msg, getStatus = EquipmentService.get_equipmentList(target_type)
+    if not getStatus:
+        return jsonify({"errCode": 1, "errMsg": msg})
+    equipmentName, getStatus = EquipmentService.get_name_by_type(target_type)
+    equipmentList = []
+    for item in msg:
+        equipmentList.append({
+            "equipmentID": item.equipmentID,
+            "equipmentName": equipmentName,
+            "equipmentStatus": item.equipmentStatus
+        })
+    return jsonify({"errCode": 0, "equipmentList":equipmentList}), 200
+
+
+
+@bp_equipment.route('/api/v1/equipment/editEquipmentType', methods=['POST'])
+@login_required
+def editEquipmentType():
+    try:
+        target_type = int(request.form['equipmentType'])
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"})
+    new_name = request.form["equipmentName"] if "equipmentName" in request.form.keys() else None
+    new_description = request.form["equipmentDescription"] if "equipmentDescription" in request.form.keys() else None
+    new_img_file = request.files["equipmentImage"] if "equipmentImage" in request.files.keys() else None
+    new_img_file_name = new_img_file.filename if new_img_file is not None else None
+    msg, updateStatus = EquipmentService.update_equipmentType(target_type, new_name, new_description, new_img_file_name)
+    if not updateStatus:
+        return jsonify({"errCode": 1, "errMsg": msg})
+    if new_img_file:
+        new_img_file.save("./application/static/equipment/"+str(target_type)+"_"+new_img_file_name)
+    return jsonify({"errCode": 0}), 200
+    

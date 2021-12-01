@@ -24,6 +24,7 @@ def refreshQRCode():
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     raw_str = str(equipment_type) + '-' + str(equipment_id) + '-' + str(datetime.datetime.now())
     raw_code = hash_code(raw_str)
+    print(raw_code)
     img_name = str(equipment_type)+"-"+str(equipment_id)+".png"
     img_url = query_yaml("app.MANAGERSERVERURL")+"image/qrcode/"+img_name
     msg, refreshStatus = EquipmentService.update_hashcode(equipment_type, equipment_id,raw_code, img_url)
