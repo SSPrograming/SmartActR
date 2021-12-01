@@ -1,5 +1,17 @@
 <template>
   <div class="equipment-detail">
+    <el-dialog title="公告编辑" :visible.sync="showQRCode" v-loading="dialogLoading" destroy-on-close>
+      <div style="text-align: right;">
+        <el-button type="primary" plain @click="handleRefresh">重新生成</el-button>
+      </div>
+      <div style="text-align: center;">
+        <el-image class="qrcode" :src="qrcodeURL"></el-image>
+      </div>
+      <div style="text-align: center;">
+        <el-button class="button" type="info" plain @click="showQRCode=false">取消</el-button>
+        <el-button class="button" type="primary" plain @click="showQRCode=false">确认</el-button>
+      </div>
+    </el-dialog>
     <div class="container">
       <div class="header">
         <Toolbar refresh></Toolbar>
@@ -15,8 +27,9 @@
         <template slot-scope="scope">
           <div class="operation">
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)"> 删除</el-button>
-            <img class="icon-qrcode pointer" src="../../assets/qrcode.png" alt="qrcode" @click="handleShowQRCode"/>
+            <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)">删除</el-button>
+            <img class="icon-qrcode pointer" src="../../assets/qrcode.png" alt="qrcode"
+                 @click="handleShowQRCode(scope.row)"/>
           </div>
         </template>
       </el-table-column>
@@ -37,6 +50,10 @@ export default {
   },
   data() {
     return {
+      dialogLoading: false,
+      showQRCode: false,
+      qrcodeURL: '',
+      qrcodeRef: {},
       tableLoading: false,
       equipmentType: 0,
       equipmentList: [
@@ -70,7 +87,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route)
+    this.equipmentType = this.$route.query.equipmentType
   },
   methods: {
     doSort(event) {
@@ -94,7 +111,39 @@ export default {
       console.log(row)
     },
     handleShowQRCode(row) {
-      console.log(row)
+      this.showQRCode = true
+      this.dialogLoading = true
+      this.qrcodeRef = {
+        equipmentType: this.equipmentType,
+        equipmentID: row.equipmentID
+      }
+      this.$api.qrcode.getQRCode(this.qrcodeRef).then((res) => {
+        if (res.data.errCode === 0) {
+          this.qrcodeURL = res.data.qrcodeURL
+          this.$utils.alertMessage(this, '获取二维码成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.dialogLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.dialogLoading = false
+      })
+    },
+    handleRefresh() {
+      this.dialogLoading = true
+      this.$api.qrcode.refreshQRCode(this.qrcodeRef).then((res) => {
+        if (res.data.errCode === 0) {
+          this.qrcodeURL = res.data.qrcodeURL
+          this.$utils.alertMessage(this, '获取二维码成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.dialogLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.dialogLoading = false
+      })
     }
   }
 }
@@ -107,6 +156,11 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: $--toolbar-margin-bottom;
+}
+
+.qrcode {
+  width: 300px;
+  height: 300px;
 }
 
 .pagination {
