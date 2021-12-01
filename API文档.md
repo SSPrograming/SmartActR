@@ -560,9 +560,9 @@ ret:
 
 
 
-添加新的设备种类：
+获取某设备种类的所有设备信息：
 
-@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/getEquipmentList', methods=['POST'])
 
 @login_required
 
@@ -570,8 +570,43 @@ params:
 
 ```
 {
+	"equipmentType": number
+}
+```
+
+ret:
+
+```
+{
+	"equipmentList":
+	[
+		{
+			"equipmentID": number,
+			"status": "",
+			"equipmentName":""
+		}
+	]
+}
+```
+
+
+
+
+
+
+
+添加新的设备种类：
+
+@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+
+@login_required
+
+params: **form-data**
+
+```
+{
 	"equipmentName": "",
-	"equipmentCount": "",
+	"equipmentCount": number,
 	"equipmentDescription": "",
 	"equipmentImage": ""	
 }
@@ -591,17 +626,16 @@ ret:
 
 编辑设备种类：
 
-@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/editEquipmentType', methods=['POST'])
 
 @login_required
 
-params:
+params: **form-data**
 
 ```
 {
 	"equipmentType": number,
 	"equipmentName": "",						#optional
-	"equipmentCount": "",						#optional
 	"equipmentDescription": "",					#optional
 	"equipmentImage": ""						#optional
 }
@@ -642,7 +676,7 @@ ret:
 
 添加设备：
 
-@bp_equipment.route('/api/v1/equipment/AddEquipment', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
 
 @login_required
 
@@ -665,9 +699,38 @@ ret:
 
 
 
+编辑设备状态：
+
+@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType":number,
+	"equipmentID": number,
+	"equipmentStatus": ""
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+	"errMsg":	
+}
+```
+
+
+
+
+
 删除设备：
 
-@bp_equipment.route('/api/v1/equipment/AddEquipment', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/deleteEquipment', methods=['POST'])
 
 @login_required
 
@@ -681,7 +744,7 @@ ret:
 
 ****
 
-二维码查看：
+**二维码查看**：
 
 @bp_equipment.route('/api/v1/qrcode/getQRCode', methods=['POST'])
 
