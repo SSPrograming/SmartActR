@@ -4,7 +4,7 @@
       <Toolbar :toolbar="recordInfo.toolbar" choose-date refresh @refresh="$emit('refresh')"
                @query="$emit('query')"></Toolbar>
     </div>
-    <el-table class="table" :data="slicedData" v-loading="recordInfo.recordTableLoading" @sort-change="doSort"
+    <el-table class="table" :data="slicedData" v-loading="recordInfo.tableLoading" @sort-change="changeSortType"
               :default-sort="{prop: 'recordID', order: 'descending'}">
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
@@ -54,13 +54,14 @@ export default {
       return this.recordInfo.recordList.length
     },
     slicedData() {
+      this.doSort()
       return this.recordInfo.recordList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.recordInfo.recordList.length ?
               this.pageSize * this.currentPage : this.recordInfo.recordList.length)
     }
   },
   methods: {
-    doSort(event) {
+    changeSortType(event) {
       if (event) {
         this.sortType.prop = event.prop
         this.sortType.order = event.order
@@ -69,6 +70,8 @@ export default {
         this.sortType.prop = 'recordID'
         this.sortType.order = 'descending'
       }
+    },
+    doSort() {
       this.$utils.sort(this.recordInfo.recordList, this.sortType, 'recordID')
     }
   }

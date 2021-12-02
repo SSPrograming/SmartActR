@@ -15,8 +15,8 @@
     <el-dialog title="设备编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
       <EquipmentEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></EquipmentEditor>
     </el-dialog>
-    <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading">
-      <ReserveView :recordInfo="recordInfo" @refresh="getRecordList" @query="query"
+    <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading" width="80%">
+      <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="query"
                    @hide="showReserveRecord=false" show-user-name></ReserveView>
     </el-dialog>
     <div class="container">
@@ -25,7 +25,7 @@
         <el-button type="primary" plain @click="handleAdd">添加设备</el-button>
       </div>
     </div>
-    <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
+    <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
               :default-sort="{prop: 'equipmentID', order: 'ascending'}">
       <el-table-column prop="equipmentID" label="设备编号" width="150px" :sortable="'custom'"></el-table-column>
       <el-table-column prop="equipmentName" label="设备名称" width="250px" :sortable="'custom'"></el-table-column>
@@ -77,7 +77,7 @@ export default {
         prop: 'equipmentID',
         order: 'ascending'
       },
-      pageSize: 10,
+      pageSize: 5,
       currentPage: 1,
       showEquipmentEditor: false,
       form: {
@@ -91,7 +91,7 @@ export default {
           queryStartDate: null,
           queryEndDate: null
         },
-        recordTableLoading: false,
+        tableLoading: false,
         recordList: []
       }
     }
@@ -101,6 +101,7 @@ export default {
       return this.equipmentList.length
     },
     slicedData() {
+      this.doSort()
       return this.equipmentList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.equipmentList.length ?
               this.pageSize * this.currentPage : this.equipmentList.length)
@@ -119,7 +120,7 @@ export default {
     }
   },
   methods: {
-    doSort(event) {
+    changeSortType(event) {
       if (event) {
         this.sortType.prop = event.prop
         this.sortType.order = event.order
@@ -128,6 +129,8 @@ export default {
         this.sortType.prop = 'noticeID'
         this.sortType.order = 'descending'
       }
+    },
+    doSort() {
       this.$utils.sort(this.equipmentList, this.sortType, 'equipmentID')
     },
     status2string(status) {
@@ -138,7 +141,6 @@ export default {
       this.$api.equipment.getAllEquipment({equipmentType: this.equipmentType}).then((res) => {
         if (res.data.errCode === 0) {
           this.equipmentList = res.data.equipmentList
-          this.doSort()
           this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)

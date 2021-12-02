@@ -4,7 +4,7 @@
       <div class="header">
         <Toolbar refresh @refresh="getRecordList"></Toolbar>
       </div>
-      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
                 :default-sort="{prop: 'recordID', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
@@ -56,6 +56,7 @@ export default {
       return this.recordList.length
     },
     slicedData() {
+      this.doSort()
       return this.recordList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.recordList.length ?
               this.pageSize * this.currentPage : this.recordList.length)
@@ -65,7 +66,7 @@ export default {
     this.getRecordList()
   },
   methods: {
-    doSort(event) {
+    changeSortType(event) {
       if (event) {
         this.sortType.prop = event.prop
         this.sortType.order = event.order
@@ -74,6 +75,8 @@ export default {
         this.sortType.prop = 'recordID'
         this.sortType.order = 'descending'
       }
+    },
+    doSort() {
       this.$utils.sort(this.recordList, this.sortType, 'recordID')
     },
     getRecordList() {
@@ -81,7 +84,6 @@ export default {
       this.$api.reserve.getTodayRecord().then((res) => {
         if (res.data.errCode === 0) {
           this.recordList = res.data.recordList
-          this.doSort()
           this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)

@@ -10,7 +10,7 @@
         </Toolbar>
         <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
-      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
                 :default-sort="{prop: 'noticeID', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="postDate" label="发布时间" width="150" :sortable="'custom'"></el-table-column>
@@ -81,6 +81,7 @@ export default {
       return this.noticeList.length
     },
     slicedData() {
+      this.doSort()
       return this.noticeList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.noticeList.length ?
               this.pageSize * this.currentPage : this.noticeList.length)
@@ -90,7 +91,7 @@ export default {
     this.getNoticeList()
   },
   methods: {
-    doSort(event) {
+    changeSortType(event) {
       if (event) {
         this.sortType.prop = event.prop
         this.sortType.order = event.order
@@ -99,6 +100,8 @@ export default {
         this.sortType.prop = 'noticeID'
         this.sortType.order = 'descending'
       }
+    },
+    doSort() {
       this.$utils.sort(this.noticeList, this.sortType, 'noticeID')
     },
     getNoticeList() {
@@ -144,7 +147,6 @@ export default {
       this.$api.notice.getNoticeList(params).then((res) => {
         if (res.data.errCode === 0) {
           this.noticeList = res.data.noticeList
-          this.doSort()
           this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
