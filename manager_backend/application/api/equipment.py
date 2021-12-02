@@ -6,6 +6,7 @@ from application.database import db
 from application.service import ReserveService, UserService, EquipmentService
 from application.utils import generate_jwt
 from .login_decorator import login_required
+import os
 
 bp_equipment = Blueprint(
     'equipment',
@@ -82,14 +83,26 @@ def editEquipmentType():
         target_type = int(request.form['equipmentType'])
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"})
+
     new_name = request.form["equipmentName"] if "equipmentName" in request.form.keys() else None
+
     new_description = request.form["equipmentDescription"] if "equipmentDescription" in request.form.keys() else None
+
     new_img_file = request.files["equipmentImage"] if "equipmentImage" in request.files.keys() else None
+
+    old_img_url = EquipmentService.get_TypeImg_url(target_type)[0]
+
     new_img_file_name = new_img_file.filename if new_img_file is not None else None
+
     msg, updateStatus = EquipmentService.update_equipmentType(target_type, new_name, new_description, new_img_file_name)
+
     if not updateStatus:
         return jsonify({"errCode": 1, "errMsg": msg})
     if new_img_file:
+        img_url_prefix = query_yaml("app.MANAGERSERVERURL") + "image/equipment/"
+        old_img_name = old_img_url[len(img_url_prefix):]
+        if os.path.exists("/code/application/static/equipment/"+old_img_name):
+            os.remove("/code/application/static/equipment/"+old_img_name)
         new_img_file.save("./application/static/equipment/"+str(target_type)+"_"+new_img_file_name)
     return jsonify({"errCode": 0}), 200
     

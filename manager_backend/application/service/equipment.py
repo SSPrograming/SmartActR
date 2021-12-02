@@ -193,4 +193,10 @@ class EquipmentService():
             return 0, True
         else:
             return target_equipment.equipmentID, True
+    
+    def get_TypeImg_url(Type):
+        target_type = equipmentType.query.filter(equipmentType.equipmentType==Type).first()
+        if target_type is None:
+            return "设备种类不存在", False
+        return target_type.equipmentImageURL, True
         
