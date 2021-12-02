@@ -60,7 +60,7 @@ export default {
       })
     },
     query() {
-      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
         this.getRecordList()
       }
     }

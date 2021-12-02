@@ -19,7 +19,7 @@
     <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
                    :current-page.sync="currentPage" :total="dataLength" background>
     </el-pagination>
-    <div style="text-align: center; margin-top: 10px;">
+    <div style="text-align: center; margin-top: 10px;" v-if="dialog">
       <el-button class="button" type="info" plain @click="$emit('hide')">取消</el-button>
       <el-button class="button" type="primary" plain @click="$emit('hide')">确认</el-button>
     </div>
@@ -37,7 +37,8 @@ export default {
   props: {
     recordInfo: Object,
     showEquipmentName: Boolean,
-    showUserName: Boolean
+    showUserName: Boolean,
+    dialog: Boolean,
   },
   data() {
     return {

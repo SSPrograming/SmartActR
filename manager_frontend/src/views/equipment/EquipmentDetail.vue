@@ -17,7 +17,7 @@
     </el-dialog>
     <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading" width="80%">
       <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="query"
-                   @hide="showReserveRecord=false" show-user-name></ReserveView>
+                   @hide="showReserveRecord=false" show-user-name dialog></ReserveView>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -152,14 +152,14 @@ export default {
       })
     },
     getRecordList() {
-      if (!this.toolbar.queryStartDate || !this.toolbar.queryEndDate ||
-          this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+          this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
     },
     query() {
-      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
         this.getRecordList()
       }
     },
