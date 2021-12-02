@@ -1,12 +1,6 @@
-from logging import exception
-from flask import request, jsonify, Blueprint, g
-from werkzeug.wrappers.request import PlainRequest
-import mjwt
-import datetime,time
-from config import query_yaml
-from application.services import UserService, EquipmentService, NoticeService,CheckInService
+from flask import  jsonify, Blueprint, g, request
+from application.services import CheckInService
 from .login_decorator import login_required
-import requests
 
 bp_checkIn = Blueprint(
     'checkIn',
@@ -15,16 +9,14 @@ bp_checkIn = Blueprint(
 
 
 @bp_checkIn.route('/api/v1/checkIn', methods=['POST'])
-# @login_required
+@login_required
 def checkIn():
-    # code = request.json['equipmentType']
-    # currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
-    # j = {'hash':'1111'}
-    # print("t: ",t)
-    # print("currentTime:",currentTime)
-    # print(type(currentTime))
-    #     test     hash = request.json['equipmentType']
-    t = CheckInService.test('testhash')
+    try:
+        hashCode = request.json["hashCode"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    t = CheckInService.test(hashCode, g.userID)
     return jsonify({
-	    "errCode": t, #0代表签到失败，1签到成功
+	    "errCode": 0, #0代表签到失败，1签到成功
+        "checkInStatus": t
         })

@@ -1,4 +1,3 @@
-from logging import exception
 from flask import request, jsonify, Blueprint, g
 import mjwt
 from config import query_yaml
@@ -43,12 +42,9 @@ def login():
             return jsonify({"errCode": 1,"errMsg": "未知错误"}), 200
     else:
         openid = wechatResponseContent['openid']
-        print(openid)
         user, isExist = UserService.get_user(UserService,userID=openid)
         if not isExist:
             UserService.create_user(UserService, userID=openid, identity="tourist")
-        else:
-            print(user.identity)
         userjwt = mjwt.generate_jwt({"openID": openid})
         response["jwt"] = userjwt
         response["errCode"] = 0
