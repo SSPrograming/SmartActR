@@ -1,20 +1,23 @@
 <template>
   <div id="app">
-    <header>
-      <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
-      <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
-    </header>
-    <el-divider></el-divider>
-    <div class="container">
-      <transition name="sidebar">
-        <aside v-if="!isLogin" style="width: 240px">
-          <Sidebar></Sidebar>
-        </aside>
-      </transition>
-      <main class="main" :style="isLogin?'width: 100%;':'width: calc(100% - 240px);'">
-        <router-view></router-view>
-      </main>
-    </div>
+    <el-scrollbar class="main-scrollbar" style="height: 100%">
+      <header>
+        <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
+        <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
+      </header>
+      <el-divider class="divider"></el-divider>
+      <div class="container">
+        <transition name="sidebar">
+          <aside v-if="!isLogin">
+            <Sidebar></Sidebar>
+          </aside>
+        </transition>
+        <main class="main" :style="isLogin?'width: 100%;padding:0'
+        :'width: calc(95% - 240px);padding: 0 calc(5% + 20px) 0 20px;'">
+          <router-view></router-view>
+        </main>
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -55,34 +58,42 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 20px 5%;
+
+  h1 {
+    display: flex;
+    padding-left: 10px;
+    font-family: '微软雅黑', sans-serif;
+    color: $--color-primary;
+    line-height: 50px;
+    cursor: default;
+
+    .logo {
+      width: 50px;
+      margin-right: 15px;
+    }
+  }
 }
 
-h1 {
-  display: flex;
-  padding-left: 10px;
-  font-family: '微软雅黑', sans-serif;
-  color: $--color-primary;
-  line-height: 50px;
-  cursor: default;
-}
-
-.logo {
-  width: 50px;
-  margin-right: 15px;
+.divider {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container {
   display: flex;
   margin: 0 auto;
-}
 
-aside {
-  box-sizing: border-box;
-}
+  aside {
+    width: 240px;
+    padding-left: 5%;
+  }
 
-main {
-  box-sizing: border-box;
-  padding: 0 20px;
+  main {
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
 }
 
 .sidebar-enter-active, .sidebar-leave-active {
@@ -102,9 +113,7 @@ main {
 }
 
 #app {
-  width: 90%;
-  padding: 20px 5px;
-  margin: 0 auto;
+  height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -119,4 +128,7 @@ main {
   }
 }
 
+.main-scrollbar > .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 </style>

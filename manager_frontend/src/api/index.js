@@ -3,10 +3,14 @@
  */
 import admin from './admin'
 import notice from './notice'
-import reserve from './reserve';
+import reserve from './reserve'
+import equipment from './equipment'
+import qrcode from './qrcode'
 
 export default {
   admin,
   notice,
-  reserve
+  reserve,
+  equipment,
+  qrcode
 }
