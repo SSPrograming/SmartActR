@@ -1,7 +1,5 @@
-from logging import exception
-from flask import request, jsonify, Blueprint, g
-from config import query_yaml
-from application.services import NoticeService
+from flask import jsonify, Blueprint, g
+from application.services import  NoticeService
 from .login_decorator import login_required
 
 bp_notice = Blueprint(
@@ -13,6 +11,7 @@ bp_notice = Blueprint(
 @login_required
 def notice():
     notice = NoticeService.get_notice()
+    print(type(notice))
     if notice is None:
         return jsonify({
 	    "errCode": 1,
@@ -22,6 +21,8 @@ def notice():
         "expireDate": "", #格式的样例："2021-11-12"
         }) 
     else:
+        print("Date:")
+        print(notice.noticeDate)
         noticeDate_str = str(notice.noticeDate)
         expireDate_str = str(notice.expireDate)
         return jsonify({
