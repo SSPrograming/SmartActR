@@ -8,6 +8,7 @@ from application.services import UserService, EquipmentService, NoticeService
 from .login_decorator import login_required
 import requests
 
+
 bp_notice = Blueprint(
     'notice',
     __name__
@@ -32,7 +33,7 @@ def notice():
         noticeDate_str = str(notice.noticeDate)
         expireDate_str = str(notice.expireDate)
         return jsonify({
-	    "errCode": 1,
+	    "errCode": 0,
 	    "errMsg": "",
 	    "noticeContent": notice.noticeContent,
         "noticeDate": noticeDate_str, #格式的样例："2021-11-09"

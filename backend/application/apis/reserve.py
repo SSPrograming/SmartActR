@@ -99,10 +99,10 @@ def getEquipmentStatus():
             "errCode": 0,
             "equipmentName": targetEquipmentType.equipmentName,
             "equipmentDescription": targetEquipmentType.equipmentDescription,
-            "equipmentSpareTime": 
-            spareTime,
+            "equipmentSpareTime": spareTime,
+            "equipmentImageURL": targetEquipmentType.equipmentImageURL
         }), 200
-
+ 
 
 @bp_reserve.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 @login_required
@@ -138,6 +138,7 @@ def getAllEquipmentStatus():
         equipmentStatuses.append({"equipmentType": equipment.equipmentType,
                                   "equipmentName": targetEquipmentType.equipmentName,
                                   "equipmentID": equipment.equipmentID,
+                                  "equipmentImageURL": targetEquipmentType.equipmentImageURL,
                                   "equipmentStatus": 0})
     
     return jsonify({
@@ -167,12 +168,10 @@ def reserveEquipment():
     occupations, hasoccupation = ReserveService.get_occupation_of_day(date)
     if hasoccupation:
         for item in occupations:
-            print(item)
             if not (StartTime>=item['endTime'] or EndTime<=item['startTime']):
                 return jsonify({"errCode": 1,"errMsg": "该时间段被占用"}), 200
     existedRecords = ReserveService.get_record_of_single_equipment(date, targetType, targetID)
     for record in existedRecords:
-        print(record.startTime)
         if not (StartTime>=record.endTime or EndTime<=record.startTime):
             return jsonify({"errCode": 1,"errMsg": "该时间段被占用"}), 200
     

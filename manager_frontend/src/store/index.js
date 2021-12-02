@@ -14,6 +14,12 @@ export default new Vuex.Store({
       sessionStorage.setItem('jwt', payload.jwt)
       state.jwt = payload.jwt
       state.login = true
+    },
+    logout(state) {
+      localStorage.removeItem('jwt')
+      sessionStorage.removeItem('jwt')
+      state.jwt = ''
+      state.login = false
     }
   },
   actions: {},

@@ -22,6 +22,7 @@ class equipmentType(db.Model):
     equipmentType = db.Column(db.Integer,primary_key=True,autoincrement=True)
     equipmentName = db.Column(db.String(256))
     equipmentDescription = db.Column(db.String(1024))
+    equipmentImageURL = db.Column(db.String(1024))
 
 class Equipment(db.Model):
     __tablename__ = 'equipment'
@@ -111,3 +112,21 @@ class Admin(db.Model):
     password = db.Column(db.String(64), doc="密码")
 
 
+class QRCode(db.Model):
+    """
+    用于存储设备种类，设备ID以及对应的hash码信息
+    """
+    __tablename__ = 'qrcode'
+    equipmentType = db.Column(db.Integer,
+                                doc="设备种类", nullable=False)                      
+    equipmentID = db.Column(db.Integer,
+                            doc="设备号",nullable=False)
+    hashCode = db.Column(db.String(512), primary_key=True)
+    QRCodeURL = db.Column(db.String(1024))
+    # 复合外键约束
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            [equipmentType, equipmentID],
+            [Equipment.equipmentType, Equipment.equipmentID]
+        ),
+    )
