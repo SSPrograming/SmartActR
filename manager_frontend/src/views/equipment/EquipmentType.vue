@@ -10,10 +10,14 @@
         <el-button type="primary" plain @click="handleAdd">添加设备种类</el-button>
       </div>
       <div class="main" v-loading="loading">
-        <el-card class="card" v-for="item in equipmentTypeList" :key="item.equipmentType">
+        <el-card class="card" v-for="(item, index) in equipmentTypeList" :key="item.equipmentType">
           <div slot="header" class="card-header">
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
+            <el-button class="button move" type="text" @click="handleMoveUp(item)" :disabled="index===0">上移</el-button>
+            <el-button class="button move" type="text" @click="handleMoveDown(item)"
+                       :disabled="index===equipmentTypeList.length - 1">下移
+            </el-button>
             <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
             <el-button class="button delete" type="text" @click="handleDelete(item)">删除</el-button>
             <el-button class="button lookup" type="text" @click="handleDetail(item)">查看详情</el-button>
@@ -98,6 +102,12 @@ export default {
         }
       }
       this.showEquipmentTypeEditor = true
+    },
+    handleMoveUp(item) {
+      console.log(item)
+    },
+    handleMoveDown(item) {
+      console.log(item)
     },
     handleEdit(item) {
       this.editEquipmentType = item.equipmentType
@@ -238,6 +248,22 @@ export default {
 
   .button {
     padding: 3px 0;
+  }
+
+  .move {
+    color: $--color-move;
+
+    &:focus, &:hover {
+      color: mix($--color-move, $--color-white, 75%);
+    }
+
+    &:active {
+      color: mix($--color-move, $--color-black, 75%);
+    }
+
+    &[disabled] {
+      color: #c0c4cc;
+    }
   }
 
   .delete {

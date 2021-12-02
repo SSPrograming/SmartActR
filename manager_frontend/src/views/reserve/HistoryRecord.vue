@@ -4,21 +4,21 @@
       <div class="header">
         <Toolbar :toolbar="toolbar" choose-date refresh @refresh="getRecordList" @query="query"></Toolbar>
       </div>
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
+                :default-sort="{prop: 'recordID', order: 'descending'}">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="startTime" label="开始时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="endTime" label="结束时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="equipmentName" label="设备名称" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="userName" label="预约人" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="postTime" label="提交时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="status" label="预约状态" :sortable="'custom'"></el-table-column>
+      </el-table>
+      <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
+                     :current-page.sync="currentPage" :total="dataLength" background>
+      </el-pagination>
     </div>
-    <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
-              :default-sort="{prop: 'recordID', order: 'descending'}">
-      <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="startTime" label="开始时间" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="endTime" label="结束时间" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="equipmentName" label="设备名称" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="userName" label="预约人" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="postTime" label="提交时间" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="status" label="预约状态" :sortable="'custom'"></el-table-column>
-    </el-table>
-    <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
-                   :current-page.sync="currentPage" :total="dataLength" background>
-    </el-pagination>
   </div>
 </template>
 

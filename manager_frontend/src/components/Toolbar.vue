@@ -10,7 +10,7 @@
                     placeholder="选择开始日期" v-if="chooseDate" @change="toolbar.queryEndDate && $emit('query')">
     </el-date-picker>
     <el-date-picker class="choose-date pointer" v-model="toolbar.queryEndDate" type="date" :editable="false"
-                    placeholder="选择结束日期" v-if="chooseDate" @change="toolbar.queryStartDate &&$emit('query')">
+                    placeholder="选择结束日期" v-if="chooseDate" @change="toolbar.queryStartDate && $emit('query')">
     </el-date-picker>
     <el-input class="input-query" placeholder="请输入查找内容" prefix-icon="el-icon-search"
               v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')">

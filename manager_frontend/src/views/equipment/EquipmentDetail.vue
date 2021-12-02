@@ -15,6 +15,28 @@
     <el-dialog title="设备编辑" :visible.sync="showEquipmentEditor" v-loading="dialogLoading">
       <EquipmentEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></EquipmentEditor>
     </el-dialog>
+    <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading">
+      <div class="header">
+        <Toolbar :toolbar="toolbar" choose-date refresh @refresh="getRecordList" @query="query"></Toolbar>
+      </div>
+      <el-table class="table" :data="recordSlicedData" v-loading="recordTableLoading" @sort-change="doRecordSort"
+                :default-sort="{prop: 'recordID', order: 'descending'}">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="startTime" label="开始时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="endTime" label="结束时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="userName" label="预约人" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="postTime" label="提交时间" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="status" label="预约状态" :sortable="'custom'"></el-table-column>
+      </el-table>
+      <el-pagination class="pagination" layout="prev, pager, next" :page-size="recordPageSize"
+                     :current-page.sync="recordCurrentPage" :total="recordDataLength" background>
+      </el-pagination>
+      <div style="text-align: center; margin-top: 10px;">
+        <el-button class="button" type="info" plain @click="showReserveRecord=false">取消</el-button>
+        <el-button class="button" type="primary" plain @click="showReserveRecord=false">确认</el-button>
+      </div>
+    </el-dialog>
     <div class="container">
       <div class="header">
         <Toolbar back refresh @back="$router.push({name: 'EquipmentType'})" @refresh="getEquipmentList"></Toolbar>
@@ -30,11 +52,12 @@
           <span>{{ status2string(scope.row.equipmentStatus) }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
+      <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <div class="operation">
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button type="text" size="small" class="lookup" @click="handleLookUp(scope.row)">预约记录</el-button>
             <img class="icon-qrcode pointer" src="../../assets/qrcode.png" alt="qrcode"
                  @click="handleShowQRCode(scope.row)"/>
           </div>
@@ -77,7 +100,17 @@ export default {
         equipmentName: '',
         equipmentID: 0,
         equipmentStatus: 0,
-      }
+      },
+      showReserveRecord: false,
+      toolbar: {
+        queryStartDate: null,
+        queryEndDate: null
+      },
+      recordTableLoading: false,
+      recordList: [],
+      recordSortType: [],
+      recordPageSize: 10,
+      recordCurrentPage: 1
     }
   },
   computed: {
@@ -88,12 +121,24 @@ export default {
       return this.equipmentList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.equipmentList.length ?
               this.pageSize * this.currentPage : this.equipmentList.length)
+    },
+    recordDataLength() {
+      return this.recordList.length
+    },
+    recordSlicedData() {
+      return this.recordList.slice(this.recordPageSize * (this.recordCurrentPage - 1),
+          this.recordPageSize * this.recordCurrentPage <= this.recordList.length ?
+              this.recordPageSize * this.recordCurrentPage : this.recordList.length)
     }
   },
   mounted() {
     if (this.$route.query.equipmentType) {
       this.equipmentType = this.$route.query.equipmentType
       this.getEquipmentList()
+      this.toolbar.queryStartDate = new Date()
+      this.toolbar.queryStartDate.setDate(this.toolbar.queryStartDate.getDate() - 8)
+      this.toolbar.queryEndDate = new Date()
+      this.toolbar.queryEndDate.setDate(this.toolbar.queryEndDate.getDate() + 8)
     } else {
       this.$router.push({name: 'EquipmentType'})
     }
@@ -109,6 +154,17 @@ export default {
         this.sortType.order = 'descending'
       }
       this.$utils.sort(this.equipmentList, this.sortType, 'equipmentID')
+    },
+    doRecordSort(event) {
+      if (event) {
+        this.recordSortType.prop = event.prop
+        this.recordSortType.order = event.order
+      }
+      if (!this.recordSortType.order) {
+        this.recordSortType.prop = 'recordID'
+        this.recordSortType.order = 'descending'
+      }
+      this.$utils.sort(this.recordList, this.sortType, 'recordID')
     },
     status2string(status) {
       return this.$api.equipment.status2string[status]
@@ -128,6 +184,18 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.tableLoading = false
       })
+    },
+    getRecordList() {
+      if (!this.toolbar.queryStartDate || !this.toolbar.queryEndDate ||
+          this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+        this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+        return
+      }
+    },
+    query() {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
+        this.getRecordList()
+      }
     },
     handleAdd() {
       this.$confirm('此操作将添加一台该类设备, 是否继续?', '提示', {
@@ -152,6 +220,10 @@ export default {
         console.log(row)
       }).catch(() => {
       })
+    },
+    handleLookUp(row) {
+      console.log(row)
+      this.showReserveRecord = true
     },
     editorCancel() {
       this.showEquipmentEditor = false
@@ -233,6 +305,18 @@ export default {
 
     &:active {
       color: mix($--color-danger, $--color-black, 75%);
+    }
+  }
+
+  .lookup {
+    color: green;
+
+    &:focus, &:hover {
+      color: mix(green, $--color-white, 75%);
+    }
+
+    &:active {
+      color: mix(green, $--color-black, 75%);
     }
   }
 
