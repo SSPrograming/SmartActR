@@ -122,6 +122,7 @@ class QRCode(db.Model):
     equipmentID = db.Column(db.Integer,
                             doc="设备号",nullable=False)
     hashCode = db.Column(db.String(512), primary_key=True)
+    QRCodeURL = db.Column(db.String(1024))
     # 复合外键约束
     __table_args__ = (
         db.ForeignKeyConstraint(

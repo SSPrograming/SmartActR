@@ -21,7 +21,7 @@ def login():
         "errMsg": "bad agruments"}), 200
     except:
         return jsonify({"errCode": 1,"errMsg": "unknown error"}), 200
-    
+
     #获取用户信息
     wechatAppID = query_yaml('app.APPID')
     wechatAppSecret = query_yaml('app.APPSECRET')
@@ -43,6 +43,7 @@ def login():
             return jsonify({"errCode": 1,"errMsg": "未知错误"}), 200
     else:
         openid = wechatResponseContent['openid']
+        print(openid)
         user, isExist = UserService.get_user(UserService,userID=openid)
         if not isExist:
             UserService.create_user(UserService, userID=openid, identity="tourist")
