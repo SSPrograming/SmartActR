@@ -1,6 +1,6 @@
 
 
-**用户相关**
+- [x] **用户相关** 
 
 /api/v1/user/login
 
@@ -100,9 +100,63 @@ ret:
 }
 ```
 
+
+
+@bp.route('/api/v1/user/postFeedback', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"content": ""
+}
+```
+
+
+
+@bp_route('/api/v1/instruction/getInstructionList', method=['POST'])
+
+@login_required
+
+parmas:
+
+```
+{
+	"instructionTagList":
+	[
+		"", ""
+	]
+}
+```
+
+ret:
+
+```
+{
+	"instructionList":
+	[
+		{
+			"instructionID":
+			"instructionName":
+			"instructionContent":
+			"instructionTags":
+			[
+				"",""
+			]
+		}
+	]
+}
+```
+
+
+
+
+
 ****
 
-**预约相关**
+- [x] **预约相关**
 
 @bp_user.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 
@@ -226,6 +280,8 @@ ret:
 	"info":
 	[
 		"reserveID": number,
+		"equipmentName": "",
+		"equipmentID": number,
 		"startTime": "",
 		"endTime": "",
 		"year": number,
@@ -252,6 +308,8 @@ ret:
 	[	
 		{
 			"reserveID": number,
+			"equipmentName": "",
+			"equipmentID": number,
 			"startTime": "",
 			"endTime": "",
 			"year": number,
@@ -281,13 +339,11 @@ ret:
 
 ```
 {
-	"checkInStatus": number,		#0为签到成功，1为码无效，2为无相关记录
+	#0为签到成功，1为码无效，2为无相关记录
 	"errCode": number,
 	"errMsg": ""
 }
 ```
-
-
 
 
 
@@ -315,7 +371,7 @@ ret:
 
 ****
 
-**公告相关**
+- [x] **公告相关**
 
 @bp_notice.route('/api/v1/reserve/getNotice', methods=['GET'])
 
@@ -337,9 +393,7 @@ ret:
 
 **管理端**
 
-
-
-**登录**
+- [x] **登录**
 
 @bp_notice.route('/api/v1/admin/login', methods=['POST'])
 
@@ -364,9 +418,7 @@ ret:
 
 ****
 
-**公告相关**
-
-
+- [x] **公告相关**
 
 @bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
 
@@ -466,7 +518,7 @@ ret:
 
 ****
 
-**预约管理**
+- [x] **预约管理**
 
 @bp_notice.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
 
@@ -533,7 +585,7 @@ ret:
 
 ****
 
-设备详情：
+**设备详情**：
 
 展示有哪些种类的设备：
 
@@ -597,7 +649,7 @@ ret:
 
 添加新的设备种类：
 
-@bp_equipment.route('/api/v1/equipment/AddEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/addEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -654,7 +706,7 @@ ret:
 
 删除设备种类：
 
-@bp_equipment.route('/api/v1/equipment/DeleteEquipmentType', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/deleteEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -671,6 +723,31 @@ ret:
 	"errCode":
 }
 ```
+
+
+
+交换设备顺序：
+
+@bp_equipment.route('/api/v1/equipment/swapEquipmentOrder', methods=['POST'])
+
+@login_required
+
+```
+{
+	"equipmentType1": number,
+	"equipmentType2": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+}
+```
+
+
 
 
 
@@ -701,7 +778,7 @@ ret:
 
 编辑设备状态：
 
-@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
+@bp_equipment.route('/api/v1/equipment/editEquipment', methods=['POST'])
 
 @login_required
 
@@ -726,6 +803,42 @@ ret:
 
 
 
+获取设备预约记录：
+
+@bp_equipment.route('/api/v1/equipment/getEquipmentRecordList', methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"equipmentType": number,
+	"equipmentID": number
+}
+```
+
+ret:
+
+```
+{
+	"RecordList":
+	[
+		{
+			"recordID":number,
+			"postTime": "",
+			"reserveDate": "",
+			"startTime": "",
+			"endTime": "",
+			"userName": "",
+			"status": "",
+		}
+	]
+}
+```
+
+
+
 
 
 删除设备：
@@ -739,8 +852,6 @@ ret:
 	
 }
 ```
-
-
 
 ****
 
@@ -788,6 +899,306 @@ ret:
 {
 	"errCode":
 	"qrcodeURL":
+}
+```
+
+****
+
+#### 独占规则
+
+@bp_rule.route('/api/v1/rules/addRule',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"repeat": number, 	#1表示重复，0表示不重复
+	"day": number, 		#周几
+	"date": ""			# 2021-21-11
+	"startTime": ""		# 20:17
+	"endTime":   ""		# 20:18
+	"expireDate": ""	# 1202-20-21
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": ""
+}
+```
+
+
+
+@bp_rule.route('/api/v1/rules/deleteRule',methods=['POST'])
+
+@login_required
+
+params
+
+```
+{
+	"ruleID": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+}
+```
+
+
+
+@bp_rule.route('/api/v1/rules/getRules',methods=['GET'])
+
+@login_required
+
+>  获取尚未失效的规则
+
+ret:
+
+```
+{
+	rules:
+	[
+		{
+			"repeat": number, 	#1表示重复，0表示不重复
+			"day": number, 		#周几
+			"date": "",			# 2021-21-11
+			"startTime": "",		# 20:17
+			"endTime":   "",		# 20:18
+			"expireDate": "",	# 1202-20-21
+			"ruleID": number
+		}
+	]
+}
+```
+
+
+
+****
+
+**使用说明**
+
+@bp_instruction.route('/api/v1/instruction/addInstruction',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionName": "",
+	"instructionContent": ""
+	"instructionTags": 
+	[
+		"",""
+	]
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/addImage',methods=['POST'])
+
+@login_required
+
+params: **form-data**
+
+```
+{
+	key: "file", value: an image
+}
+```
+
+ret:
+
+```
+{
+	"ImageURL": ""	
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/updateInstruction',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionName": "",
+	"instructionContent": "",
+	"instructionID": number,
+	"instructionTags": 
+	[
+		"",""
+	]
+}
+```
+
+ret:
+
+```
+{
+	"errCode":
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['POST'])
+
+@login_required
+
+ret:
+
+```
+{
+	InstructionList:
+	[
+		{
+			"instructionID":
+			"instructionName":
+			"instructionContent":
+			"instructionTags":
+			[
+				"",""
+			]
+		}
+	]
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/deleteInstruction',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionID": ""
+}
+```
+
+ret:
+
+```
+{
+	"errCode": 
+}
+```
+
+****
+
+**用户管理**
+
+@bp_instruction.route('/api/v1/user/queryUserInfo',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"stuID": "", 		#optional
+	"stuName": "", 		#optional
+	"department": ""	#optional
+}
+```
+
+ret:
+
+```
+{
+	"stuList":
+	[
+		{
+			"stuID": "", 		
+			"stuName": "", 		
+			"department": "",	
+			"email": "",
+			"cellphone": "",
+			"status": ""
+		}
+	]
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/user/updateUserStatus',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"stuID": "",
+	"status": ""
+}
+```
+
+ret：
+
+```
+{
+	"errCode"
+}
+```
+
+
+
+****
+
+**反馈**
+
+@bp_instruction.route('/api/v1/feedback/getFeedbackList',methods=['POST'])
+
+@login_required
+
+```
+{
+	"startDate": "",
+	"endDate": "",
+	"limitNum": number
+}
+```
+
+ret:
+
+```
+{
+	"feedbackList":
+	[
+		{
+			"feedbackID": number,
+			"postDate": "",
+			"feedbackContent": "",
+			"stu"
+		}
+	]
 }
 ```
 
