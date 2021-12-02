@@ -24,31 +24,31 @@
         <Toolbar back refresh @back="$router.push({name: 'EquipmentType'})" @refresh="getEquipmentList"></Toolbar>
         <el-button type="primary" plain @click="handleAdd">添加设备</el-button>
       </div>
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
+                :default-sort="{prop: 'equipmentID', order: 'ascending'}">
+        <el-table-column prop="equipmentID" label="设备编号" width="150px" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="equipmentName" label="设备名称" width="250px" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'">
+          <template slot-scope="scope">
+            <span>{{ status2string(scope.row.equipmentStatus) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="200">
+          <template slot-scope="scope">
+            <div class="operation">
+              <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+              <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="text" size="small" class="lookup" @click="handleLookUp(scope.row)">预约记录</el-button>
+              <img class="icon-qrcode pointer" src="../../assets/qrcode.png" alt="qrcode"
+                   @click="handleShowQRCode(scope.row)"/>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
+                     :current-page.sync="currentPage" :total="dataLength" background>
+      </el-pagination>
     </div>
-    <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
-              :default-sort="{prop: 'equipmentID', order: 'ascending'}">
-      <el-table-column prop="equipmentID" label="设备编号" width="150px" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="equipmentName" label="设备名称" width="250px" :sortable="'custom'"></el-table-column>
-      <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'">
-        <template slot-scope="scope">
-          <span>{{ status2string(scope.row.equipmentStatus) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
-        <template slot-scope="scope">
-          <div class="operation">
-            <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)">删除</el-button>
-            <el-button type="text" size="small" class="lookup" @click="handleLookUp(scope.row)">预约记录</el-button>
-            <img class="icon-qrcode pointer" src="../../assets/qrcode.png" alt="qrcode"
-                 @click="handleShowQRCode(scope.row)"/>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
-                   :current-page.sync="currentPage" :total="dataLength" background>
-    </el-pagination>
   </div>
 </template>
 
