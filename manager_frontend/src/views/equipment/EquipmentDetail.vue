@@ -16,26 +16,8 @@
       <EquipmentEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></EquipmentEditor>
     </el-dialog>
     <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading">
-      <div class="header">
-        <Toolbar :toolbar="toolbar" choose-date refresh @refresh="getRecordList" @query="query"></Toolbar>
-      </div>
-      <el-table class="table" :data="recordSlicedData" v-loading="recordTableLoading" @sort-change="doRecordSort"
-                :default-sort="{prop: 'recordID', order: 'descending'}">
-        <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="reserveDate" label="预约日期" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="startTime" label="开始时间" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="endTime" label="结束时间" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="userName" label="预约人" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="postTime" label="提交时间" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="status" label="预约状态" :sortable="'custom'"></el-table-column>
-      </el-table>
-      <el-pagination class="pagination" layout="prev, pager, next" :page-size="recordPageSize"
-                     :current-page.sync="recordCurrentPage" :total="recordDataLength" background>
-      </el-pagination>
-      <div style="text-align: center; margin-top: 10px;">
-        <el-button class="button" type="info" plain @click="showReserveRecord=false">取消</el-button>
-        <el-button class="button" type="primary" plain @click="showReserveRecord=false">确认</el-button>
-      </div>
+      <ReserveView :recordInfo="recordInfo" @refresh="getRecordList" @query="query"
+                   @hide="showReserveRecord=false" show-user-name></ReserveView>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -73,12 +55,14 @@
 <script>
 import Toolbar from '@/components/Toolbar'
 import EquipmentEditor from '@/components/Editor/EquipmentEditor'
+import ReserveView from '@/components/ReserveView'
 
 export default {
   name: "EquipmentDetail",
   components: {
     EquipmentEditor,
-    Toolbar
+    Toolbar,
+    ReserveView
   },
   data() {
     return {
@@ -102,15 +86,14 @@ export default {
         equipmentStatus: 0,
       },
       showReserveRecord: false,
-      toolbar: {
-        queryStartDate: null,
-        queryEndDate: null
-      },
-      recordTableLoading: false,
-      recordList: [],
-      recordSortType: [],
-      recordPageSize: 10,
-      recordCurrentPage: 1
+      recordInfo: {
+        toolbar: {
+          queryStartDate: null,
+          queryEndDate: null
+        },
+        recordTableLoading: false,
+        recordList: []
+      }
     }
   },
   computed: {
@@ -121,24 +104,16 @@ export default {
       return this.equipmentList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.equipmentList.length ?
               this.pageSize * this.currentPage : this.equipmentList.length)
-    },
-    recordDataLength() {
-      return this.recordList.length
-    },
-    recordSlicedData() {
-      return this.recordList.slice(this.recordPageSize * (this.recordCurrentPage - 1),
-          this.recordPageSize * this.recordCurrentPage <= this.recordList.length ?
-              this.recordPageSize * this.recordCurrentPage : this.recordList.length)
     }
   },
   mounted() {
     if (this.$route.query.equipmentType) {
       this.equipmentType = this.$route.query.equipmentType
       this.getEquipmentList()
-      this.toolbar.queryStartDate = new Date()
-      this.toolbar.queryStartDate.setDate(this.toolbar.queryStartDate.getDate() - 8)
-      this.toolbar.queryEndDate = new Date()
-      this.toolbar.queryEndDate.setDate(this.toolbar.queryEndDate.getDate() + 8)
+      this.recordInfo.toolbar.queryStartDate = new Date()
+      this.recordInfo.toolbar.queryStartDate.setDate(this.recordInfo.toolbar.queryStartDate.getDate() - 8)
+      this.recordInfo.toolbar.queryEndDate = new Date()
+      this.recordInfo.toolbar.queryEndDate.setDate(this.recordInfo.toolbar.queryEndDate.getDate() + 8)
     } else {
       this.$router.push({name: 'EquipmentType'})
     }
@@ -154,17 +129,6 @@ export default {
         this.sortType.order = 'descending'
       }
       this.$utils.sort(this.equipmentList, this.sortType, 'equipmentID')
-    },
-    doRecordSort(event) {
-      if (event) {
-        this.recordSortType.prop = event.prop
-        this.recordSortType.order = event.order
-      }
-      if (!this.recordSortType.order) {
-        this.recordSortType.prop = 'recordID'
-        this.recordSortType.order = 'descending'
-      }
-      this.$utils.sort(this.recordList, this.sortType, 'recordID')
     },
     status2string(status) {
       return this.$api.equipment.status2string[status]
