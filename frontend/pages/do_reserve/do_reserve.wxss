@@ -48,7 +48,6 @@
 .equipment-info-image {
     /* 大小 */
     width: 220rpx;
-    height: 160rpx;
 }
 
 .whitespace {

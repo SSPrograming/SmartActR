@@ -20,11 +20,11 @@
         </view>
         <view class="equipment-info-image-containter">
             <view class="whitespace"></view>
-            <image class="equipment-info-image" src="{{ equipmentInfo.equipmentImageURL }}"></image>
+            <image class="equipment-info-image" src="{{ equipmentInfo.equipmentImageURL }}" mode="widthFix"></image>
             <view class="whitespace"></view>
         </view>
     </view>
-    <view class="delimeter">目前可预约时间段：</view>
+    <view class="delimeter">目前可预约时间段：{{ equipmentInfo.month }}月{{ equipmentInfo.date }}日</view>
     <view class="time-available-container">
         <view class="time-available" wx:for="{{ equipmentSpareTime }}" wx:key="index">
             {{ item.startTime }} ~ {{ item.endTime }}

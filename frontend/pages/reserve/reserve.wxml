@@ -2,7 +2,7 @@
 <page-meta root-background-color="#ebebeb">
     <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
 </page-meta>
-<page-container show="{{ isShowNotice }}" position="right" bind:enter="onEnter" custom-style="background: #ebebeb;">
+<page-container show="{{ false }}" position="right" bind:enter="onEnter" custom-style="background: #ebebeb;">
     <view class="notice-page-container">
         <view class="whitespace"></view>
         <view class="notice-page-box">
@@ -49,7 +49,9 @@
     <view class="equipments-container">
         <scroll-view class="equipment-scroll" scroll-y="true">
             <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}" bindtap="doReserve">
-                <image class="equipment-image" src="{{ item.equipmentImageURL }}"></image>
+                <view class="equipment-image-container">
+                    <image class="equipment-image" src="{{ item.equipmentImageURL }}" mode="aspectFit"></image>
+                </view>
                 <view class="equipment-vertical-delimiter"></view>
                 <view class="equipment-content">
                     <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>
