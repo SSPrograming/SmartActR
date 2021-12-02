@@ -3,7 +3,7 @@ from flask import request, jsonify, Blueprint, g
 from flask.wrappers import Response
 import mjwt
 from config import query_yaml
-from application.services import UserService, EquipmentService, ReserveService
+from application.services import UserService, EquipmentService, ReserveService,CheckInService
 from .login_decorator import login_required
 import operator, datetime
 import math
@@ -236,3 +236,13 @@ def getCurrentReserveInfo():
         "errCode": 0,
         "info": resp_record
     }), 200
+
+@bp_reserve.route('/api/v1/reserve/checkIn', methods=['POST'])
+@login_required
+def checkIn():
+    hash = request.json['equipmentType']
+    user_id = g.userID
+    t = CheckInService.test("testhash",1)
+    return jsonify({
+	    "errCode": t, #0代表签到失败，1签到成功
+        })
