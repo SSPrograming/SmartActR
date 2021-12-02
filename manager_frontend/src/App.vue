@@ -12,7 +12,8 @@
             <Sidebar></Sidebar>
           </aside>
         </transition>
-        <main class="main" :style="isLogin?'width: 100%;':'width: calc(95% - 240px);'">
+        <main class="main" :style="isLogin?'width: 100%;padding:0'
+        :'width: calc(95% - 240px);padding: 0 calc(5% + 20px) 0 20px;'">
           <router-view></router-view>
         </main>
       </div>
@@ -91,7 +92,6 @@ header {
 
   main {
     box-sizing: border-box;
-    padding: 0 calc(5% + 20px) 0 20px;
     margin: 0 auto;
   }
 }
