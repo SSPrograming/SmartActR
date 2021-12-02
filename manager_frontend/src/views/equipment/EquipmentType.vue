@@ -297,6 +297,7 @@ export default {
     .equipment-image {
       display: block;
       width: 100%;
+      max-height: 356px;
     }
   }
 }

@@ -92,9 +92,9 @@ header {
   main {
     box-sizing: border-box;
     padding: 0 calc(5% + 20px) 0 20px;
+    margin: 0 auto;
   }
 }
-
 
 .sidebar-enter-active, .sidebar-leave-active {
   transition: all .5s ease-in-out;

@@ -91,8 +91,12 @@ export default {
     }
   },
   mounted() {
-    this.equipmentType = this.$route.query.equipmentType
-    this.getEquipmentList()
+    if (this.$route.query.equipmentType) {
+      this.equipmentType = this.$route.query.equipmentType
+      this.getEquipmentList()
+    } else {
+      this.$router.push({name: 'EquipmentType'})
+    }
   },
   methods: {
     doSort(event) {
