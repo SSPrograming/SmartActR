@@ -6,8 +6,7 @@
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
       <div class="editor">
-        <mavon-editor v-model="content" font-size="16" language="zh-CN" :box-shadow="false"
-                      @change="setHTML" @save="handleSave"></mavon-editor>
+        <MarkdownEditor></MarkdownEditor>
       </div>
     </div>
   </div>
@@ -15,16 +14,20 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import MarkdownEditor from '@/components/Editor/MarkdownEditor'
 
 export default {
   name: "InstructionEditor",
   components: {
-    Toolbar
+    Toolbar,
+    MarkdownEditor
   },
   data() {
     return {
-      content: '',
-      html: ''
+      instruction: {
+        content: '',
+        html: ''
+      }
     }
   },
   methods: {

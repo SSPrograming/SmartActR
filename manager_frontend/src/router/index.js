@@ -71,7 +71,8 @@ const routes = [
   {
     path: '/instruction',
     name: 'Instruction',
-    component: NotFound
+    // component: NotFound
+    redirect: {name: 'InstructionEditor'}
   },
   {
     path: '/instruction/editor',

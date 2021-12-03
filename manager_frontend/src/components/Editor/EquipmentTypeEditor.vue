@@ -15,7 +15,7 @@
       <el-form-item label="图片" required>
         <el-upload
             class="image-uploader" ref="uploader"
-            action="/api/v1/equipment/testPicUpload"
+            action=""
             accept="image/*"
             :show-file-list="false"
             :auto-upload="false"
