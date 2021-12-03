@@ -27,7 +27,9 @@
         <el-input class="input" :rows="20" type="textarea" placeholder="请输入内容" v-model="instruction.content"></el-input>
       </div>
       <div class="right">
-        <div class="output" v-html="instruction.html"></div>
+        <el-scrollbar class="scrollbar" style="height: 100%">
+          <div class="output" v-html="instruction.html"></div>
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -110,14 +112,14 @@ export default {
 
   .right {
     flex-basis: 50%;
+    height: 27em;
     margin-left: 5px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
 
     .output {
       box-sizing: border-box;
-      height: 100%;
       padding: 20px;
-      border: 1px solid #dcdfe6;
-      border-radius: 4px;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-scrollbar class="main-scrollbar" style="height: 100%">
+    <el-scrollbar class="scrollbar" style="height: 100%">
       <header>
         <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
         <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
@@ -112,8 +112,13 @@ header {
 </style>
 
 <style lang="scss">
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
-  height: 98vh;
+  height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -128,7 +133,22 @@ header {
   }
 }
 
-.main-scrollbar > .el-scrollbar__wrap {
+.scrollbar > .el-scrollbar__wrap {
   overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+  background-color: #ebeef5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 147, 153, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 1);
 }
 </style>
