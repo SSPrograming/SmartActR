@@ -22,12 +22,25 @@
         </div>
       </el-upload>
     </div>
+    <div class="main">
+      <div class="left">
+        <el-input class="input" :rows="20" type="textarea" placeholder="请输入内容" v-model="instruction.content"></el-input>
+      </div>
+      <div class="right">
+        <div class="output" v-html="instruction.html"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import 'highlight.js/styles/github-gist.css'
+
 export default {
   name: "MarkdownEditor",
+  props: {
+    instruction: Object
+  },
   data() {
     return {
       dialogVisible: false,
@@ -45,9 +58,70 @@ export default {
     handleRemove(file) {
       this.$refs.imageUploader.handleRemove(file)
     }
+  },
+  watch: {
+    'instruction.content'() {
+      let hljs = require('highlight.js'); // https://highlightjs.org/
+      let md = require('markdown-it')({
+        html: true,
+        xhtmlOut: false,
+        breaks: false,
+        langPrefix: 'language-',
+        linkify: false,
+        typographer: true,
+        quotes: '“”‘’',
+        highlight: function (str, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            try {
+              return '<pre class="hljs"><code>' +
+                  hljs.highlight(str, {language: lang, ignoreIllegals: true}).value +
+                  '</code></pre>';
+              // eslint-disable-next-line no-empty
+            } catch (__) {
+            }
+          }
+
+          return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+        }
+      });
+      this.instruction.html = md.render(this.instruction.content);
+    }
   }
 }
 </script>
+
+<style scoped lang="scss">
+.dialog-image {
+  display: block;
+  max-width: 100%;
+  max-height: 75vh;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+
+  .left {
+    flex-basis: 50%;
+    margin-right: 5px;
+  }
+
+  .right {
+    flex-basis: 50%;
+    margin-left: 5px;
+
+    .output {
+      box-sizing: border-box;
+      height: 100%;
+      padding: 20px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+    }
+  }
+}
+</style>
 
 <style lang="scss">
 .image-uploader {
@@ -80,13 +154,9 @@ export default {
     margin-left: 10px;
   }
 }
-</style>
 
-<style scoped lang="scss">
-.dialog-image {
-  display: block;
-  max-width: 100%;
-  max-height: 75vh;
-  margin: 0 auto;
+blockquote {
+  font-style: italic;
+  font-size: 16px;
 }
 </style>

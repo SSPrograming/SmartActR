@@ -6,7 +6,7 @@
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
       <div class="editor">
-        <MarkdownEditor></MarkdownEditor>
+        <MarkdownEditor :instruction="instruction"></MarkdownEditor>
       </div>
     </div>
   </div>

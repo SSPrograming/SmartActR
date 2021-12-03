@@ -54,6 +54,11 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -107,13 +112,8 @@ header {
 </style>
 
 <style lang="scss">
-* {
-  padding: 0;
-  margin: 0;
-}
-
 #app {
-  height: 100vh;
+  height: 98vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
