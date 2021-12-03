@@ -26,7 +26,7 @@ class ReserveService():
         valid_time = query_yaml("app.VALIDTIME")
         for record in records_to_update:
             record_startTime = datetime.datetime.combine(record.reserveDate, record.startTime)
-            if record_startTime + datetime.timedelta(minutes=valid_time)<now_datetime and record.status=="success":
+            if record_startTime + datetime.timedelta(minutes=valid_time)<now_datetime and record.status=="成功":
                 try:
                     record.status = "违约"
                     db.session.commit()

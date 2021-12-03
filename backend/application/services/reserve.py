@@ -21,7 +21,7 @@ class ReserveService:
         valid_occupations = OccupationInfo.query.filter(OccupationInfo.expireDate>=date).all()
         occupied_time = []
         occupy_flag = False
-        weekday = datetime.datetime.now().isoweekday()
+        weekday = date.isoweekday()
         for valid_occupation in valid_occupations:
             if valid_occupation.repeat==True:   #重复占用规则
                 if valid_occupation.day==weekday:
@@ -29,7 +29,7 @@ class ReserveService:
                                           "endTime": valid_occupation.endTime})
                     occupy_flag = True
             else:   #非重复占用规则
-                if valid_occupation.date==datetime.datetime.now():
+                if valid_occupation.date==date:
                     occupied_time.append({"startTime": valid_occupation.startTime,
                                           "endTime": valid_occupation.endTime})
                     occupy_flag = True

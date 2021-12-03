@@ -32,7 +32,6 @@ def getEquipmentStatus():
     occupation, hasOccupation = ReserveService.get_occupation_of_day(date)
     records = ReserveService.get_record_of_single_equipment(date, targetType, targetID)
     for record in records:
-        print(record.startTime)
         occupation.append({"startTime": record.startTime,
                                           "endTime": record.endTime})
     occupation = sorted(occupation, key=operator.itemgetter('startTime'))
@@ -68,14 +67,11 @@ def getEquipmentStatus():
     for item in spareTime:
         item_endTime = datetime.datetime.strptime(item["endTime"],'%H:%M')
         item_endTime = item_endTime.replace(year=year, month=month, day=day)
-        print(item_endTime)
-        print(now)
         if item_endTime < now:
             remove_end += 1
         else:
             break
     del spareTime[:remove_end]
-    print(len(spareTime))
     if len(spareTime):
         item_startTime = datetime.datetime.strptime(spareTime[0]["startTime"], '%H:%M')
         item_startTime = item_startTime.replace(year=year, month=month, day=day)
