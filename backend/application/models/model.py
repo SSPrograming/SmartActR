@@ -31,7 +31,7 @@ class Equipment(db.Model):
                               doc="设备种类")
     equipmentID = db.Column(db.Integer, primary_key=True)
     equipmentStatus = db.Column(db.String(32),
-                                doc="设备状态,是否损坏等,默认为fine")
+                                doc="设备状态,是否损坏等,默认为完好")
 
 class Reserve_Record(db.Model):
     """

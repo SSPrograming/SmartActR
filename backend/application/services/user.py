@@ -63,7 +63,7 @@ class UserService():
     def bind_user(self, userID, stuInfo):
         # TODO:失败时回滚
         try:
-            msg, bindStatus = self.update_user_status(self, userID, 'binded')
+            msg, bindStatus = self.update_user_status(self, userID, '已绑定')
             self.update_user_identity(self, userID, 'student')
             stuID = stuInfo['stuID']
             stuName = stuInfo['stuName']
@@ -87,7 +87,7 @@ class UserService():
             return e, False
 
     def update_user_status(self, userID, newStatus):
-        statuses = ['not bind', 'binded', 'freeze']
+        statuses = ['已绑定', '未绑定', '冻结']
         if newStatus not in statuses:
             return "未定义的状态", False
         user, isExist = self.get_user(self, userID)

@@ -92,7 +92,7 @@ class EquipmentService():
     def add_equipment(Type,id):
         new_equipment = Equipment()
         new_equipment.equipmentType = Type
-        new_equipment.equipmentStatus = 'fine'
+        new_equipment.equipmentStatus = '完好'
         new_equipment.equipmentID = id
         try:
             db.session.add(new_equipment)

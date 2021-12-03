@@ -27,7 +27,7 @@ def getEquipmentStatus():
     targetEquipmentType = EquipmentService.get_single_equipmentType(targetType)
     if targetEquipment is None:
         return jsonify({"errCode": 1,"errMsg": "无此设备"}), 200
-    if targetEquipment.equipmentStatus != 'fine':
+    if targetEquipment.equipmentStatus != '完好':
         return jsonify({"errCode": 1,"errMsg": "设备损坏，不可使用"}), 200
     occupation, hasOccupation = ReserveService.get_occupation_of_day(date)
     records = ReserveService.get_record_of_single_equipment(date, targetType, targetID)

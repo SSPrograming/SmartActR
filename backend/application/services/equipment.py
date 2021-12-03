@@ -48,7 +48,7 @@ class EquipmentService:
         插入单台设备
         """
         newEquipment = Equipment(equipmentType=equipmentTypeID,equipmentID=equipmentID,
-                                equipmentStatus='fine')
+                                equipmentStatus='完好')
         try:
             db.session.add(newEquipment)
             db.session.commit()

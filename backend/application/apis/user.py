@@ -107,7 +107,7 @@ def bind():
 def getBindStatus():
     msg, succ = UserService.get_user_status(UserService, g.userID)
     if succ:
-        if msg == 'binded' or msg == 'freeze':
+        if msg == '已绑定' or msg == '冻结':
             return jsonify({"errCode": 0,"isBind": True}), 200
         else:
             return jsonify({"errCode": 0,"isBind": False}), 200
@@ -140,7 +140,7 @@ def unBind():
     解除绑定;删除stu表中相关行，更新user表中的status以及identity
     """
     # TODO:失败时回滚
-    msg1, stauts1 = UserService.update_user_status(UserService, userID=g.userID, newStatus='not bind')
+    msg1, stauts1 = UserService.update_user_status(UserService, userID=g.userID, newStatus='未绑定')
     msg2, status2 = UserService.update_user_identity(UserService, userID=g.userID, newIdentity='tourist')
     msg3, status3 = UserService.drop_single_student(UserService, g.userID)
     if stauts1 and status2 and status3:
