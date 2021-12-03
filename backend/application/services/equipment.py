@@ -1,6 +1,5 @@
 from application.database import db
 from application.models import Equipment, equipmentType
-import datetime
 
 class EquipmentService:
     def get_all_equipmentType():
@@ -58,3 +57,10 @@ class EquipmentService:
             print(e)
             db.session.rollback()
             return False
+    
+    def get_name_by_Type(Type):
+        target_type = equipmentType.query.filter(equipmentType.equipmentType==Type).first()
+        if target_type is None:
+            return "不存在的设备"
+        else:
+            return target_type.equipmentName

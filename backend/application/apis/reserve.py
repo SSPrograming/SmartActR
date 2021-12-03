@@ -200,6 +200,8 @@ def getHistoryReserveInfo():
     for item in history_record:
         resp_record.append({
             "reserveID": item.recordID,
+            "equipmentName": EquipmentService.get_name_by_Type(item.equipmentType),
+            "equipmentID": item.equipmentID,
             "startTime": item.startTime.strftime("%H:%M"),
             "endTime": item.endTime.strftime("%H:%M"),
             "year": item.reserveDate.year,
@@ -222,6 +224,8 @@ def getCurrentReserveInfo():
         resp_record.append({
             "reserveID": item.recordID,
             "startTime": item.startTime.strftime("%H:%M"),
+            "equipmentName": EquipmentService.get_name_by_Type(item.equipmentType),
+            "equipmentID": item.equipmentID,
             "endTime": item.endTime.strftime("%H:%M"),
             "year": item.reserveDate.year,
             "month": item.reserveDate.month,

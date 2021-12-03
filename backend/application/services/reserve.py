@@ -1,8 +1,7 @@
 from application.database import db
-from application.models import User, Student, Reserve_Record, Equipment, equipmentType, OccupationInfo
+from application.models import Reserve_Record, OccupationInfo
 import datetime
 from application.utils import now
-import time
 
 class ReserveService:
     def get_record_of_single_equipment(date, equipmentType, equipmentID):
@@ -39,7 +38,7 @@ class ReserveService:
     def add_reserve_record(userID, reserveDate, startTime, endTime, equipmentType, equipmentID):
         nrecord = Reserve_Record(userID=userID, postTime=now(),reserveDate=reserveDate, startTime=startTime,
                                 endTime=endTime, equipmentType=equipmentType, equipmentID=equipmentID,
-                                status="success")
+                                status="成功")
         try:
             db.session.add(nrecord)
             db.session.commit()

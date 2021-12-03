@@ -73,6 +73,7 @@ class EquipmentService():
         """
         target_equipmentType = equipmentType.query.order_by(equipmentType.equipmentType.desc()).first().equipmentType
         new_equipmentType.equipmentImageURL = query_yaml("app.MANAGERSERVERURL") + "image/equipment/"+ str(target_equipmentType) + "_" +img_name
+        new_equipmentType.equipmentOrder = target_equipmentType
         try:
             db.session.commit()
         except:
