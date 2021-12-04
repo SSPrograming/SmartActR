@@ -12,7 +12,7 @@
         <template slot="dateCell" slot-scope="{date/*, data*/}">
           <div class="calendar-date"> {{ date.getDate() }}</div>
           <div class="calendar-rule" v-for="item in getDayRules(date)" :key="item.ruleID">
-            <div :class="item.repeat ? 'repeat' : 'once'">
+            <div :class="item.repeat ? 'repeat' : 'once'" @click="handleEdit(item)">
               {{ item.startTime }} ~ {{ item.endTime }}
             </div>
           </div>
@@ -38,31 +38,34 @@ export default {
       calendarLoading: false,
       rules: [
         {
+          ruleID: 1,
           repeat: 0,
           day: 0,
           date: "2021-12-4",
           startTime: "08:00",
           endTime: "12:00",
           expireDate: "2021-12-31",
-          ruleID: 1
+          description: ''
         },
         {
+          ruleID: 2,
           repeat: 1,
           day: 0,
           date: "2021-12-4",
           startTime: "13:00",
           endTime: "18:00",
           expireDate: "2021-12-31",
-          ruleID: 2
+          description: ''
         },
         {
+          ruleID: 3,
           repeat: 0,
           day: 0,
           date: "2021-12-26",
           startTime: "08:00",
           endTime: "12:00",
           expireDate: "2021-12-31",
-          ruleID: 3
+          description: ''
         }
       ],
       showRuleEditor: false,
@@ -117,14 +120,24 @@ export default {
       if (this.editRuleID) {
         this.editRuleID = null
         this.form = {
+          ruleID: 0,
           repeat: 0,
-          day: 0,
-          date: '',
-          startTime: '08:00',
-          endTime: '12:00',
+          day: null,
+          date: null,
+          startTime: null,
+          endTime: null,
           expireDate: null,
-          ruleID: 0
+          description: ''
         }
+      }
+      this.showRuleEditor = true
+    },
+    handleEdit(rule) {
+      this.editRuleID = rule.ruleID
+      this.form = {
+        ...rule,
+        date: new Date(rule.date),
+        expireDate: new Date(rule.expireDate)
       }
       this.showRuleEditor = true
     },
@@ -156,11 +169,27 @@ export default {
     .repeat {
       padding: 1px 5px;
       background: lightsteelblue;
+
+      &:focus, &:hover {
+        background: mix(lightsteelblue, $--color-white, 75%);
+      }
+
+      &:active {
+        background: mix(lightsteelblue, $--color-black, 75%);
+      }
     }
 
     .once {
       padding: 1px 5px;
       background: lightgreen;
+
+      &:focus, &:hover {
+        background: mix(lightgreen, $--color-white, 75%);
+      }
+
+      &:active {
+        background: mix(lightgreen, $--color-black, 75%);
+      }
     }
   }
 }

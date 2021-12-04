@@ -26,9 +26,9 @@
           <el-time-select class="pointer" v-model="form.endTime" :picker-options="timeOptions" :editable="false"
                           placeholder="请选择结束时间"></el-time-select>
         </el-form-item>
-        <el-form-item label="过期时间" required v-if="form.repeat === 1">
-          <el-time-select class="pointer" v-model="form.expireDate" :picker-options="timeOptions" :editable="false"
-                          placeholder="请选择过期时间"></el-time-select>
+        <el-form-item label="失效日期" required v-if="form.repeat === 1">
+          <el-date-picker class="pointer" v-model="form.date" type="date" :editable="false"
+                          placeholder="请选择失效日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="规则描述">
           <el-input type="textarea" :rows="5" placeholder="请输入规则描述" v-model="form.description"></el-input>
