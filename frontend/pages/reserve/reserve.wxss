@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     /* 大小 */
-    height: calc(100% - 222rpx);
+    height: calc(100vh - 200rpx);
 }
 
 .notice-page-box {
@@ -52,10 +52,16 @@
     text-decoration: underline;
 }
 
+.notice-page-scroll {
+    /* 大小 */
+    max-height: calc(100vh - 585rpx);
+    margin-top: 30rpx;
+}
+
 .notice-page-content {
     /* 大小 */
     width: 80%;
-    margin: 30rpx auto;
+    margin: 10rpx auto;
     /* 文字 */
     font-size: 36rpx;
 }
@@ -64,12 +70,12 @@
     /* 大小 */
     padding-bottom: 10rpx;
     /* 文字 */
-    text-indent: 2em;
+    text-indent: 1.5em;
 }
 
 .notice-page-confirm {
     /* 大小 */
-    margin-top: 50rpx;
+    margin: 50rpx 0 50rpx;
     /* 文字 */
     font: 36rpx;
     color: #ffffff;
@@ -255,6 +261,7 @@
     display: flex;
     /* 大小 */
     width: 612rpx;
+    height: 180rpx;
     padding: 20rpx;
     margin: 0 auto 30rpx auto;
     /* 文字 */
@@ -272,10 +279,15 @@
     margin-bottom: 200rpx;
 }
 
+.equipment-image-container {
+    flex-basis: 240rpx;
+    width: 220rpx;
+}
+
 .equipment-image {
     /* 大小 */
-    width: 220rpx;
-    height: 180rpx;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .equipment-vertical-delimiter {

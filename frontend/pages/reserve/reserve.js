@@ -8,7 +8,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    equipmentType2imagePath: app.$api.reserve.equipmentType2imagePath,
     equipmentStatus2String: app.$api.reserve.equipmentStatus2String,
     equipmentList: [],
     dates: [],
@@ -52,8 +51,10 @@ Page({
       .then((res) => {
         if (res.data.errCode === 0) {
           let show = false;
-          if (new Date() <= new Date(res.data.expireDate)) {
-            show = false;
+          const date = new Date(res.data.expireDate);
+          date.setDate(date.getDate() + 1);
+          if (new Date() <= date) {
+            show = true;
           }
           this.setData({
             noticeDate: res.data.noticeDate,
@@ -96,7 +97,7 @@ Page({
   doReserve(e) {
     const target_equipment = this.data.equipmentList[e.currentTarget.dataset.index];
     wx.navigateTo({
-      url: `/pages/do_reserve/do_reserve?equipmentType=${target_equipment.equipmentType}&equipmentID=${target_equipment.equipmentID}&equipmentName=${target_equipment.equipmentName}&equipmentStatus=${target_equipment.equipmentStatus}&year=${this.data.dates[this.data.selected].year}&month=${this.data.dates[this.data.selected].month}&date=${this.data.dates[this.data.selected].date}`,
+      url: `/pages/do_reserve/do_reserve?equipmentType=${target_equipment.equipmentType}&equipmentID=${target_equipment.equipmentID}&equipmentName=${target_equipment.equipmentName}&equipmentStatus=${target_equipment.equipmentStatus}&equipmentImageURL=${target_equipment.equipmentImageURL}&year=${this.data.dates[this.data.selected].year}&month=${this.data.dates[this.data.selected].month}&date=${this.data.dates[this.data.selected].date}`,
     });
   },
 
@@ -168,6 +169,7 @@ Page({
       loading: true,
     });
     app.dealThing(this.getAllEquipmentStatus);
+    app.dealThing(this.getNotice);
   },
 
   /**

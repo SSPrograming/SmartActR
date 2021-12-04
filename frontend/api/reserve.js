@@ -7,12 +7,6 @@ import {
 } from './common';
 
 const reserve_config = {
-  equipmentType2imagePath: [
-    '',
-    '/resources/images/3DPrinter.jpg',
-    '/resources/images/experimentTable.jpg',
-    '/resources/images/laserCutter.jpg',
-  ],
   equipmentStatus2String: [
     '空闲',
     '拥挤',
