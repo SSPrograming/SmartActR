@@ -35,6 +35,7 @@
         </el-form-item>
         <div style="text-align: center;">
           <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
+          <el-button class="button" type="danger" plain @click="handleDelete" v-if="form.ruleID">删除</el-button>
           <el-button class="button" type="primary" plain @click="submit">提交</el-button>
         </div>
       </el-form>
@@ -98,6 +99,16 @@ export default {
     }
   },
   methods: {
+    handleDelete() {
+      this.$confirm('此操作将删除该规则, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$emit('editorDelete')
+      }).catch(() => {
+      })
+    },
     submit() {
       this.$refs.form.validate().then((valid) => {
         if (this.form.repeat === 0 && !this.form.date) {

@@ -1,7 +1,8 @@
 <template>
   <div class="equipment-rules">
     <el-dialog title="规则编辑" :visible.sync="showRuleEditor" v-loading="dialogLoading">
-      <RuleEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></RuleEditor>
+      <RuleEditor :form="form" @editorCancel="editorCancel" @editorDelete="handleDelete"
+                  @editorConfirm="editorConfirm"></RuleEditor>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -140,6 +141,9 @@ export default {
         expireDate: new Date(rule.expireDate)
       }
       this.showRuleEditor = true
+    },
+    handleDelete() {
+      this.showRuleEditor = false
     },
     editorCancel() {
       this.showRuleEditor = false
