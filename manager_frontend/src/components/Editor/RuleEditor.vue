@@ -3,7 +3,7 @@
     <div class="container">
       <el-form class="form" ref="form" :model="form" label-width="80px">
         <el-form-item label="重复" required>
-          <el-select v-model="form.repeat" placeholder="请选择">
+          <el-select v-model="form.repeat" placeholder="请选择" :disabled="form.ruleID">
             <el-option v-for="item in repeatOptions" :key="item.value" :label="item.label"
                        :value="item.value"></el-option>
           </el-select>
@@ -87,7 +87,7 @@ export default {
           label: '六'
         },
         {
-          value: 7,
+          value: 0,
           label: '日'
         },
       ],
