@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      instructionID: 0,
       instruction: {
         content: '# SmartActR\n' +
             '\n' +
@@ -49,6 +50,13 @@ export default {
             '```',
         html: ''
       }
+    }
+  },
+  mounted() {
+    if (this.$route.query.instructionID) {
+      this.instructionID = this.$route.query.instructionID
+    } else {
+      this.$router.push({name: 'Instruction'})
     }
   },
   methods: {

@@ -82,7 +82,8 @@ export default {
   name: "Sidebar",
   computed: {
     routeName() {
-      return this.$route.name === 'EquipmentDetail' ? 'EquipmentType' : this.$route.name
+      return this.$route.name === 'EquipmentDetail' ? 'EquipmentType' :
+          this.$route.name === 'InstructionEditor' ? 'Instruction' : this.$route.name
     }
   },
   methods: {
