@@ -12,10 +12,14 @@ const sort = (array, sortType, primaryKey) => {
     } else if (var1 > var2) {
       return asc ? 1 : -1
     } else {
-      if (a[primaryKey] < b[primaryKey]) {
-        return asc ? -1 : 1
-      } else if (a[primaryKey] > b[primaryKey]) {
-        return asc ? 1 : -1
+      if (primaryKey) {
+        if (a[primaryKey] < b[primaryKey]) {
+          return asc ? -1 : 1
+        } else if (a[primaryKey] > b[primaryKey]) {
+          return asc ? 1 : -1
+        } else {
+          return 0
+        }
       } else {
         return 0
       }

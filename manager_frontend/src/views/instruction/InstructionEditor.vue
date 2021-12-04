@@ -6,8 +6,7 @@
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
       <div class="editor">
-        <mavon-editor v-model="content" font-size="16" language="zh-CN" :box-shadow="false"
-                      @change="setHTML" @save="handleSave"></mavon-editor>
+        <MarkdownEditor :instruction="instruction"></MarkdownEditor>
       </div>
     </div>
   </div>
@@ -15,16 +14,49 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import MarkdownEditor from '@/components/Editor/MarkdownEditor'
 
 export default {
   name: "InstructionEditor",
   components: {
-    Toolbar
+    Toolbar,
+    MarkdownEditor
   },
   data() {
     return {
-      content: '',
-      html: ''
+      instructionID: 0,
+      instruction: {
+        content: '# SmartActR\n' +
+            '\n' +
+            '&emsp;&emsp;机械系科协活动室的管理系统——智慧活动室。\n' +
+            '\n' +
+            '## 分支\n' +
+            '\n' +
+            '+ `main`：每一次迭代发布的版本\n' +
+            '+ `develop`：开发版本\n' +
+            '+ `frontend`：前端分支\n' +
+            '+ `backend`：后端分支\n' +
+            '+ `manager-frontend`：管理端前端分支\n' +
+            '+ `manager-backend`：管理端后端分支\n' +
+            '+ `meeting`：会议记录\n' +
+            '+ `doc`：文档\n' +
+            '\n' +
+            '```cpp\n' +
+            '#include <iostream>\n' +
+            'using namespace std;\n' +
+            'int main() {\n' +
+            '    cout << "Hello, world" << endl;\n' +
+            '}\n' +
+            '```',
+        html: ''
+      }
+    }
+  },
+  mounted() {
+    if (this.$route.query.instructionID) {
+      this.instructionID = this.$route.query.instructionID
+    } else {
+      this.$router.push({name: 'Instruction'})
     }
   },
   methods: {
@@ -48,7 +80,7 @@ export default {
 }
 
 .editor {
-  padding-top: 20px;
+  padding-top: 5px;
 }
 
 .editor .v-note-wrapper {

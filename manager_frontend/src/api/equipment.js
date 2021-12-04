@@ -7,10 +7,6 @@ import axios from './axios'
 const subUrl = 'equipment'
 
 const equipment = {
-  status2string: {
-    'fine': '正常',
-    'broken': '损坏'
-  },
   getAllEquipmentType() {
     return axios.get(`${config.baseUrl}/${subUrl}/getAllEquipmentType`)
   },
@@ -25,6 +21,21 @@ const equipment = {
   },
   getAllEquipment(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/getAllEquipment`, params)
+  },
+  swapEquipmentOrder(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/swapEquipmentOrder`, params)
+  },
+  addEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/addEquipment`, params)
+  },
+  editEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/editEquipment`, params)
+  },
+  deleteEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/deleteEquipment`, params)
+  },
+  getEquipmentRecordList(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/getEquipmentRecordList`, params)
   }
 }
 

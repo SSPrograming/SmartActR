@@ -8,6 +8,8 @@ import TodayRecord from '@/views/reserve/TodayRecord'
 import HistoryRecord from '@/views/reserve/HistoryRecord'
 import EquipmentType from '@/views/equipment/EquipmentType'
 import EquipmentDetail from '@/views/equipment/EquipmentDetail'
+import EquipmentRules from '@/views/equipment/EquipmentRules'
+import Insturction from '@/views/instruction/Instruction'
 import InstructionEditor from '@/views/instruction/InstructionEditor'
 import NotFound from '@/views/NotFound'
 
@@ -66,12 +68,12 @@ const routes = [
   {
     path: '/equipment/rules',
     name: 'EquipmentRules',
-    component: NotFound
+    component: EquipmentRules
   },
   {
     path: '/instruction',
     name: 'Instruction',
-    component: NotFound
+    component: Insturction
   },
   {
     path: '/instruction/editor',

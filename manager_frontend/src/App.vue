@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-scrollbar class="main-scrollbar" style="height: 100%">
+    <el-scrollbar class="scrollbar" style="height: 100%">
       <header>
         <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
         <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
@@ -53,6 +53,11 @@ export default {
 
 <style scoped lang="scss">
 @import "src/element-variables";
+
+h1 {
+  padding: 0;
+  margin: 0;
+}
 
 header {
   display: flex;
@@ -107,7 +112,7 @@ header {
 </style>
 
 <style lang="scss">
-* {
+html, body {
   padding: 0;
   margin: 0;
 }
@@ -128,7 +133,9 @@ header {
   }
 }
 
-.main-scrollbar > .el-scrollbar__wrap {
+.scrollbar > .el-scrollbar__wrap {
   overflow-x: hidden;
 }
+
+
 </style>

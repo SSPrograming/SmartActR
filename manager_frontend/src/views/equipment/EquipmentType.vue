@@ -14,8 +14,8 @@
           <div slot="header" class="card-header">
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
-            <el-button class="button move" type="text" @click="handleMoveUp(item)" :disabled="index===0">上移</el-button>
-            <el-button class="button move" type="text" @click="handleMoveDown(item)"
+            <el-button class="button move" type="text" @click="handleMoveUp(index)" :disabled="index===0">上移</el-button>
+            <el-button class="button move" type="text" @click="handleMoveDown(index)"
                        :disabled="index===equipmentTypeList.length - 1">下移
             </el-button>
             <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
@@ -38,7 +38,7 @@
               </div>
             </div>
             <div class="right">
-              <img :src="item.equipmentImage" class="equipment-image" alt=""/>
+              <img :src="toDynamicImageUrl(item.equipmentImage)" class="equipment-image" alt=""/>
             </div>
           </div>
         </el-card>
@@ -76,11 +76,19 @@ export default {
     this.getAllEquipmentType()
   },
   methods: {
+    toDynamicImageUrl(imageUrl) {
+      return imageUrl /* + '?time=' + new Date().getTime() */
+    },
     getAllEquipmentType() {
       this.loading = true
       this.$api.equipment.getAllEquipmentType().then((res) => {
         if (res.data.errCode === 0) {
           this.equipmentTypeList = res.data.TypeList
+          const sortType = {
+            prop: 'equipmentOrder',
+            order: 'ascending'
+          }
+          this.$utils.sort(this.equipmentTypeList, sortType, 'equipmentType')
           this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -103,11 +111,47 @@ export default {
       }
       this.showEquipmentTypeEditor = true
     },
-    handleMoveUp(item) {
-      console.log(item)
+    handleMoveUp(index) {
+      const curr = this.equipmentTypeList[index]
+      const prev = this.equipmentTypeList[index - 1]
+      const params = {
+        equipmentType1: curr.equipmentType,
+        equipmentType2: prev.equipmentType
+      }
+      this.loading = true
+      this.$api.equipment.swapEquipmentOrder(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.getAllEquipmentType()
+        } else {
+          this.$utils.error.APIError(this, res.data)
+          this.loading = false
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.loading = false
+      })
     },
-    handleMoveDown(item) {
-      console.log(item)
+    handleMoveDown(index) {
+      const curr = this.equipmentTypeList[index]
+      const next = this.equipmentTypeList[index + 1]
+      const params = {
+        equipmentType1: curr.equipmentType,
+        equipmentType2: next.equipmentType
+      }
+      this.loading = true
+      this.$api.equipment.swapEquipmentOrder(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.getAllEquipmentType()
+        } else {
+          this.$utils.error.APIError(this, res.data)
+          this.loading = false
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.loading = false
+      })
     },
     handleEdit(item) {
       this.editEquipmentType = item.equipmentType
