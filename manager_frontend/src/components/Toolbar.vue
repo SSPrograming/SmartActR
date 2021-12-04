@@ -7,15 +7,16 @@
       </el-option>
     </el-select>
     <el-date-picker class="choose-date pointer" v-model="toolbar.queryStartDate" type="date" :editable="false"
-                    placeholder="选择开始日期" v-if="chooseDate" @change="$emit('query')">
+                    placeholder="选择开始日期" v-if="chooseDate" @change="toolbar.queryEndDate && $emit('query')">
     </el-date-picker>
     <el-date-picker class="choose-date pointer" v-model="toolbar.queryEndDate" type="date" :editable="false"
-                    placeholder="选择结束日期" v-if="chooseDate" @change="$emit('query')">
+                    placeholder="选择结束日期" v-if="chooseDate" @change="toolbar.queryStartDate && $emit('query')">
     </el-date-picker>
     <el-input class="input-query" placeholder="请输入查找内容" prefix-icon="el-icon-search"
               v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')">
     </el-input>
     <el-button type="info" v-if="query" @click="$emit('query')">查找</el-button>
+    <el-button type="primary" icon="el-icon-back" plain v-if="back" @click="$emit('back')"></el-button>
     <el-button type="primary" plain v-if="refresh" @click="$emit('refresh')">刷新</el-button>
   </div>
 </template>
@@ -27,6 +28,7 @@ export default {
     chooseNum: Boolean,
     chooseDate: Boolean,
     query: Boolean,
+    back: Boolean,
     refresh: Boolean,
     toolbar: {
       showNums: Number,
