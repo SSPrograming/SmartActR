@@ -38,7 +38,7 @@
               </div>
             </div>
             <div class="right">
-              <img :src="item.equipmentImage" class="equipment-image" alt=""/>
+              <img :src="toDynamicImageUrl(item.equipmentImage)" class="equipment-image" alt=""/>
             </div>
           </div>
         </el-card>
@@ -76,12 +76,15 @@ export default {
     this.getAllEquipmentType()
   },
   methods: {
+    toDynamicImageUrl(imageUrl) {
+      return imageUrl /* + '?time=' + new Date().getTime() */
+    },
     getAllEquipmentType() {
       this.loading = true
       this.$api.equipment.getAllEquipmentType().then((res) => {
         if (res.data.errCode === 0) {
           this.equipmentTypeList = res.data.TypeList
-          let sortType = {
+          const sortType = {
             prop: 'equipmentOrder',
             order: 'ascending'
           }

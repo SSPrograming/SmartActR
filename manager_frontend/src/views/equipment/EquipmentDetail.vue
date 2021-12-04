@@ -28,11 +28,7 @@
                 :default-sort="{prop: 'equipmentID', order: 'ascending'}">
         <el-table-column prop="equipmentID" label="设备编号" width="150px" :sortable="'custom'"></el-table-column>
         <el-table-column prop="equipmentName" label="设备名称" width="250px" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'">
-          <template slot-scope="scope">
-            <span>{{ status2string(scope.row.equipmentStatus) }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="equipmentStatus" label="设备状态" :sortable="'custom'"></el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <div class="operation">
@@ -92,7 +88,8 @@ export default {
           queryEndDate: null
         },
         tableLoading: false,
-        recordList: []
+        recordList: [],
+        equipmentID: 0
       }
     }
   },
@@ -109,7 +106,7 @@ export default {
   },
   mounted() {
     if (this.$route.query.equipmentType) {
-      this.equipmentType = this.$route.query.equipmentType
+      this.equipmentType = Number.parseInt(this.$route.query.equipmentType)
       this.getEquipmentList()
       this.recordInfo.toolbar.queryStartDate = new Date()
       this.recordInfo.toolbar.queryStartDate.setDate(this.recordInfo.toolbar.queryStartDate.getDate() - 8)
@@ -133,9 +130,6 @@ export default {
     doSort() {
       this.$utils.sort(this.equipmentList, this.sortType, 'equipmentID')
     },
-    status2string(status) {
-      return this.$api.equipment.status2string[status]
-    },
     getEquipmentList() {
       this.tableLoading = true
       this.$api.equipment.getAllEquipment({equipmentType: this.equipmentType}).then((res) => {
@@ -157,6 +151,25 @@ export default {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
+      const params = {
+        equipmentType: this.equipmentType,
+        equipmentID: this.recordInfo.equipmentID,
+        startDate: this.recordInfo.toolbar.queryStartDate && this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'),
+        endDate: this.recordInfo.toolbar.queryEndDate && this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd')
+      }
+      this.recordInfo.tableLoading = true
+      this.$api.equipment.getEquipmentRecordList(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.recordInfo.recordList = res.data.recordList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.recordInfo.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.recordInfo.tableLoading = false
+      })
     },
     query() {
       if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
@@ -169,7 +182,19 @@ export default {
         cancelButtonText: '取消',
         type: 'info'
       }).then(() => {
-
+        this.tableLoading = true
+        this.$api.equipment.addEquipment({equipmentType: this.equipmentType}).then((res) => {
+          if (res.data.errCode === 0) {
+            this.getEquipmentList()
+            this.$utils.alertMessage(this, '添加成功', 'success')
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.tableLoading = false
+        })
       }).catch(() => {
       })
     },
@@ -183,18 +208,54 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        const params = {
+          equipmentType: this.equipmentType,
+          equipmentID: row.equipmentID
+        }
+        this.tableLoading = true
+        this.$api.equipment.deleteEquipment(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.getEquipmentList()
+            this.$utils.alertMessage(this, '删除成功', 'success')
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.tableLoading = false
+        })
       }).catch(() => {
       })
     },
     handleLookUp(row) {
-      console.log(row)
+      this.recordInfo.equipmentID = row.equipmentID
+      this.getRecordList()
       this.showReserveRecord = true
     },
     editorCancel() {
       this.showEquipmentEditor = false
     },
     editorConfirm() {
+      this.dialogLoading = true
+      const params = {
+        equipmentType: this.equipmentType,
+        equipmentID: this.form.equipmentID,
+        equipmentStatus: this.form.equipmentStatus
+      }
+      this.dialogLoading = true
+      this.$api.equipment.editEquipment(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.getEquipmentList()
+          this.$utils.alertMessage(this, '编辑成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.dialogLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.dialogLoading = false
+      })
       this.showEquipmentEditor = false
     },
     handleShowQRCode(row) {

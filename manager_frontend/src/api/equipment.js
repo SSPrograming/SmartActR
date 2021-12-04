@@ -7,10 +7,6 @@ import axios from './axios'
 const subUrl = 'equipment'
 
 const equipment = {
-  status2string: {
-    'fine': '正常',
-    'broken': '损坏'
-  },
   getAllEquipmentType() {
     return axios.get(`${config.baseUrl}/${subUrl}/getAllEquipmentType`)
   },
@@ -37,6 +33,9 @@ const equipment = {
   },
   deleteEquipment(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/deleteEquipment`, params)
+  },
+  getEquipmentRecordList(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/getEquipmentRecordList`, params)
   }
 }
 

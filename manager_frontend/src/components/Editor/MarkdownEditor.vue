@@ -155,7 +155,7 @@ export default {
   .el-upload--picture-card {
     width: 100px;
     height: 100px;
-    margin: 0 8px 11px 0;
+    margin: 0 8px 12px 0;
     line-height: 107px;
   }
 

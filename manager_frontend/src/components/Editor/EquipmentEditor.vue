@@ -30,12 +30,12 @@ export default {
     return {
       options: [
         {
-          value: 'fine',
-          label: this.$api.equipment.status2string['fine']
+          value: '完好',
+          label: '完好'
         },
         {
-          value: 'broken',
-          label: this.$api.equipment.status2string['broken']
+          value: '损坏',
+          label: '损坏'
         }
       ]
     }
