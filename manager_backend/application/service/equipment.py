@@ -174,7 +174,7 @@ class EquipmentService():
     
     def update_equipment_status(Type, id, status):
         target_equipment = Equipment.query.filter(Equipment.equipmentType==Type,
-                                                  Equipment.equipmentID==id)
+                                                  Equipment.equipmentID==id).first()
         if target_equipment is None:
             return "设备不存在", False
         try:
