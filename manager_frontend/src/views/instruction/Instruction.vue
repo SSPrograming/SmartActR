@@ -6,7 +6,7 @@
     </el-dialog>
     <div class="container">
       <div class="header">
-        <Toolbar refresh></Toolbar>
+        <Toolbar refresh @refresh="getInstructionList"></Toolbar>
         <el-button type="primary" plain @click="handleAdd">添加使用说明</el-button>
       </div>
       <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
@@ -52,7 +52,6 @@ export default {
       instructionList: [
         {
           instructionName: '3D辉夜机使用说明',
-          instructionContent: '',
           instructionID: 1,
           instructionTags: ['快乐', '好用']
         }
@@ -96,6 +95,9 @@ export default {
     doSort() {
       this.$utils.sort(this.instructionList, this.sortType, 'instructionID')
     },
+    getInstructionList() {
+
+    },
     handleAdd() {
       if (this.editInstructionID) {
         this.editInstructionID = null
@@ -107,10 +109,22 @@ export default {
       this.showInstructionInfoEditor = true
     },
     handleEdit(row) {
-      console.log(row)
+      this.editInstructionID = row.instructionID
+      this.form = {
+        instructionName: row.instructionName,
+        instructionTags: row.instructionTags.concat(),
+      }
+      this.showInstructionInfoEditor = true
     },
     handleDelete(row) {
-      console.log(row)
+      this.$confirm('此操作将删除该公告, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(row)
+      }).catch(() => {
+      })
     },
     handleLookUp(row) {
       this.$router.push({

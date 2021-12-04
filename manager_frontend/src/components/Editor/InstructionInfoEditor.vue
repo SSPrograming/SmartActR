@@ -5,7 +5,7 @@
         <el-input v-model="form.instructionName" style="width: 250px" placeholder="请输入设备名称"></el-input>
       </el-form-item>
       <el-form-item label="标签" required>
-        <el-tag v-for="(tag, index) in form.instructionTags" :key="index" closable type="info"
+        <el-tag v-for="(tag, index) in form.instructionTags" :key="index" closable type="success"
                 @close="removeTag(index)" disable-transitions>
           {{ tag }}
         </el-tag>
