@@ -2,8 +2,9 @@ from flask import request, jsonify, Blueprint, g
 from config import query_yaml
 from application.database import db
 from application.service import ruleService
-from application.utils import generate_jwt
+from application.utils import generate_jwt, now
 from .login_decorator import login_required
+import datetime
 
 bp_rule = Blueprint(
     'rule',
@@ -22,11 +23,13 @@ def addRule():
         expireDate = request.json["expireDate"]
         ruleContent["startTime"] = startTime
         ruleContent["endTime"] = endTime
-        ruleContent["expireDate"] = expireDate
+        ruleDescription = request.json["ruleDescription"]
+        ruleContent["ruleDescription"] = ruleDescription
     except:
         return jsonify(argumentErr), 200
     if repeat == 1:
         try:
+            ruleContent["expireDate"] = expireDate
             day = request.json["day"]
             ruleContent["day"] = day
         except:
@@ -34,6 +37,7 @@ def addRule():
     elif repeat==0:
         try:
             date = request.json["date"]
+            ruleContent["expireDate"] = date
             ruleContent["date"] = date
         except:
             return jsonify(argumentErr), 200
@@ -46,3 +50,26 @@ def addRule():
     else:
         return jsonify({"errCode": 0}), 200
     
+
+@bp_rule.route('/api/v1/rules/getRules', methods=['GET'])
+@login_required
+def getRules():
+    rule_list_raw = ruleService.get_rule_list()
+    now_datetime = now()
+    now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+    rule_list_ret = []
+    for item in rule_list_raw:
+        rule = {}
+        rule["repeat"] = item.repeat
+        if item.repeat==1:
+            rule["day"] = item.day
+        else:
+            rule["date"] = str(item.date)
+        rule["startTime"] = item.startTime.strftime("%H:%M")
+        rule["endTime"] = item.endTime.strftime("%H:%M")
+        rule["expireDate"] = str(item.expireDate)
+        rule["takeEffectDate"] = str(now_date)
+        rule["ruleID"] = item.ruleID
+        rule["ruleDescription"] = '' if item.ruleDescription is None else item.ruleDescription
+        rule_list_ret.append(rule)
+    return jsonify({"rules": rule_list_ret, "errCode": 0}), 200

@@ -71,18 +71,19 @@ class Student(db.Model):
     cell = db.Column(db.String(16))
     email = db.Column(db.String(32))
 
-class OccupationInfo(db.Model):
+class ruleTable(db.Model):
     """
     占用规则表
     """
-    __tablename__ = 'occupationinfo'
-    ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    __tablename__ = 'ruletable'
+    ruleID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     repeat = db.Column(db.Boolean, doc="是否为重复规则")
     day = db.Column(db.Integer, doc="如重复，是星期几")
     date = db.Column(db.Date, doc="如不重复，是哪一天")
     startTime = db.Column(db.Time, doc="开始时间")
     endTime = db.Column(db.Time, doc="结束时间")
     expireDate = db.Column(db.Date, doc="规则失效日期")
+    ruleDescription = db.Column(db.String(256), doc="规则描述")
 
 class TableNotcie(db.Model):
     """

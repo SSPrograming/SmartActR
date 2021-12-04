@@ -1,5 +1,5 @@
 from application.database import db
-from application.models import Reserve_Record, OccupationInfo
+from application.models import Reserve_Record, ruleTable
 import datetime
 from application.utils import now
 
@@ -18,7 +18,7 @@ class ReserveService:
         返回一个占用时间段和标志位，标志这一天是否有占用
         占用时间段可能有多个，以[{"startTime":Time, "endTime": Time}]形式返回
         """
-        valid_occupations = OccupationInfo.query.filter(OccupationInfo.expireDate>=date).all()
+        valid_occupations = ruleTable.query.filter(ruleTable.expireDate>=date).all()
         occupied_time = []
         occupy_flag = False
         weekday = date.isoweekday()
