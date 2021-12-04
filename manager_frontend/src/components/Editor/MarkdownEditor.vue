@@ -49,7 +49,35 @@ export default {
       dialogImageUrl: '',
     }
   },
+  mounted() {
+    this.renderMarkdown()
+  },
   methods: {
+    renderMarkdown() {
+      let hljs = require('highlight.js'); // https://highlightjs.org/
+      let md = require('markdown-it')({
+        html: true,
+        xhtmlOut: false,
+        breaks: false,
+        langPrefix: 'language-',
+        linkify: false,
+        typographer: true,
+        quotes: '“”‘’',
+        highlight: function (str, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            try {
+              return '<pre class="hljs">' +
+                  hljs.highlight(str, {language: lang, ignoreIllegals: true}).value +
+                  '</pre>';
+              // eslint-disable-next-line no-empty
+            } catch (__) {
+            }
+          }
+          return '<pre class="hljs">' + md.utils.escapeHtml(str) + '</pre>';
+        }
+      });
+      this.instruction.html = md.render(this.instruction.content);
+    },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
@@ -63,30 +91,7 @@ export default {
   },
   watch: {
     'instruction.content'() {
-      let hljs = require('highlight.js'); // https://highlightjs.org/
-      let md = require('markdown-it')({
-        html: true,
-        xhtmlOut: false,
-        breaks: false,
-        langPrefix: 'language-',
-        linkify: false,
-        typographer: true,
-        quotes: '“”‘’',
-        highlight: function (str, lang) {
-          if (lang && hljs.getLanguage(lang)) {
-            try {
-              return '<pre class="hljs"><code>' +
-                  hljs.highlight(str, {language: lang, ignoreIllegals: true}).value +
-                  '</code></pre>';
-              // eslint-disable-next-line no-empty
-            } catch (__) {
-            }
-          }
-
-          return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-        }
-      });
-      this.instruction.html = md.render(this.instruction.content);
+      this.renderMarkdown()
     }
   }
 }
@@ -103,7 +108,6 @@ export default {
 .main {
   display: flex;
   width: 100%;
-  margin-top: 20px;
 
   .left {
     flex-basis: 50%;
@@ -151,6 +155,7 @@ export default {
   .el-upload--picture-card {
     width: 100px;
     height: 100px;
+    margin: 0 8px 11px 0;
     line-height: 107px;
   }
 
@@ -160,6 +165,18 @@ export default {
 }
 
 .output {
+  color: #24292f;
+
+  h1 {
+    padding-bottom: .3em;
+    border-bottom: 1px solid #d8dee4;
+  }
+
+  h2 {
+    padding-bottom: .3em;
+    border-bottom: 1px solid #d8dee4;
+  }
+
   blockquote {
     margin: 0;
     padding: 0 1em;
@@ -176,6 +193,14 @@ export default {
     background-color: #f6f8fa;
     border-radius: 6px;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  }
+
+  code {
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: #afb8c133;
+    border-radius: 6px;
   }
 
   ul {
