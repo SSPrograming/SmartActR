@@ -1,8 +1,9 @@
 .container {
-    padding-top: 40rpx;
+    padding-top: 30rpx;
     background-color: #ebebeb;
 
     .reserve_history_tab {
+        margin: 0 10% 0 10%;
         display: flex;
 
         .tab_container {
@@ -15,9 +16,9 @@
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 300rpx;
-                height: 100rpx;
-                line-height: 100rpx;
+                width: 240rpx;
+                height: 80rpx;
+                line-height: 80rpx;
                 background-color: white;
                 border-radius: 50rpx;
                 box-shadow: 5rpx 5rpx 10rpx rgba(240, 194, 214, .6);
@@ -32,8 +33,8 @@
                 margin-top: 10rpx;
                 left: 50%;
                 transform: translateX(-50%);
-                height: 80rpx;
-                width: 280rpx;
+                height: 60rpx;
+                width: 220rpx;
                 border-radius: 50rpx;
                 box-shadow: 0rpx 0rpx 5rpx rgba(116, 53, 78, 0.6);
                 background-color: transparent;
@@ -57,26 +58,31 @@
                 height: 250rpx;
                 padding: 20rpx;
                 margin: 30rpx auto 0 auto;
-                font-size: 35rpx;
+                font-size: 30rpx;
                 line-height: 50rpx;
                 background: #ffffff;
                 box-shadow: 5rpx 5rpx 10rpx rgba(240, 194, 214, .6);
-                border-radius: 20rpx;
+                border-radius: 30rpx;
 
                 .history_content {
                     padding: 15rpx;
                 }
 
                 .reservation_status {
-                    margin: 20rpx 20rpx 20rpx 50rpx;
-                    width: 200rpx;
-                    height: 200rpx;
+                    margin: 30rpx 20rpx 20rpx 50rpx;
+                    width: 180rpx;
+                    height: 180rpx;
                     float: right;
+                    transform: rotate(345deg);
                 }
             }
 
             .history_container:last-child {
                 margin-bottom: 200rpx;
+            }
+
+            .history_container:first-child {
+                margin-top: 15rpx;
             }
 
         }

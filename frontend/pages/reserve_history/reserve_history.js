@@ -15,14 +15,14 @@ Page({
 
   },
 
-  switch_current(){
+  switch_current() {
     this.setData({
       selected: 0,
     })
     app.dealThing(this.getCurrentReserveInfo);
   },
 
-  switch_history(){
+  switch_history() {
     this.setData({
       selected: 1,
     })
@@ -85,11 +85,11 @@ Page({
   onLoad: function (options) {
     app.dealThing(this.getCurrentReserveInfo);
     this.setData({
-      reservationStatus2imagePath:{
-        'success' : '/resources/images/reserve_success.png',
-        'finish': '/resources/images/reserve_finish.png',
+      reservationStatus2imagePath: {
+        '成功': '/resources/images/reserve_success.png',
+        '完成': '/resources/images/reserve_finish.png',
         '违约': '/resources/images/reserve_fail.png',
-        'cancel': '/resources/images/reserve_cancel.png',
+        '取消': '/resources/images/reserve_cancel.png',
       }
     })
   },
