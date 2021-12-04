@@ -1,0 +1,33 @@
+<!--pages/reserve_history/reserve_history.wxml-->
+<page-meta root-background-color="#ebebeb">
+  <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
+</page-meta>
+<view class="container">
+  <view class="reserve_history_tab">
+    <view class="tab_container">
+        <view class="current_tab tab" bindtap="switch_current">
+            当前预约
+        </view>
+        <view class="{{selected === 0 ? 'chosen_tab' : 'hidden'}}"></view>
+
+    </view>
+    <view class="tab_container">
+        <view class="history_tab tab" bindtap="switch_history">
+            历史预约
+        </view>
+        <view class="{{selected === 1 ? 'chosen_tab' : 'hidden'}}"></view>
+    </view>
+  </view>
+  <view class="history_container">
+      <scroll-view class="equipment_scroll" scroll-y="true">          
+            <view class="history_container" wx:for="{{reservation_list}}" wx:key="index" data-index="{{index}}">
+                <view class="history_content">
+                    <view class="reserveID">设备编号：{{item.reserveID}}号</view>
+                    <view class="reserve_date">预约日期：{{item.month}}月{{item.date}}日</view>
+                    <view class="reserve_time">预约时间：{{item.startTime}}~{{item.endTime}}</view>
+                </view>
+                <image class="reservation_status" src="{{ reservationStatus2imagePath[item.status] }}"></image>
+            </view>
+      </scroll-view>
+  </view>
+</view>

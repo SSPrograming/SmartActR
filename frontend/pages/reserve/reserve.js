@@ -53,7 +53,7 @@ Page({
         if (res.data.errCode === 0) {
           let show = false;
           if (new Date() <= new Date(res.data.expireDate)) {
-            show = true;
+            show = false;
           }
           this.setData({
             noticeDate: res.data.noticeDate,
@@ -70,14 +70,18 @@ Page({
   },
 
   showNotice(e) {
-    this.setData({ isShowNotice: true });
+    this.setData({
+      isShowNotice: true
+    });
   },
 
   hideNotice(e) {
-    this.setData({ isShowNotice: false });
+    this.setData({
+      isShowNotice: false
+    });
   },
 
-  onEnter(e) { },
+  onEnter(e) {},
 
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {
@@ -133,8 +137,8 @@ Page({
   onShow() {
     // 更新TabBar
     if (
-      typeof this.getTabBar === 'function'
-      && this.getTabBar()
+      typeof this.getTabBar === 'function' &&
+      this.getTabBar()
     ) {
       this.getTabBar().setData({
         selected: 1,
