@@ -3,7 +3,7 @@ from application.services import EquipmentService, ReserveService,CheckInService
 from .login_decorator import login_required
 import operator, datetime
 import math
-
+from application.utils import now, calculate_total_time, reduce_to_nowTime, calculate_spare_time
 
 bp_reserve = Blueprint(
     'reserve',
@@ -27,12 +27,11 @@ def getEquipmentStatus():
     targetEquipmentType = EquipmentService.get_single_equipmentType(targetType)
     if targetEquipment is None:
         return jsonify({"errCode": 1,"errMsg": "无此设备"}), 200
-    if targetEquipment.equipmentStatus != 'fine':
+    if targetEquipment.equipmentStatus != '完好':
         return jsonify({"errCode": 1,"errMsg": "设备损坏，不可使用"}), 200
     occupation, hasOccupation = ReserveService.get_occupation_of_day(date)
     records = ReserveService.get_record_of_single_equipment(date, targetType, targetID)
     for record in records:
-        print(record.startTime)
         occupation.append({"startTime": record.startTime,
                                           "endTime": record.endTime})
     occupation = sorted(occupation, key=operator.itemgetter('startTime'))
@@ -63,25 +62,21 @@ def getEquipmentStatus():
             spareTime.append(splitTime_2)
 
     remove_end = 0
-    # 转化为本地时间
-    now = datetime.datetime.now() + datetime.timedelta(hours=8)
+    now_datetime = now()
     for item in spareTime:
         item_endTime = datetime.datetime.strptime(item["endTime"],'%H:%M')
         item_endTime = item_endTime.replace(year=year, month=month, day=day)
-        print(item_endTime)
-        print(now)
-        if item_endTime < now:
+        if item_endTime < now_datetime:
             remove_end += 1
         else:
             break
     del spareTime[:remove_end]
-    print(len(spareTime))
     if len(spareTime):
         item_startTime = datetime.datetime.strptime(spareTime[0]["startTime"], '%H:%M')
         item_startTime = item_startTime.replace(year=year, month=month, day=day)
-        if item_startTime < now:
-            minute_round = math.ceil(now.minute / 15) * 15
-            hour = now.hour
+        if item_startTime < now_datetime:
+            minute_round = math.ceil(now_datetime.minute / 15) * 15
+            hour = now_datetime.hour
             if minute_round == 60:
                 hour += 1
                 minute_round = 0
@@ -120,9 +115,9 @@ def getAllEquipmentStatus():
         for record in records:
             occupation.append({"startTime": record.startTime,
                                "endTime": record.endTime})
-            occupation = sorted(occupation, key=operator.itemgetter('startTime'))
+        occupation = sorted(occupation, key=operator.itemgetter('startTime'))
         occupation_merged = []
-        if len(occupation)>0:
+        if len(occupation):
             cur_item = occupation[0] #to be merged
             for item in occupation:
                 if item["startTime"]<=cur_item["endTime"]:
@@ -130,12 +125,23 @@ def getAllEquipmentStatus():
                 else:
                     occupation_merged.append(cur_item)
                     cur_item = item
+            occupation_merged.append(cur_item)
+        occupation_merged = reduce_to_nowTime(occupation_merged, date)
+        total_time_occupied = calculate_total_time(occupation_merged)
+        spare_time = calculate_spare_time(date)
+        if spare_time==datetime.timedelta(0) or total_time_occupied/spare_time>=1:
+            occupationStatus = 2
+        elif total_time_occupied/spare_time>=0.5:
+            occupationStatus = 1
+        else:
+            occupationStatus = 0
+
         # TODO: 判断占用状态
         equipmentStatuses.append({"equipmentType": equipment.equipmentType,
                                   "equipmentName": targetEquipmentType.equipmentName,
                                   "equipmentID": equipment.equipmentID,
                                   "equipmentImageURL": targetEquipmentType.equipmentImageURL,
-                                  "equipmentStatus": 0})
+                                  "equipmentStatus": occupationStatus})
     
     return jsonify({
         "errCode": 0,
@@ -200,6 +206,8 @@ def getHistoryReserveInfo():
     for item in history_record:
         resp_record.append({
             "reserveID": item.recordID,
+            "equipmentName": EquipmentService.get_name_by_Type(item.equipmentType),
+            "equipmentID": item.equipmentID,
             "startTime": item.startTime.strftime("%H:%M"),
             "endTime": item.endTime.strftime("%H:%M"),
             "year": item.reserveDate.year,
@@ -222,6 +230,8 @@ def getCurrentReserveInfo():
         resp_record.append({
             "reserveID": item.recordID,
             "startTime": item.startTime.strftime("%H:%M"),
+            "equipmentName": EquipmentService.get_name_by_Type(item.equipmentType),
+            "equipmentID": item.equipmentID,
             "endTime": item.endTime.strftime("%H:%M"),
             "year": item.reserveDate.year,
             "month": item.reserveDate.month,

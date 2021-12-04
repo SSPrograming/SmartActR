@@ -73,6 +73,7 @@ class EquipmentService():
         """
         target_equipmentType = equipmentType.query.order_by(equipmentType.equipmentType.desc()).first().equipmentType
         new_equipmentType.equipmentImageURL = query_yaml("app.MANAGERSERVERURL") + "image/equipment/"+ str(target_equipmentType) + "_" +img_name
+        new_equipmentType.equipmentOrder = target_equipmentType
         try:
             db.session.commit()
         except:
@@ -91,7 +92,7 @@ class EquipmentService():
     def add_equipment(Type,id):
         new_equipment = Equipment()
         new_equipment.equipmentType = Type
-        new_equipment.equipmentStatus = 'fine'
+        new_equipment.equipmentStatus = '完好'
         new_equipment.equipmentID = id
         try:
             db.session.add(new_equipment)
@@ -173,7 +174,7 @@ class EquipmentService():
     
     def update_equipment_status(Type, id, status):
         target_equipment = Equipment.query.filter(Equipment.equipmentType==Type,
-                                                  Equipment.equipmentID==id)
+                                                  Equipment.equipmentID==id).first()
         if target_equipment is None:
             return "设备不存在", False
         try:

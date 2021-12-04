@@ -28,7 +28,7 @@ class CheckInService:
                 print("diff:",diff)
                 if diff <= 20 and diff >= -20:
                     flag = True
-                    equipment.status = "finished"
+                    equipment.status = "完成"
                     db.session.commit()
             if not flag:
                 return 2 #码有效，但是签到失败（未预约或者已经逾期违约）

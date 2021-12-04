@@ -22,7 +22,8 @@ def getAllEquipmentType():
         "equipmentName": item.equipmentName,
         "equipmentDescription": item.equipmentDescription,
         "equipmentCount": EquipmentService.get_type_count(item.equipmentType),
-        "equipmentImage": item.equipmentImageURL
+        "equipmentImage": item.equipmentImageURL,
+        "equipmentOrder": item.equipmentOrder
     }   for item in type_all_raw
     ]
     return jsonify({"errCode": 0, "TypeList": type_list}), 200

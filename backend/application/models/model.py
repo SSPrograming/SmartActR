@@ -23,6 +23,7 @@ class equipmentType(db.Model):
     equipmentName = db.Column(db.String(256))
     equipmentDescription = db.Column(db.String(1024))
     equipmentImageURL = db.Column(db.String(1024))
+    equipmentOrder = db.Column(db.Integer, unique=True)
 
 class Equipment(db.Model):
     __tablename__ = 'equipment'
@@ -30,7 +31,7 @@ class Equipment(db.Model):
                               doc="设备种类")
     equipmentID = db.Column(db.Integer, primary_key=True)
     equipmentStatus = db.Column(db.String(32),
-                                doc="设备状态,是否损坏等,默认为fine")
+                                doc="设备状态,是否损坏等,默认为完好")
 
 class Reserve_Record(db.Model):
     """
@@ -70,18 +71,19 @@ class Student(db.Model):
     cell = db.Column(db.String(16))
     email = db.Column(db.String(32))
 
-class OccupationInfo(db.Model):
+class ruleTable(db.Model):
     """
     占用规则表
     """
-    __tablename__ = 'occupationinfo'
-    ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    __tablename__ = 'ruletable'
+    ruleID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     repeat = db.Column(db.Boolean, doc="是否为重复规则")
     day = db.Column(db.Integer, doc="如重复，是星期几")
     date = db.Column(db.Date, doc="如不重复，是哪一天")
     startTime = db.Column(db.Time, doc="开始时间")
     endTime = db.Column(db.Time, doc="结束时间")
     expireDate = db.Column(db.Date, doc="规则失效日期")
+    ruleDescription = db.Column(db.String(256), doc="规则描述")
 
 class TableNotcie(db.Model):
     """
@@ -99,7 +101,6 @@ class Instruction(db.Model):
     """
     __tablename__ = 'instruction'
     instructionContent = db.Column(db.Text, doc="html格式说明内容")
-    instructionTag = db.Column(db.String(256), doc="标签")
     instructionID = db.Column(db.Integer, autoincrement=True, primary_key=True, doc="ID")
     instructionName = db.Column(db.String(64), doc="说明标题")
 
@@ -130,3 +131,22 @@ class QRCode(db.Model):
             [Equipment.equipmentType, Equipment.equipmentID]
         ),
     )
+
+class InstructionTag(db.Model):
+    """
+    使用说明-标签映射
+    """
+    __tablename__ = 'instructionTag'
+    instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
+    tagName = db.Column(db.String(64))
+    instructionTagID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+
+class feedback(db.Model):
+    """
+    反馈
+    """
+    __tablename__ = 'feedback'
+    feedbackContent = db.Column(db.String(1024))
+    feedbackID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    postDate = db.Column(db.Date)
+    userID = db.Column(db.String(128), db.ForeignKey('user.userID'), nullable=False)
