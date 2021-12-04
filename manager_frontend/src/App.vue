@@ -137,18 +137,5 @@ html, body {
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 8px;
-  background-color: #ebeef5;
-}
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(144, 147, 153, 0.3);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 1);
-}
 </style>

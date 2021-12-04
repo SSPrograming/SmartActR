@@ -120,9 +120,11 @@ export default {
     .output {
       box-sizing: border-box;
       padding: 20px;
+      font-size: 14px;
     }
   }
 }
+
 </style>
 
 <style lang="scss">
@@ -157,8 +159,50 @@ export default {
   }
 }
 
-blockquote {
-  font-style: italic;
-  font-size: 16px;
+.output {
+  blockquote {
+    margin: 0;
+    padding: 0 1em;
+    font-size: 14px;
+    color: #57606a;
+    border-left: .25em solid #d0d7de;
+  }
+
+  pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 2em;
+  }
 }
+
+.input {
+  textarea::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+    background-color: #ebeef5;
+  }
+
+  textarea:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(144, 147, 153, 0.3);
+  }
+
+  textarea::-webkit-scrollbar-thumb {
+    background-color: rgba(144, 147, 153, 0);
+    border-radius: 3px;
+  }
+
+  textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 1);
+  }
+}
+
 </style>
