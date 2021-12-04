@@ -261,6 +261,7 @@
     display: flex;
     /* 大小 */
     width: 612rpx;
+    height: 180rpx;
     padding: 20rpx;
     margin: 0 auto 30rpx auto;
     /* 文字 */
@@ -278,10 +279,15 @@
     margin-bottom: 200rpx;
 }
 
+.equipment-image-container {
+    flex-basis: 240rpx;
+    width: 220rpx;
+}
+
 .equipment-image {
     /* 大小 */
-    width: 220rpx;
-    height: 180rpx;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .equipment-vertical-delimiter {
