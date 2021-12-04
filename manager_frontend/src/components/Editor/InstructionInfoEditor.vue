@@ -2,7 +2,7 @@
   <div class="instruction-info-editor">
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="标题" required>
-        <el-input v-model="form.instructionName" style="width: 250px" placeholder="请输入设备名称"></el-input>
+        <el-input v-model="form.instructionName" style="width: 250px" placeholder="请输入标题名称"></el-input>
       </el-form-item>
       <el-form-item label="标签" required>
         <el-tag v-for="(tag, index) in form.instructionTags" :key="index" closable type="success"
