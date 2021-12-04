@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint, g
+from flask import json, request, jsonify, Blueprint, g
 from config import query_yaml
 from application.database import db
 from application.service import ruleService
@@ -20,7 +20,6 @@ def addRule():
         repeat = request.json["repeat"]
         startTime = request.json["startTime"]
         endTime = request.json["endTime"]
-        expireDate = request.json["expireDate"]
         ruleContent["startTime"] = startTime
         ruleContent["endTime"] = endTime
         ruleDescription = request.json["ruleDescription"]
@@ -29,6 +28,7 @@ def addRule():
         return jsonify(argumentErr), 200
     if repeat == 1:
         try:
+            expireDate = request.json["expireDate"]
             ruleContent["expireDate"] = expireDate
             day = request.json["day"]
             ruleContent["day"] = day
@@ -45,6 +45,47 @@ def addRule():
         return jsonify(argumentErr)
     
     msg, addStatus = ruleService.addRule(repeat, ruleContent)
+    if not addStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    else:
+        return jsonify({"errCode": 0}), 200
+
+
+@bp_rule.route('/api/v1/rules/updateRule', methods=['POST'])
+@login_required
+def updateRule():
+    argumentErr = {"errCode": 1, "errMsg": "bad arguments"}
+    ruleContent = {}
+    try:
+        ruleID = request.json["ruleID"]
+        repeat = request.json["repeat"]
+        startTime = request.json["startTime"]
+        endTime = request.json["endTime"]
+        ruleContent["startTime"] = startTime
+        ruleContent["endTime"] = endTime
+        ruleDescription = request.json["ruleDescription"]
+        ruleContent["ruleDescription"] = ruleDescription
+    except:
+        return jsonify(argumentErr), 200
+    if repeat == 1:
+        try:
+            expireDate = request.json["expireDate"]
+            ruleContent["expireDate"] = expireDate
+            day = request.json["day"]
+            ruleContent["day"] = day
+        except:
+            return jsonify(argumentErr), 200
+    elif repeat==0:
+        try:
+            date = request.json["date"]
+            ruleContent["expireDate"] = date
+            ruleContent["date"] = date
+        except:
+            return jsonify(argumentErr), 200
+    else:
+        return jsonify(argumentErr)
+    
+    msg, addStatus = ruleService.updateRule(ruleID, repeat, ruleContent)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
@@ -73,3 +114,17 @@ def getRules():
         rule["ruleDescription"] = '' if item.ruleDescription is None else item.ruleDescription
         rule_list_ret.append(rule)
     return jsonify({"rules": rule_list_ret, "errCode": 0}), 200
+
+@bp_rule.route('/api/v1/rules/deleteRule', methods=['POST'])
+@login_required
+def deleteRule():
+    argumentErr = {"errCode": 1, "errMsg": "bad arguments"}
+    try:
+        ruleID = request.json["ruleID"]
+    except:
+        return jsonify(argumentErr), 200
+    msg, deleteStatus = ruleService.deleteRule(ruleID=ruleID)
+    if deleteStatus:
+        return jsonify({"errCode": 0}), 200
+    else:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200

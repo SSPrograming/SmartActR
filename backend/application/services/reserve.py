@@ -6,11 +6,12 @@ from application.utils import now
 class ReserveService:
     def get_record_of_single_equipment(date, equipmentType, equipmentID):
         """
-        返回特定日期，特定设备的所有预约记录
+        返回特定日期，特定设备的所有**有效**预约记录
         """
         records = Reserve_Record.query.filter(Reserve_Record.reserveDate==date,
                                               Reserve_Record.equipmentType==equipmentType,
-                                              Reserve_Record.equipmentID==equipmentID).all()
+                                              Reserve_Record.equipmentID==equipmentID,
+                                              Reserve_Record.status=="成功" or Reserve_Record.status=="完成").all()
         return records
         
     def get_occupation_of_day(date):
