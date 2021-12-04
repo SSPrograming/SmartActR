@@ -12,6 +12,12 @@ const rule = {
   },
   addRule(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/addRule`, params)
+  },
+  updateRule(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/updateRule`, params)
+  },
+  deleteRule(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/deleteRule`, params)
   }
 }
 

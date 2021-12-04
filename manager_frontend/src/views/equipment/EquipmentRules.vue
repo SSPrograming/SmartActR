@@ -127,21 +127,38 @@ export default {
       this.showRuleEditor = true
     },
     handleDelete() {
-      this.showRuleEditor = false
+      if (this.editRuleID) {
+        this.dialogLoading = true
+        this.$api.rule.deleteRule({ruleID: this.editRuleID}).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '删除成功', 'success')
+            this.getRules()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        })
+      } else {
+        this.showRuleEditor = false
+      }
     },
     editorCancel() {
       this.showRuleEditor = false
     },
     editorConfirm() {
-      console.log(this.form)
       let params = {
         ...this.form,
         day: this.form.repeat && this.form.day,
         date: !this.form.repeat && this.$utils.time.format(this.form.date, 'yyyy-MM-dd'),
         expireDate: this.form.repeat && this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd')
       }
-      console.log(params)
       this.dialogLoading = true
+      // 新建
       if (!this.editRuleID) {
         this.$api.rule.addRule(params).then((res) => {
           if (res.data.errCode === 0) {
@@ -156,6 +173,27 @@ export default {
               expireDate: null,
               ruleDescription: ''
             }
+            this.getRules()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        })
+      }
+      // 编辑
+      else {
+        params = {
+          ...params,
+          ruleID: this.editRuleID
+        }
+        this.$api.rule.updateRule(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '编辑成功', 'success')
             this.getRules()
           } else {
             this.$utils.error.APIError(this, res.data)

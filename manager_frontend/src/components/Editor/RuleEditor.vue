@@ -122,7 +122,6 @@ export default {
         } else if (this.form.endTime <= this.form.startTime) {
           this.$utils.alertMessage(this, '请选择正确的时间范围', 'warning')
         } else if (this.form.repeat && !this.form.expireDate) {
-          console.log(this.form.expireDate)
           this.$utils.alertMessage(this, '请选择失效日期', 'warning')
         } else {
           if (valid) {
