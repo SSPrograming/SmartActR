@@ -25,6 +25,18 @@ const equipment = {
   },
   getAllEquipment(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/getAllEquipment`, params)
+  },
+  swapEquipmentOrder(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/swapEquipmentOrder`, params)
+  },
+  addEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/addEquipment`, params)
+  },
+  editEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/editEquipment`, params)
+  },
+  deleteEquipment(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/deleteEquipment`, params)
   }
 }
 
