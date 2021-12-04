@@ -1,6 +1,8 @@
+from operator import or_
 from application.database import db
 from application.models import Reserve_Record, ruleTable
 import datetime
+from sqlalchemy import or_
 from application.utils import now
 
 class ReserveService:
@@ -11,7 +13,7 @@ class ReserveService:
         records = Reserve_Record.query.filter(Reserve_Record.reserveDate==date,
                                               Reserve_Record.equipmentType==equipmentType,
                                               Reserve_Record.equipmentID==equipmentID,
-                                              Reserve_Record.status=="成功" or Reserve_Record.status=="完成").all()
+                                              or_(Reserve_Record.status=="成功",Reserve_Record.status=="完成")).all()
         return records
         
     def get_occupation_of_day(date):
