@@ -8,13 +8,13 @@
                        :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="星期" required v-if="form.repeat === 1">
+        <el-form-item label="星期" required v-if="form.repeat">
           <el-select v-model="form.day" placeholder="请选择">
             <el-option v-for="item in dayOptions" :key="item.value" :label="item.label"
                        :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="日期" required v-if="form.repeat === 0">
+        <el-form-item label="日期" required v-if="!form.repeat">
           <el-date-picker class="pointer" v-model="form.date" type="date" :editable="false"
                           placeholder="请选择日期"></el-date-picker>
         </el-form-item>
@@ -26,12 +26,12 @@
           <el-time-select class="pointer" v-model="form.endTime" :picker-options="timeOptions" :editable="false"
                           placeholder="请选择结束时间"></el-time-select>
         </el-form-item>
-        <el-form-item label="失效日期" required v-if="form.repeat === 1">
-          <el-date-picker class="pointer" v-model="form.date" type="date" :editable="false"
+        <el-form-item label="失效日期" required v-if="form.repeat">
+          <el-date-picker class="pointer" v-model="form.expireDate" type="date" :editable="false"
                           placeholder="请选择失效日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="规则描述">
-          <el-input type="textarea" :rows="5" placeholder="请输入规则描述" v-model="form.description"></el-input>
+          <el-input type="textarea" :rows="5" placeholder="请输入规则描述" v-model="form.ruleDescription"></el-input>
         </el-form-item>
         <div style="text-align: center;">
           <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
@@ -53,11 +53,11 @@ export default {
     return {
       repeatOptions: [
         {
-          value: 0,
+          value: false,
           label: '否'
         },
         {
-          value: 1,
+          value: true,
           label: '是'
         }
       ],
@@ -111,9 +111,9 @@ export default {
     },
     submit() {
       this.$refs.form.validate().then((valid) => {
-        if (this.form.repeat === 0 && !this.form.date) {
+        if (!this.form.repeat && !this.form.date) {
           this.$utils.alertMessage(this, '请选择日期', 'warning')
-        } else if (this.form.repeat === 1 && typeof this.form.day != "number") {
+        } else if (this.form.repeat && typeof this.form.day != "number") {
           this.$utils.alertMessage(this, '请选择星期', 'warning')
         } else if (!this.form.startTime) {
           this.$utils.alertMessage(this, '请选择开始时间', 'warning')
@@ -121,8 +121,9 @@ export default {
           this.$utils.alertMessage(this, '请选择结束时间', 'warning')
         } else if (this.form.endTime <= this.form.startTime) {
           this.$utils.alertMessage(this, '请选择正确的时间范围', 'warning')
-        } else if (this.form.repeat === 1 && !this.form.expireDate) {
-          this.$utils.alertMessage(this, '请选择过期时间', 'warning')
+        } else if (this.form.repeat && !this.form.expireDate) {
+          console.log(this.form.expireDate)
+          this.$utils.alertMessage(this, '请选择失效日期', 'warning')
         } else {
           if (valid) {
             this.$emit('editorConfirm')

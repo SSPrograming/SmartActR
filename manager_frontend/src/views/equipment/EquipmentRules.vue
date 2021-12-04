@@ -37,61 +37,45 @@ export default {
     return {
       dialogLoading: false,
       calendarLoading: false,
-      rules: [
-        {
-          ruleID: 1,
-          repeat: 0,
-          day: 0,
-          date: "2021-12-4",
-          startTime: "08:00",
-          endTime: "12:00",
-          expireDate: "2021-12-31",
-          description: ''
-        },
-        {
-          ruleID: 2,
-          repeat: 1,
-          day: 0,
-          date: "2021-12-4",
-          startTime: "13:00",
-          endTime: "18:00",
-          expireDate: "2021-12-31",
-          description: ''
-        },
-        {
-          ruleID: 3,
-          repeat: 0,
-          day: 0,
-          date: "2021-12-26",
-          startTime: "08:00",
-          endTime: "12:00",
-          expireDate: "2021-12-31",
-          description: ''
-        }
-      ],
+      rules: [],
       showRuleEditor: false,
       editRuleID: null,
       form: {
-        ruleID: 0,
-        repeat: 0,
+        ruleID: null,
+        repeat: false,
         day: null,
         date: null,
         startTime: null,
         endTime: null,
         expireDate: null,
-        description: ''
+        ruleDescription: ''
       }
     }
   },
+  mounted() {
+    this.getRules()
+  },
   methods: {
     getRules() {
-
+      this.calendarLoading = true
+      this.$api.rule.getRules().then((res) => {
+        if (res.data.errCode === 0) {
+          this.rules = res.data.rules
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.calendarLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.calendarLoading = false
+      })
     },
     getDayRules(date) {
       let result = []
       this.rules.forEach((rule) => {
         // 有效的规则
-        if (date <= new Date(rule.expireDate)) {
+        if (date <= new Date(rule.expireDate) && date >= new Date(rule.takeEffectDate)) {
           // 重复规则
           if (rule.repeat) {
             if (rule.day === date.getDay()) {
@@ -121,14 +105,14 @@ export default {
       if (this.editRuleID) {
         this.editRuleID = null
         this.form = {
-          ruleID: 0,
-          repeat: 0,
+          ruleID: null,
+          repeat: false,
           day: null,
           date: null,
           startTime: null,
           endTime: null,
           expireDate: null,
-          description: ''
+          ruleDescription: ''
         }
       }
       this.showRuleEditor = true
@@ -150,7 +134,40 @@ export default {
     },
     editorConfirm() {
       console.log(this.form)
-      this.showRuleEditor = false
+      let params = {
+        ...this.form,
+        day: this.form.repeat && this.form.day,
+        date: !this.form.repeat && this.$utils.time.format(this.form.date, 'yyyy-MM-dd'),
+        expireDate: this.form.repeat && this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd')
+      }
+      console.log(params)
+      this.dialogLoading = true
+      if (!this.editRuleID) {
+        this.$api.rule.addRule(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '添加成功', 'success')
+            this.form = {
+              ruleID: null,
+              repeat: false,
+              day: null,
+              date: null,
+              startTime: null,
+              endTime: null,
+              expireDate: null,
+              ruleDescription: ''
+            }
+            this.getRules()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showRuleEditor = false
+        })
+      }
     }
   }
 }

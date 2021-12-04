@@ -4,9 +4,12 @@
 import config from './config'
 import axios from './axios'
 
-const subUrl = 'rule'
+const subUrl = 'rules'
 
 const rule = {
+  getRules() {
+    return axios.get(`${config.baseUrl}/${subUrl}/getRules`)
+  },
   addRule(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/addRule`, params)
   }
