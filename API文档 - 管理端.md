@@ -518,10 +518,11 @@ params:
 {
 	"repeat": number, 	#1表示重复，0表示不重复
 	"day": number, 		#周几
-	"date": ""			# 2021-21-11
-	"startTime": ""		# 20:17
-	"endTime":   ""		# 20:18
-	"expireDate": ""	# 1202-20-21
+	"date": "",			# 2021-21-11
+	"startTime": "",	# 20:17
+	"endTime":   "",	# 20:18
+	"expireDate": "",	# 1202-20-21
+	"ruleDescription": ""
 }
 ```
 
@@ -574,10 +575,12 @@ ret:
 			"repeat": number, 	#1表示重复，0表示不重复
 			"day": number, 		#周几
 			"date": "",			# 2021-21-11
-			"startTime": "",		# 20:17
-			"endTime":   "",		# 20:18
+			"startTime": "",	# 20:17
+			"endTime":   "",	# 20:18
+			"takeEffectDate": "",
 			"expireDate": "",	# 1202-20-21
-			"ruleID": number
+			"ruleID": number,
+			"ruleDescription": ""
 		}
 	]
 }
@@ -666,6 +669,30 @@ ret:
 
 
 
+@bp_instruction.route('/api/v1/instruction/getSingleInstruction',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionID": number
+}
+```
+
+ret:
+
+```
+{
+	"instructionContent": ""
+}
+```
+
+
+
+
+
 @bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['POST'])
 
 @login_required
@@ -679,7 +706,6 @@ ret:
 		{
 			"instructionID":
 			"instructionName":
-			"instructionContent":
 			"instructionTags":
 			[
 				"",""

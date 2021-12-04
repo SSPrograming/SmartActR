@@ -143,17 +143,41 @@ ret:
 	"instructionList":
 	[
 		{
-			"instructionID":
-			"instructionName":
-			"instructionContent":
-			"instructionTags":
+			"instructionID": number,
+			"instructionName": "",
+			"instructionTags": 
 			[
 				"",""
-			]
+			],
+			"instructionImageURL": ""
 		}
 	]
 }
 ```
+
+
+
+@bp_route('/api/v1/instruction/getSingleInstruction', method=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionID": number
+}
+```
+
+ret:
+
+```
+{
+	"instructionContent": "",
+}
+```
+
+
 
 
 
