@@ -71,14 +71,18 @@ Page({
   },
 
   showNotice(e) {
-    this.setData({ isShowNotice: true });
+    this.setData({
+      isShowNotice: true
+    });
   },
 
   hideNotice(e) {
-    this.setData({ isShowNotice: false });
+    this.setData({
+      isShowNotice: false
+    });
   },
 
-  onEnter(e) { },
+  onEnter(e) {},
 
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {
@@ -134,8 +138,8 @@ Page({
   onShow() {
     // 更新TabBar
     if (
-      typeof this.getTabBar === 'function'
-      && this.getTabBar()
+      typeof this.getTabBar === 'function' &&
+      this.getTabBar()
     ) {
       this.getTabBar().setData({
         selected: 1,

@@ -1,9 +1,17 @@
 /* pages/user/user.wxss */
+.notice-container {
+    width: 80%;
+    height: 60%;
+    margin: auto;
+    background-color: black;
+    border: black 4rpx solid;
+}
+
 .user_info_wrap {
     /* 位置 */
     position: relative;
     /* 大小 */
-    height: 100vw;
+    height: 150vw;
 
     .background {
         /* 大小 */
@@ -15,7 +23,7 @@
         /* 位置 */
         position: absolute;
         left: 50%;
-        top: 15%;
+        top: 10%;
         transform: translateX(-50%);
         /* 大小 */
         height: 50vw;
@@ -45,8 +53,9 @@
     .user_content {
         /* 位置 */
         position: absolute;
+        overflow: hidden;
         left: 50%;
-        top: 70%;
+        top: 50%;
         transform: translateX(-50%);
         /* 大小 */
         width: 85%;
@@ -95,5 +104,11 @@
             border-bottom: 0rpx;
         }
 
+    }
+
+    .feedback_wrap {
+        width: 60%;
+        height: 60%;
+        padding: auto;
     }
 }
