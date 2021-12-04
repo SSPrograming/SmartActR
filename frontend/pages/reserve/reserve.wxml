@@ -2,6 +2,28 @@
 <page-meta root-background-color="#ebebeb">
     <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
 </page-meta>
+<page-container show="{{ isShowNotice }}" position="right" bind:enter="onEnter" custom-style="background: #ebebeb;">
+    <view class="notice-page-container">
+        <view class="whitespace"></view>
+        <view class="notice-page-box">
+            <view class="notice-page-title"> 公告 </view>
+            <view class="notice-page-time-container">
+                <image class="notice-page-time-icon" src="/resources/icons/reserve/calendar.png"></image>
+                <view class="notice-page-time">{{ noticeDate }}</view>
+            </view>
+            <view class="notice-page-content">
+                <!--
+                大家好，欢迎来到科协活动室！在这里，你可以体验实践的快乐，用自己的双手创造属于自己的东西；在这里，你可以和朋友共同成长，一起取得荣耀与辉煌；在这里，你可以非常快乐，快乐地放飞自我。科协活动室欢迎你们的到来！
+                -->
+                <view wx:for="{{ noticeContents }}" wx:key="index">
+                    {{ item }}
+                </view>
+            </view>
+            <button class="notice-page-confirm" bindtap="hideNotice">确认</button>
+        </view>
+        <view class="whitespace"></view>
+    </view>
+</page-container>
 <view class="container">
     <view class="dates-container">
         <image class="left-arrow" src="/resources/icons/reserve/arrow.png"></image>
@@ -13,7 +35,7 @@
             </view>
         </scroll-view>
     </view>
-    <view class="notice-container">
+    <view class="notice-container" bindtap="showNotice">
         <view class="notice-title-container">
             <image class="notice-title-image" src="/resources/icons/reserve/notice.png"></image>
             <view class="notice-title-text">公告</view>
@@ -29,7 +51,7 @@
                 <view class="equipment-vertical-delimiter"></view>
                 <view class="equipment-content">
                     <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>
-                    <view class="equipments-whitespace"></view>
+                    <view class="whitespace"></view>
                     <view class="equipment-status" style="{{ item.equipmentStatus === 0 ? 'color: green' : item.equipmentStatus === 1 ? 'color: orange' : 'color: red' }}">{{ equipmentStatus2String[item.equipmentStatus] }}</view>
                 </view>
             </view>

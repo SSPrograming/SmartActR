@@ -14,12 +14,14 @@ Page({
     dates: [],
     selected: 0,
     notice: '各位同学，为避免不必要的麻烦，请仔细阅读公告，如有问题，请及时反馈！',
+    noticeDate: '',
+    noticeContents: [],
+    isShowNotice: false,
     loading: false,
   },
 
   // 后端数据获取
   getAllEquipmentStatus() {
-    const date = new Date();
     const params = this.data.dates[this.data.selected];
     app.$api.reserve.getAllEquipmentStatus(params)
       .then((res) => {
@@ -44,13 +46,47 @@ Page({
       });
   },
 
+  // 后端获取公告
+  getNotice() {
+    app.$api.reserve.getNotice()
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          let show = false;
+          if (new Date() <= new Date(res.data.expireDate)) {
+            show = false;
+          }
+          this.setData({
+            noticeDate: res.data.noticeDate,
+            noticeContents: res.data.noticeContent.trim().split('\n'),
+            isShowNotice: show
+          });
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+  },
+
+  showNotice(e) {
+    this.setData({
+      isShowNotice: true
+    });
+  },
+
+  hideNotice(e) {
+    this.setData({
+      isShowNotice: false
+    });
+  },
+
+  onEnter(e) {},
+
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {
       this.setData({
         selected: e.currentTarget.dataset.index,
-      });
-      // 判断登录状态
-      this.setData({
         loading: true,
       });
       app.dealThing(this.getAllEquipmentStatus);
@@ -81,13 +117,11 @@ Page({
           date: date.getDate(),
           day: day2string[date.getDay()],
         };
-      })
-    });
-    // 判断登录状态
-    this.setData({
+      }),
       loading: true,
     });
     app.dealThing(this.getAllEquipmentStatus);
+    app.dealThing(this.getNotice);
   },
 
   /**
@@ -103,8 +137,8 @@ Page({
   onShow() {
     // 更新TabBar
     if (
-      typeof this.getTabBar === 'function'
-      && this.getTabBar()
+      typeof this.getTabBar === 'function' &&
+      this.getTabBar()
     ) {
       this.getTabBar().setData({
         selected: 1,
@@ -130,7 +164,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    // 判断登录状态
     this.setData({
       loading: true,
     });

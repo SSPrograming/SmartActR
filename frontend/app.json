@@ -4,7 +4,8 @@
         "pages/reserve/reserve",
         "pages/do_reserve/do_reserve",
         "pages/user/user",
-        "pages/instruction/instruction"
+        "pages/instruction/instruction",
+        "pages/reserve_history/reserve_history"
     ],
     "window": {
         "navigationBarBackgroundColor": "#fff",
