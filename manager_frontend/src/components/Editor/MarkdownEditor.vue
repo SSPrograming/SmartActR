@@ -1,10 +1,10 @@
 <template>
   <div class="markdown-editor">
-    <el-dialog :visible.sync="dialogVisible" top="5vh">
+    <el-dialog :visible.sync="dialogVisible" top="10vh">
       <img class="dialog-image" :src="dialogImageUrl" alt="">
     </el-dialog>
     <div class="image-uploader">
-      <el-upload action="" ref="imageUploader" list-type="picture-card" :auto-upload="false">
+      <el-upload ref="imageUploader" action="" :auto-upload="false" list-type="picture-card" accept="image/*">
         <i slot="default" class="el-icon-plus"></i>
         <div class="image-file-container" slot="file" slot-scope="{file}">
           <img class="el-upload-list__item-thumbnail image-file" :src="file.url" alt="">
@@ -24,7 +24,8 @@
     </div>
     <div class="main">
       <div class="left">
-        <el-input class="input" :rows="24" type="textarea" placeholder="请输入内容" v-model="instruction.content"></el-input>
+        <el-input class="input" type="textarea" v-model="instruction.content" placeholder="请输入内容"
+                  :rows="24" @keydown.native="handleHotkey"></el-input>
       </div>
       <div class="right">
         <el-scrollbar class="scrollbar" style="height: 100%">
@@ -41,12 +42,15 @@ import 'highlight.js/styles/github-gist.css'
 export default {
   name: "MarkdownEditor",
   props: {
-    instruction: Object
+    instruction: {
+      content: String,
+      html: String
+    }
   },
   data() {
     return {
       dialogVisible: false,
-      dialogImageUrl: '',
+      dialogImageUrl: ''
     }
   },
   mounted() {
@@ -54,8 +58,8 @@ export default {
   },
   methods: {
     renderMarkdown() {
-      let hljs = require('highlight.js'); // https://highlightjs.org/
-      let md = require('markdown-it')({
+      const hljs = require('highlight.js'); // https://highlightjs.org/
+      const md = require('markdown-it')({
         html: true,
         xhtmlOut: false,
         breaks: false,
@@ -79,14 +83,21 @@ export default {
       this.instruction.html = md.render(this.instruction.content);
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
     handleInsert(file) {
       console.log(file)
     },
     handleRemove(file) {
       this.$refs.imageUploader.handleRemove(file)
+    },
+    handleHotkey(event) {
+      // Ctrl + S
+      if (event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault()
+        this.$emit('editorSave')
+      }
     }
   },
   watch: {

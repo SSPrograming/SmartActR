@@ -35,7 +35,14 @@ export default {
     Toolbar
   },
   props: {
-    recordInfo: Object,
+    recordInfo: {
+      toolbar: {
+        queryStartDate: Date,
+        queryEndDate: Date
+      },
+      tableLoading: Boolean,
+      recordList: Array
+    },
     showEquipmentName: Boolean,
     showUserName: Boolean,
     dialog: Boolean,

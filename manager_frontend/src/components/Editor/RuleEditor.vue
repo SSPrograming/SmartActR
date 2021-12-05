@@ -135,7 +135,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.form {
-  margin: 0 auto;
-}
+
 </style>

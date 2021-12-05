@@ -9,7 +9,7 @@
                 @close="removeTag(index)" disable-transitions>
           {{ tag }}
         </el-tag>
-        <el-button icon="el-icon-plus" circle size="mini" @click="addTag" style="margin-left: 5px"></el-button>
+        <el-button icon="el-icon-plus" size="mini" circle @click="addTag" style="margin-left: 5px"></el-button>
       </el-form-item>
       <div style="text-align: center;">
         <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
@@ -23,7 +23,10 @@
 export default {
   name: "InstructionInfoEditor",
   props: {
-    form: Object
+    form: {
+      instructionName: String,
+      instructionTags: Array
+    }
   },
   methods: {
     addTag() {
@@ -39,7 +42,15 @@ export default {
       this.form.instructionTags.splice(index, 1)
     },
     submit() {
-
+      this.$refs.form.validate().then((valid) => {
+        if (!this.form.instructionName) {
+          this.$utils.alertMessage(this, '请输入标题', 'warning')
+        } else {
+          if (valid) {
+            this.$emit('editorConfirm')
+          }
+        }
+      })
     }
   }
 }

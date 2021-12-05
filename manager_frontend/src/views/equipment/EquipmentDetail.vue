@@ -79,7 +79,7 @@ export default {
       form: {
         equipmentName: '',
         equipmentID: 0,
-        equipmentStatus: 0,
+        equipmentStatus: '',
       },
       showReserveRecord: false,
       recordInfo: {

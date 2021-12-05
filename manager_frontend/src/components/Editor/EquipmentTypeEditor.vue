@@ -8,20 +8,15 @@
         <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>
       </el-form-item>
       <el-form-item label="设备描述" required>
-        <el-input type="textarea" :rows="5" maxlength="50" show-word-limit placeholder="请输入设备描述"
-                  v-model="form.equipmentDescription">
+        <el-input type="textarea" v-model="form.equipmentDescription" placeholder="请输入设备描述"
+                  :rows="5" maxlength="50" show-word-limit>
         </el-input>
       </el-form-item>
       <el-form-item label="图片" required>
-        <el-upload
-            class="image-uploader" ref="uploader"
-            action=""
-            accept="image/*"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="imageChange">
-          <img v-if="imageUrl" :src="imageUrl" class="image" alt="">
-          <i v-else class="el-icon-plus image-uploader-icon"></i>
+        <el-upload class="image-uploader" ref="uploader" action="" :auto-upload="false"
+                   :show-file-list="false" accept="image/*" :on-change="imageChange">
+          <img :src="imageUrl" class="image" alt="" v-if="imageUrl">
+          <i class="el-icon-plus image-uploader-icon" v-else></i>
         </el-upload>
       </el-form-item>
       <div style="text-align: center;">
@@ -36,7 +31,12 @@
 export default {
   name: "EquipmentTypeEditor",
   props: {
-    form: Object,
+    form: {
+      equipmentName: String,
+      equipmentCount: Number,
+      equipmentDescription: String,
+      equipmentImage: String | Object,
+    },
     add: Boolean
   },
   computed: {
@@ -89,10 +89,10 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-}
 
-.image-uploader .el-upload:hover {
-  border-color: #409EFF;
+  &:hover {
+    border-color: #409EFF;
+  }
 }
 
 .image-uploader-icon {
@@ -105,8 +105,8 @@ export default {
 }
 
 .image {
-  height: 178px;
   display: block;
+  height: 178px;
 }
 
 </style>

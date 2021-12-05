@@ -25,7 +25,7 @@
       </el-form-item>
       <el-form-item label="反馈内容">
         <!--
-        <el-input type="textarea" :rows="10" v-model="form.feedbackContent"></el-input>
+        <el-input type="textarea" v-model="form.feedbackContent" :rows="10"></el-input>
         -->
         <div style="width: 90%;
                     min-height: 200px;
@@ -47,7 +47,12 @@
 export default {
   name: "FeedbackEditor",
   props: {
-    form: Object
+    form: {
+      feedbackID: Number,
+      postDate: String,
+      feedbackContent: String,
+      userName: String
+    }
   }
 }
 </script>

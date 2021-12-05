@@ -6,7 +6,7 @@
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
       <div class="editor">
-        <MarkdownEditor :instruction="instruction"></MarkdownEditor>
+        <MarkdownEditor :instruction="instruction" @editorSave="handleSave"></MarkdownEditor>
       </div>
     </div>
   </div>
@@ -61,10 +61,7 @@ export default {
   },
   methods: {
     handleSave() {
-      console.log(this.html)
-    },
-    setHTML(content, html) {
-      this.html = html
+      console.log(this.instruction.html)
     }
   }
 }
@@ -81,9 +78,5 @@ export default {
 
 .editor {
   padding-top: 5px;
-}
-
-.editor .v-note-wrapper {
-  height: 50vh;
 }
 </style>
