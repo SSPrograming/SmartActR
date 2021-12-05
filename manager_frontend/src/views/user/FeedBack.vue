@@ -1,5 +1,9 @@
 <template>
   <div class="feedback">
+    <el-dialog title="公告编辑" :visible.sync="showFeedbackEditor">
+      <FeedbackEditor :form="form" @editorCancel="showFeedbackEditor=false"
+                      @editorConfirm="showFeedbackEditor=false"></FeedbackEditor>
+    </el-dialog>
     <div class="header">
       <Toolbar :toolbar="toolbar" choose-num choose-date refresh @query="query">
       </Toolbar>
@@ -16,6 +20,11 @@
           </el-scrollbar>
         </template>
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="handleLookUp(scope.row)">查看详情</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
                    :current-page.sync="currentPage" :total="dataLength" background>
@@ -25,10 +34,12 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import FeedbackEditor from '@/components/Editor/FeedbackEditor'
 
 export default {
   name: "FeedBack",
   components: {
+    FeedbackEditor,
     Toolbar
   },
   data() {
@@ -52,7 +63,14 @@ export default {
         order: 'descending'
       },
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      showFeedbackEditor: false,
+      form: {
+        feedbackID: 1,
+        postDate: '2021-12-05',
+        feedbackContent: '你们做得还不错嘛',
+        userName: '美味しい'
+      }
     }
   },
   computed: {
@@ -82,6 +100,10 @@ export default {
     },
     query() {
 
+    },
+    handleLookUp(row) {
+      this.form = row
+      this.showFeedbackEditor = true
     }
   }
 }
