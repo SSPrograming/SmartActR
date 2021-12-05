@@ -633,7 +633,6 @@ params:
 ```
 {
 	"instructionName": "",
-	"instructionContent": ""
 	"instructionTags": 
 	[
 		"",""
@@ -659,7 +658,8 @@ params: **form-data**
 
 ```
 {
-	key: "file", value: an image
+	key: "file", value: an image,
+	key: "instructionID", value: number
 }
 ```
 
@@ -668,6 +668,29 @@ ret:
 ```
 {
 	"ImageURL": ""	
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+
+@login_required
+
+params: 
+
+```
+{
+	"instructionID": number,
+	"imageURL": str
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number	
 }
 ```
 
