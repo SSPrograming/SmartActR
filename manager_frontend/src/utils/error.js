@@ -13,7 +13,7 @@ const error = {
   /**
    * API调用返回错误
    * @param that 调用该函数的组件指针
-   * @param err 错误信息{ errCode: number, errMsg: String }
+   * @param err 错误信息 { errCode: Number, errMsg: String }
    * @constructor
    */
   APIError(that, err) {
