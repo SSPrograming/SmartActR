@@ -2,7 +2,11 @@
   <div class="user">
     <div class="container">
       <div class="header">
-        <el-input class="input-query" placeholder="请输入学生号" prefix-icon="el-icon-search"
+        <el-select class="choose-num" v-model="toolbar.showNums" placeholder="请选择" @change="getStuList">
+          <el-option v-for="item in numOptions" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+        <el-input class="input-query" placeholder="请输入学号" prefix-icon="el-icon-search"
                   v-model="toolbar.stuID" @keyup.enter.native="query" clearable>
         </el-input>
         <el-input class="input-query" placeholder="请输入学生姓名" prefix-icon="el-icon-search"
@@ -16,12 +20,17 @@
       <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
                 :default-sort="{prop: 'stuID', order: 'ascending'}">
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="stuID" label="学生号" width="150" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="stuID" label="学号" width="150" :sortable="'custom'"></el-table-column>
         <el-table-column prop="stuName" label="姓名" width="150" :sortable="'custom'"></el-table-column>
         <el-table-column prop="department" label="院系" width="180" :sortable="'custom'"></el-table-column>
         <el-table-column prop="cellphone" label="手机" width="200" :sortable="'custom'"></el-table-column>
         <el-table-column prop="email" label="邮箱" :sortable="'custom'"></el-table-column>
-        <el-table-column prop="status" label="状态" width="150" :sortable="'custom'"></el-table-column>
+        <el-table-column prop="freeze" label="冻结日期" width="150" :sortable="'custom'">
+          <template slot-scope="scope">
+            <span v-if="scope.row.freezeStatus">{{ scope.row.freezeDate }}</span>
+            <span v-else>未冻结</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small" class="freeze" @click="handleFreeze(scope.row)">冻结</el-button>
@@ -41,21 +50,33 @@ export default {
   name: "User",
   data() {
     return {
+      numOptions: [
+        {label: '查看近20条', value: 20},
+        {label: '查看近50条', value: 50},
+        {label: '查看近100条', value: 100},
+        {label: '查看近500条', value: 500}
+      ],
       toolbar: {
+        showNums: 20,
         stuID: '',
         stuName: '',
         department: ''
       },
       tableLoading: false,
-      stuList: [{
-        userID: '',
-        stuID: '202020202',
-        stuName: '水神',
-        department: '摸鱼学院',
-        email: 'happy@my.world',
-        cellphone: '12345678900',
-        status: '活跃'
-      }],
+      stuList: [
+        /*
+        {
+          userID: '',
+          stuID: '202020202',
+          stuName: '水神',
+          department: '摸鱼学院',
+          email: 'happy@my.world',
+          cellphone: '12345678900',
+          freezeDate: '1970-01-01',
+          freezeStatus: true,
+        }
+        */
+      ],
       sortType: {
         prop: 'stuID',
         order: 'ascending'
@@ -75,6 +96,9 @@ export default {
               this.pageSize * this.currentPage : this.stuList.length)
     }
   },
+  mounted() {
+    this.getStuList()
+  },
   methods: {
     changeSortType(event) {
       if (event) {
@@ -90,10 +114,28 @@ export default {
       this.$utils.sort(this.stuList, this.sortType, 'stuID')
     },
     getStuList() {
-
+      this.tableLoading = true
+      let params = {
+        limitNum: this.toolbar.showNums
+      }
+      this.toolbar.stuID && (params.stuID = this.toolbar.stuID)
+      this.toolbar.stuName && (params.stuName = this.toolbar.stuName)
+      this.toolbar.department && (params.department = this.toolbar.department)
+      this.$api.user.queryUserInfo(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.stuList = res.data.stuList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
+      })
     },
     query() {
-
+      this.getStuList()
     },
     handleFreeze(row) {
       this.$confirm('此操作将冻结该用户, 是否继续?', '提示', {
@@ -126,12 +168,16 @@ export default {
   display: flex;
   margin-bottom: $--toolbar-margin-bottom;
 
+  .choose-num {
+    flex-basis: 160px;
+  }
+
   .input-query {
     flex-basis: 200px;
+  }
 
-    & + .input-query {
-      margin-left: 10px;
-    }
+  * + .input-query {
+    margin-left: 10px;
   }
 
   .query-button {

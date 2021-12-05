@@ -39,26 +39,11 @@ export default {
   data() {
     return {
       numOptions: [
-        {
-          label: '查看近20条',
-          value: 20
-        },
-        {
-          label: '查看近50条',
-          value: 50
-        },
-        {
-          label: '查看近100条',
-          value: 100
-        },
-        {
-          label: '查看近500条',
-          value: 500
-        },
-        {
-          label: '查看全部',
-          value: -1
-        }
+        {label: '查看近20条', value: 20},
+        {label: '查看近50条', value: 50},
+        {label: '查看近100条', value: 100},
+        {label: '查看近500条', value: 500},
+        {label: '查看全部', value: -1}
       ]
     }
   }
