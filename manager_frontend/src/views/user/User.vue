@@ -130,12 +130,12 @@ export default {
     flex-basis: 200px;
 
     & + .input-query {
-      margin-left: 5px;
+      margin-left: 10px;
     }
   }
 
   .query-button {
-    margin-left: 5px;
+    margin-left: 10px;
   }
 }
 
@@ -156,14 +156,14 @@ export default {
 }
 
 .unfreeze {
-  color: orange;
+  color: orangered;
 
   &:focus, &:hover {
-    color: mix(orange, $--color-white, 75%);
+    color: mix(orangered, $--color-white, 75%);
   }
 
   &:active {
-    color: mix(orange, $--color-black, 75%);
+    color: mix(orangered, $--color-black, 75%);
   }
 }
 
