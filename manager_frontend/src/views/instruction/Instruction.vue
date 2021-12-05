@@ -156,6 +156,7 @@ export default {
 
 .pagination {
   margin-top: $--pagination-margin-top;
+  margin-bottom: $--pagination-margin-bottom;
 }
 
 .delete {
