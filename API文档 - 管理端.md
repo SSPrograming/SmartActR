@@ -517,11 +517,11 @@ params:
 ```
 {
 	"repeat": number, 	#1表示重复，0表示不重复
-	"day": number, 		#周几
-	"date": "",			# 2021-21-11
+	"day": number, 		#周几;当repeat=1时必须有此选项
+	"date": "",			# 2021-21-11;当repeat=0时必须有此选项
 	"startTime": "",	# 20:17
 	"endTime":   "",	# 20:18
-	"expireDate": "",	# 1202-20-21
+	"expireDate": "",	# 1202-20-21;当repeat=1时必须有此选项
 	"ruleDescription": ""
 }
 ```
@@ -534,6 +534,38 @@ ret:
 	"errMsg": ""
 }
 ```
+
+
+
+@bp_rule.route('/api/v1/rules/updateRule',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"ruleID": number,
+	"repeat": number, 	#1表示重复，0表示不重复
+	"day": number, 		#周几;当repeat=1时必须有此选项
+	"date": "",			# 2021-21-11;当repeat=0时必须有此选项
+	"startTime": "",	# 20:17
+	"endTime":   "",	# 20:18
+	"expireDate": "",	# 1202-20-21; 当repeat=1时必须有此选项
+	"ruleDescription": ""
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number,
+	"errMsg": ""
+}
+```
+
+
 
 
 
@@ -741,7 +773,7 @@ ret:
 
 **用户管理**
 
-@bp_instruction.route('/api/v1/user/queryUserInfo',methods=['POST'])
+@bp_user.route('/api/v1/user/queryUserInfo',methods=['POST'])
 
 @login_required
 
@@ -749,6 +781,7 @@ params:
 
 ```
 {
+	"limitNum": "",
 	"stuID": "", 		#optional
 	"stuName": "", 		#optional
 	"department": ""	#optional
@@ -762,12 +795,14 @@ ret:
 	"stuList":
 	[
 		{
+			"userID": "",
 			"stuID": "", 		
 			"stuName": "", 		
 			"department": "",	
 			"email": "",
 			"cellphone": "",
-			"status": ""
+			"freezeStatus": bool,
+			"freezeDate": ""
 		}
 	]
 }
