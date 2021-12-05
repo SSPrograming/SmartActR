@@ -13,7 +13,7 @@
                     placeholder="选择结束日期" v-if="chooseDate" @change="toolbar.queryStartDate && $emit('query')">
     </el-date-picker>
     <el-input class="input-query" placeholder="请输入查找内容" prefix-icon="el-icon-search"
-              v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')">
+              v-model="toolbar.queryStr" v-if="query" @keyup.enter.native="$emit('query')" clearable>
     </el-input>
     <el-button type="info" v-if="query" @click="$emit('query')">查找</el-button>
     <el-button type="primary" icon="el-icon-back" plain v-if="back" @click="$emit('back')"></el-button>

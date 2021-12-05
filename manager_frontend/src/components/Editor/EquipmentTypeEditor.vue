@@ -2,7 +2,7 @@
   <div class="equipment-type-editor">
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="设备名称" required>
-        <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称"></el-input>
+        <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="设备数量" required>
         <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>

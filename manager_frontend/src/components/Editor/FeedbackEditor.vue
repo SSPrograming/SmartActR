@@ -3,7 +3,7 @@
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="提交人">
         <!--
-        <el-input style="width: 250px" v-model="form.userName" disabled></el-input>
+        <el-input style="width: 250px" v-model="form.userName" disabled clearable></el-input>
         -->
         <div style="width: 200px;
                     padding: 0 15px;

@@ -3,13 +3,13 @@
     <div class="container">
       <div class="header">
         <el-input class="input-query" placeholder="请输入学生号" prefix-icon="el-icon-search"
-                  v-model="toolbar.stuID" @keyup.enter.native="query">
+                  v-model="toolbar.stuID" @keyup.enter.native="query" clearable>
         </el-input>
         <el-input class="input-query" placeholder="请输入学生姓名" prefix-icon="el-icon-search"
-                  v-model="toolbar.stuName" @keyup.enter.native="query">
+                  v-model="toolbar.stuName" @keyup.enter.native="query" clearable>
         </el-input>
         <el-input class="input-query" placeholder="请输入院系" prefix-icon="el-icon-search"
-                  v-model="toolbar.department" @keyup.enter.native="query">
+                  v-model="toolbar.department" @keyup.enter.native="query" clearable>
         </el-input>
         <el-button class="query-button" type="info" @click="query">查找</el-button>
       </div>
