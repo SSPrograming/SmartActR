@@ -19,9 +19,9 @@ class UserService():
         if query_content["stuID"] is not None:
             query_condition = and_(query_condition, Student.stuID==query_content["stuID"])
         if query_content["department"] is not None:
-            query_condition = and_(query_condition, Student.department==query_content["department"])
+            query_condition = and_(query_condition, Student.department.like('%'+query_content["department"]+'%'))
         if query_content["stuName"] is not None:
-            query_condition = and_(query_condition, Student.name==query_content["stuName"])
+            query_condition = and_(query_condition, Student.name.like('%'+query_content["stuName"]+'%'))
         
         if query_content["limitNum"] is None:
             stuList = Student.query.filter(query_condition).all()
@@ -44,7 +44,8 @@ class UserService():
                 "department": stu.department,
                 "email": stu.email,
                 "cellphone": stu.cell,
-                "status": userInfo.status
+                "freezeStatus": userInfo.freezeStatus,
+                "freezeDate": str(userInfo.freezeDate)
             })
         return stuInfoList, True
     

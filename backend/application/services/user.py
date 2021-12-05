@@ -8,6 +8,8 @@ class UserService():
             frzTime = datetime.date(year=1970,month=1,day=1)
             nuser = User(userID=userID, status='not bind', violationTimes=0,
                         freezeDate=frzTime, identity=identity)
+            nuser.freezeStatus = 0
+            nuser.violateToday = 0
             db.session.add(nuser)
             db.session.commit()
             return 'ok', True

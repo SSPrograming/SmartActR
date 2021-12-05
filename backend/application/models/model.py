@@ -152,3 +152,12 @@ class feedback(db.Model):
     feedbackID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     postDate = db.Column(db.Date)
     userID = db.Column(db.String(128), db.ForeignKey('user.userID'), nullable=False)
+
+class InstructionImage(db.Model):
+    """
+    使用说明-图片映射
+    """
+    __tablename__ = 'instructionImage'
+    instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
+    imageURL = db.Column(db.String(512), nullable=False, unique=True)
+    instructionImageID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)

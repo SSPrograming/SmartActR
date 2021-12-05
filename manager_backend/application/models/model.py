@@ -134,3 +134,31 @@ class QRCode(db.Model):
             [Equipment.equipmentType, Equipment.equipmentID]
         ),
     )
+
+class InstructionTag(db.Model):
+    """
+    使用说明-标签映射
+    """
+    __tablename__ = 'instructionTag'
+    instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
+    tagName = db.Column(db.String(64))
+    instructionTagID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+
+class feedback(db.Model):
+    """
+    反馈
+    """
+    __tablename__ = 'feedback'
+    feedbackContent = db.Column(db.String(1024))
+    feedbackID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    postDate = db.Column(db.Date)
+    userID = db.Column(db.String(128), db.ForeignKey('user.userID'), nullable=False)
+
+class InstructionImage(db.Model):
+    """
+    使用说明-图片映射
+    """
+    __tablename__ = 'instructionImage'
+    instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
+    imageURL = db.Column(db.String(1024), nullable=False, unique=True)
+    instructionImageID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
