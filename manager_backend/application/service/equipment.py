@@ -173,10 +173,26 @@ class EquipmentService():
         return "ok", True
     
     def update_equipment_status(Type, id, status):
+        now_datetime = now()
+        now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
         target_equipment = Equipment.query.filter(Equipment.equipmentType==Type,
                                                   Equipment.equipmentID==id).first()
         if target_equipment is None:
             return "设备不存在", False
+        
+        if status=='损坏':
+            related_records = Reserve_Record.query.filter(Reserve_Record.equipmentType==Type,
+                                                          Reserve_Record.equipmentID==id,
+                                                          Reserve_Record.reserveDate>=now_date,
+                                                          Reserve_Record.status=='成功').all()
+            for record in related_records:
+                record.status='取消'
+                try:
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    return "数据库更新失败", False
+
         try:
             target_equipment.equipmentStatus = status
             db.session.commit()

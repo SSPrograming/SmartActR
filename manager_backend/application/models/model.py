@@ -12,6 +12,8 @@ class User(db.Model):
     violationTimes = db.Column(db.Integer, doc="违约次数")
     freezeDate = db.Column(db.Date, doc= "开始冻结日期")
     identity = db.Column(db.String(32), doc="身份")
+    violateToday = db.Column(db.Boolean, doc="今日是否违约")
+    freezeStatus = db.Column(db.Boolean, doc="是否冻结权限")
 
 
 class equipmentType(db.Model):
