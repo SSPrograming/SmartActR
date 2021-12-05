@@ -1,12 +1,11 @@
 <template>
   <div class="feedback">
-    <el-dialog title="公告编辑" :visible.sync="showFeedbackEditor">
+    <el-dialog title="反馈内容" :visible.sync="showFeedbackEditor">
       <FeedbackEditor :form="form" @editorCancel="showFeedbackEditor=false"
                       @editorConfirm="showFeedbackEditor=false"></FeedbackEditor>
     </el-dialog>
     <div class="header">
-      <Toolbar :toolbar="toolbar" choose-num choose-date refresh @query="query">
-      </Toolbar>
+      <Toolbar :toolbar="toolbar" choose-num choose-date refresh @query="query" @refresh="getFeedbackList"></Toolbar>
     </div>
     <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
               :default-sort="{prop: 'feedbackID', order: 'descending'}">
@@ -96,7 +95,10 @@ export default {
       }
     },
     doSort() {
-      this.$utils.sort(this.feedbackList, this.sortType, 'noticeID')
+      this.$utils.sort(this.feedbackList, this.sortType, 'feedbackID')
+    },
+    getFeedbackList() {
+
     },
     query() {
 

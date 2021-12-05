@@ -1,8 +1,9 @@
 <template>
   <div class="equipment-type">
     <el-dialog title="设备种类编辑" :visible.sync="showEquipmentTypeEditor" v-loading="dialogLoading">
-      <EquipmentTypeEditor :form="form" @editorCancel="editorCancel"
-                           @editorConfirm="editorConfirm" :add="editEquipmentType === null"></EquipmentTypeEditor>
+      <EquipmentTypeEditor :form="form" :add="editEquipmentType === null"
+                           @editorConfirm="editorConfirm" @editorCancel="editorCancel">
+      </EquipmentTypeEditor>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -61,15 +62,15 @@ export default {
     return {
       loading: false,
       equipmentTypeList: [],
+      dialogLoading: false,
+      showEquipmentTypeEditor: false,
+      editEquipmentType: null,
       form: {
         equipmentName: '',
         equipmentCount: 1,
         equipmentDescription: '',
         equipmentImage: null,
-      },
-      editEquipmentType: null,
-      dialogLoading: false,
-      showEquipmentTypeEditor: false
+      }
     }
   },
   mounted() {

@@ -35,16 +35,16 @@ export default {
       tableLoading: false,
       recordList: [
         /*
-      {
-        recordID: 0,
-        postTime: '',
-        reserveDate: '',
-        startTime: '',
-        endTime: '',
-        username: '',
-        status: '',
-        equipmentName: ''
-      }
+        {
+          recordID: 0,
+          postTime: '',
+          reserveDate: '',
+          startTime: '',
+          endTime: '',
+          username: '',
+          status: '',
+          equipmentName: ''
+        }
         */
       ],
       sortType: {

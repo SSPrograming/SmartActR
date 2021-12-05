@@ -77,6 +77,6 @@ export default {
 }
 
 .editor {
-  padding-top: 5px;
+  padding: 5px 0 10px 0;
 }
 </style>

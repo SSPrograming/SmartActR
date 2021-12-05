@@ -62,12 +62,8 @@ export default {
   },
   data() {
     return {
-      dialogLoading: false,
-      showQRCode: false,
-      qrcodeURL: '',
-      qrcodeRef: {},
-      tableLoading: false,
       equipmentType: 0,
+      tableLoading: false,
       equipmentList: [],
       sortType: {
         prop: 'equipmentID',
@@ -75,6 +71,7 @@ export default {
       },
       pageSize: 5,
       currentPage: 1,
+      dialogLoading: false,
       showEquipmentEditor: false,
       form: {
         equipmentName: '',
@@ -90,6 +87,14 @@ export default {
         tableLoading: false,
         recordList: [],
         equipmentID: 0
+      },
+      showQRCode: false,
+      qrcodeURL: '',
+      qrcodeRef: {
+        /*
+        equipmentType: this.equipmentType,
+        equipmentID: row.equipmentID
+        */
       }
     }
   },
@@ -123,8 +128,8 @@ export default {
         this.sortType.order = event.order
       }
       if (!this.sortType.order) {
-        this.sortType.prop = 'noticeID'
-        this.sortType.order = 'descending'
+        this.sortType.prop = 'equipmentID'
+        this.sortType.order = 'ascending'
       }
     },
     doSort() {
@@ -309,12 +314,6 @@ export default {
   margin-bottom: $--toolbar-margin-bottom;
 }
 
-.qrcode {
-  width: 298px;
-  height: 298px;
-  border: 1px dashed #d9d9d9;
-}
-
 .pagination {
   margin-top: $--pagination-margin-top;
 }
@@ -352,6 +351,12 @@ export default {
     height: 18px;
     margin-left: 10px;
   }
+}
+
+.qrcode {
+  width: 298px;
+  height: 298px;
+  border: 1px dashed #d9d9d9;
 }
 
 </style>

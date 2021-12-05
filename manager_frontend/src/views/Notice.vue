@@ -5,9 +5,7 @@
     </el-dialog>
     <div class="container">
       <div class="header">
-        <Toolbar :toolbar="toolbar" choose-num choose-date query
-                 @query="query">
-        </Toolbar>
+        <Toolbar :toolbar="toolbar" choose-num choose-date query @query="query"></Toolbar>
         <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
       <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
@@ -48,28 +46,32 @@ export default {
   },
   data() {
     return {
-      dialogLoading: false,
-      tableLoading: false,
-      noticeList: [{
-        noticeID: 0,
-        postDate: '',
-        expireDate: '',
-        content: ''
-      }],
-      sortType: {
-        prop: 'noticeID',
-        order: 'descending'
-      },
       toolbar: {
         showNums: 20,
         queryStartDate: null,
         queryEndDate: null,
         queryStr: '',
       },
+      tableLoading: false,
+      noticeList: [
+        /*
+        {
+        noticeID: 0,
+        postDate: '',
+        expireDate: '',
+        content: ''
+        }
+        */
+      ],
+      sortType: {
+        prop: 'noticeID',
+        order: 'descending'
+      },
       pageSize: 10,
       currentPage: 1,
-      editNoticeID: null,
+      dialogLoading: false,
       showNoticeEditor: false,
+      editNoticeID: null,
       form: {
         expireDate: null,
         noticeContent: '',

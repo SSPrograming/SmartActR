@@ -3,7 +3,7 @@
     <div class="container">
       <el-form class="form" ref="form" :model="form" label-width="80px">
         <el-form-item label="重复" required>
-          <el-select v-model="form.repeat" placeholder="请选择" :disabled="form.ruleID">
+          <el-select v-model="form.repeat" placeholder="请选择" :disabled="edit">
             <el-option v-for="item in repeatOptions" :key="item.value" :label="item.label"
                        :value="item.value"></el-option>
           </el-select>
@@ -35,7 +35,7 @@
         </el-form-item>
         <div style="text-align: center;">
           <el-button class="button" type="info" plain @click="$emit('editorCancel')">取消</el-button>
-          <el-button class="button" type="danger" plain @click="handleDelete" v-if="form.ruleID">删除</el-button>
+          <el-button class="button" type="danger" plain @click="handleDelete" v-if="edit">删除</el-button>
           <el-button class="button" type="primary" plain @click="submit">提交</el-button>
         </div>
       </el-form>
@@ -47,7 +47,16 @@
 export default {
   name: "RuleEditor",
   props: {
-    form: Object
+    form: {
+      ruleID: Number,
+      repeat: Boolean,
+      day: Number,
+      date: Date,
+      startTime: String,
+      endTime: String,
+      expireDate: Date,
+      ruleDescription: String
+    }
   },
   data() {
     return {
@@ -96,6 +105,11 @@ export default {
         step: '00:30',
         end: '22:00'
       }
+    }
+  },
+  computed: {
+    edit() {
+      return Boolean(this.form.ruleID)
     }
   },
   methods: {

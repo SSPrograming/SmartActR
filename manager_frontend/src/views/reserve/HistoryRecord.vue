@@ -1,8 +1,8 @@
 <template>
   <div class="history-record">
     <div class="container">
-      <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="query" show-equipment-name
-                   show-user-name></ReserveView>
+      <ReserveView :record-info="recordInfo" show-equipment-name show-user-name
+                   @refresh="getRecordList" @query="query"></ReserveView>
     </div>
   </div>
 </template>
@@ -23,7 +23,20 @@ export default {
           queryEndDate: null
         },
         tableLoading: false,
-        recordList: []
+        recordList: [
+          /*
+          {
+            recordID: 0,
+            postTime: '',
+            reserveDate: '',
+            startTime: '',
+            endTime: '',
+            username: '',
+            status: '',
+            equipmentName: ''
+          }
+          */
+        ]
       }
     }
   },
