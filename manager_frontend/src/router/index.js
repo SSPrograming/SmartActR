@@ -9,8 +9,9 @@ import HistoryRecord from '@/views/reserve/HistoryRecord'
 import EquipmentType from '@/views/equipment/EquipmentType'
 import EquipmentDetail from '@/views/equipment/EquipmentDetail'
 import EquipmentRules from '@/views/equipment/EquipmentRules'
-import Insturction from '@/views/instruction/Instruction'
+import Instruction from '@/views/instruction/Instruction'
 import InstructionEditor from '@/views/instruction/InstructionEditor'
+import User from '@/views/user/User'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -73,7 +74,7 @@ const routes = [
   {
     path: '/instruction',
     name: 'Instruction',
-    component: Insturction
+    component: Instruction
   },
   {
     path: '/instruction/editor',
@@ -83,7 +84,7 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    component: NotFound
+    component: User
   },
   {
     path: '/user/feedback',

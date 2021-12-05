@@ -33,7 +33,9 @@ export default {
   data() {
     return {
       tableLoading: false,
-      recordList: [{
+      recordList: [
+        /*
+      {
         recordID: 0,
         postTime: '',
         reserveDate: '',
@@ -42,7 +44,9 @@ export default {
         username: '',
         status: '',
         equipmentName: ''
-      }],
+      }
+        */
+      ],
       sortType: {
         prop: 'recordID',
         order: 'descending'
