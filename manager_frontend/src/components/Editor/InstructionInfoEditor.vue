@@ -51,7 +51,11 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        this.form.instructionTags.push(value)
+        if (!value.match(this.$utils.error.invalidToken)) {
+          this.form.instructionTags.push(value)
+        } else {
+          this.$utils.alertMessage(this, '请勿输入特殊字符', 'warning')
+        }
       }).catch(() => {
       });
     },

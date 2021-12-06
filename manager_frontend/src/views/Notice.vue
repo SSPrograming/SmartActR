@@ -107,7 +107,8 @@ export default {
       this.$utils.sort(this.noticeList, this.sortType, 'noticeID')
     },
     getNoticeList() {
-      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate &&
+          this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }

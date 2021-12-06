@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     renderMarkdown() {
-      const hljs = require('highlight.js'); // https://highlightjs.org/
+      const hljs = require('highlight.js') // https://highlightjs.org/
       const md = require('markdown-it')({
         html: true,
         xhtmlOut: false,

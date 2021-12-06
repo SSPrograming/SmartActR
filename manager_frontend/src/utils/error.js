@@ -5,6 +5,8 @@
 import alertMessage from './alertMessage'
 
 const error = {
+  // 非法字符
+  invalidToken: /[,]/,
   // 服务器错误
   ServerError(that, err) {
     console.log(err)

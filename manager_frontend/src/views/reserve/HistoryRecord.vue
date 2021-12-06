@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     getRecordList() {
-      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate &&
           this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
@@ -73,9 +73,7 @@ export default {
       })
     },
     query() {
-      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
-        this.getRecordList()
-      }
+      this.getRecordList()
     }
   }
 }

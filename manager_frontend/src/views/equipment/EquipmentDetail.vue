@@ -151,7 +151,7 @@ export default {
       })
     },
     getRecordList() {
-      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate &&
           this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
@@ -177,9 +177,7 @@ export default {
       })
     },
     query() {
-      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
-        this.getRecordList()
-      }
+      this.getRecordList()
     },
     handleAdd() {
       this.$confirm('此操作将添加一台该类设备, 是否继续?', '提示', {
