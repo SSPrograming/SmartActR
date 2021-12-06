@@ -70,7 +70,7 @@ ret:
 
 
 
-@bp.route('/api/v1/user/getIdentity', methods=['GET'])
+@bp_user('/api/v1/user/getIdentity', methods=['GET'])
 
 @login_required
 
@@ -86,7 +86,7 @@ ret:
 
 
 
-@bp.route('/api/v1/user/getStudentInfo', methods=['GET'])
+@bp_user('/api/v1/user/getStudentInfo', methods=['GET'])
 
 @login_required
 
@@ -105,7 +105,7 @@ ret:
 
 #TODO
 
-@bp.route('/api/v1/user/postFeedback', methods=['POST'])
+@bp.user('/api/v1/user/postFeedback', methods=['POST'])
 
 @login_required
 
@@ -121,20 +121,15 @@ params:
 
 #TODO
 
-@bp_route('/api/v1/instruction/getInstructionList', method=['POST'])
+#返回所有的使用说明除去正文以外的信息
+
+#需要使用的数据库：instruction, instrucionTag, instructionImage
+
+#返回的图片是封面图
+
+@bp_instruction('/api/v1/instruction/getInstructionList', method=['GET'])
 
 @login_required
-
-parmas:
-
-```
-{
-	"instructionTagList":
-	[
-		"", ""
-	]
-}
-```
 
 ret:
 
@@ -149,7 +144,7 @@ ret:
 			[
 				"",""
 			],
-			"instructionImageURL": ""
+			"instructionCoverURL": ""
 		}
 	]
 }
@@ -157,7 +152,9 @@ ret:
 
 
 
-@bp_route('/api/v1/instruction/getSingleInstruction', method=['POST'])
+#TODO
+
+@bp_instruction('/api/v1/instruction/getSingleInstruction', method=['POST'])
 
 @login_required
 
@@ -174,6 +171,23 @@ ret:
 ```
 {
 	"instructionContent": "",
+}
+```
+
+
+
+#TODO
+
+@bp_instruction.route('/api/v1/instruction/getFreezeStatus', method=['GET'])
+
+@login_required
+
+ret:
+
+```
+{
+	"freezeStatus": bool,
+	"freezeDate": ""
 }
 ```
 
