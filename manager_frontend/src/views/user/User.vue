@@ -1,5 +1,9 @@
 <template>
   <div class="user">
+    <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading" width="80%">
+      <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="recordQuery"
+                   @hide="showReserveRecord=false" show-user-name show-equipment-name dialog></ReserveView>
+    </el-dialog>
     <div class="container">
       <div class="header">
         <el-select class="choose-num" v-model="toolbar.showNums" placeholder="请选择" @change="getStuList">
@@ -31,10 +35,11 @@
             <span v-else>未冻结</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="150">
           <template slot-scope="scope">
             <el-button type="text" size="small" class="freeze" @click="handleFreeze(scope.row)">冻结</el-button>
             <el-button type="text" size="small" class="unfreeze" @click="handleUnFreeze(scope.row)">解冻</el-button>
+            <el-button type="text" size="small" class="lookup" @click="handleLookUp(scope.row)">预约记录</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,8 +51,13 @@
 </template>
 
 <script>
+import ReserveView from '@/components/ReserveView'
+
 export default {
   name: "User",
+  components: {
+    ReserveView
+  },
   data() {
     return {
       numOptions: [
@@ -82,7 +92,18 @@ export default {
         order: 'ascending'
       },
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      dialogLoading: false,
+      showReserveRecord: false,
+      recordInfo: {
+        toolbar: {
+          queryStartDate: null,
+          queryEndDate: null
+        },
+        tableLoading: false,
+        recordList: [],
+        equipmentID: 0
+      },
     }
   },
   computed: {
@@ -98,6 +119,10 @@ export default {
   },
   mounted() {
     this.getStuList()
+    this.recordInfo.toolbar.queryStartDate = new Date()
+    this.recordInfo.toolbar.queryStartDate.setDate(this.recordInfo.toolbar.queryStartDate.getDate() - 8)
+    this.recordInfo.toolbar.queryEndDate = new Date()
+    this.recordInfo.toolbar.queryEndDate.setDate(this.recordInfo.toolbar.queryEndDate.getDate() + 8)
   },
   methods: {
     changeSortType(event) {
@@ -134,8 +159,20 @@ export default {
         this.tableLoading = false
       })
     },
+    getRecordList() {
+      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+          this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
+        this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+        return
+      }
+    },
     query() {
       this.getStuList()
+    },
+    recordQuery() {
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
+        this.getRecordList()
+      }
     },
     handleFreeze(row) {
       this.$confirm('此操作将冻结该用户, 是否继续?', '提示', {
@@ -156,6 +193,10 @@ export default {
         console.log(row)
       }).catch(() => {
       })
+    },
+    handleLookUp(row) {
+      console.log(row)
+      this.showReserveRecord = true
     }
   }
 }
@@ -203,14 +244,26 @@ export default {
 }
 
 .unfreeze {
-  color: orangered;
+  color: $--color-unfreeze;
 
   &:focus, &:hover {
-    color: mix(orangered, $--color-white, 75%);
+    color: mix($--color-unfreeze, $--color-white, 75%);
   }
 
   &:active {
-    color: mix(orangered, $--color-black, 75%);
+    color: mix($--color-unfreeze, $--color-black, 75%);
+  }
+}
+
+.lookup {
+  color: $--color-lookup;
+
+  &:focus, &:hover {
+    color: mix($--color-lookup, $--color-white, 75%);
+  }
+
+  &:active {
+    color: mix($--color-lookup, $--color-black, 75%);
   }
 }
 
