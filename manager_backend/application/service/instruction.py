@@ -27,10 +27,11 @@ class InstructionService():
             return "插入数据库时失败，可能是图片名过长","", False
         
     
-    def addInstruction(instructionName, instructionTags):
+    def addInstruction(instructionName, instructionTags, instructionCoverName):
         new_instruction = Instruction()
         new_instruction.instructionName = instructionName
         new_instruction.instructionContent = ""
+        new_instruction.instructionCoverURL = ""
         try:
             db.session.add(new_instruction)
             db.session.commit()
@@ -38,6 +39,16 @@ class InstructionService():
             return "创建使用说明失败", False
         
         new_instruction = Instruction.query.order_by(Instruction.instructionID.desc()).first()
+
+        instructionCoverURL = query_yaml("app.MANAGERSERVERURL") + "image/instructioncover/" + str(new_instruction.instructionID) + "_" + instructionCoverName
+        
+        new_instruction.instructionCoverURL = instructionCoverURL
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "为使用说明添加描述图片URL失败", False
+
         for tag in instructionTags:
             new_instruction_tag = InstructionTag()
             new_instruction_tag.instructionID = new_instruction.instructionID
@@ -48,4 +59,4 @@ class InstructionService():
             except:
                 return "为使用说明创建标签失败", False
         
-        return "ok", True
+        return instructionCoverURL, True

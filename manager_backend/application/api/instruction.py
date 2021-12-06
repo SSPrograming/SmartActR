@@ -4,7 +4,6 @@ from config import query_yaml
 from application.database import db
 from application.service import UserService, InstructionService
 from application.utils import generate_jwt, now
-from manager_backend.application.service import instruction
 from .login_decorator import login_required
 import os
 
@@ -35,8 +34,23 @@ def addImage():
 @login_required
 def addInstruction():
     try:
-        instructionName = request.json["instructionName"]
-        instructionTags = request.json["instructionTags"]
+        instructionName = request.form["instructionName"]
+        instructionCover = request.files.get('instructionCover')
+        instructionTags = request.form.get("instructionTags").split(',')
+        print(request.form.to_dict())
     except:
         return jsonify({"errCode":1, "errMsg": "bad arguments"}), 200
+    
+    instructionCoverName = instructionCover.filename
+    msg_or_url, addStatus = InstructionService.addInstruction(instructionName, instructionTags, instructionCoverName)
+    if not addStatus:
+        return jsonify({"errCode": 1, "errMsg": msg_or_url}), 200
+    
+    if not os.path.exists("./application/static/instructioncover/"):
+        os.makedirs("./application/static/instructioncover")
+
+    new_cover_name = msg_or_url.split('/')[-1]
+    instructionCover.save('./application/static/instructioncover/'+new_cover_name)
+    return jsonify({"errCode": 0}), 200
+    
     
