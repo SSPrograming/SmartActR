@@ -115,3 +115,29 @@ class InstructionService():
     def getInstructionTags(instructionID):
         instructionTags = InstructionTag.query.filter(InstructionTag.instructionID==instructionID).all()
         return [item.tagName for item in instructionTags]
+
+    def deleteInstruction(instructionID):
+        targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
+        if targetInstruction is None:
+            return "此说明不存在", False
+        try:
+            InstructionTag.query.filter(InstructionTag.instructionID==instructionID).delete()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "删除使用说明失败", False
+        
+        try:
+            InstructionImage.query.filter(InstructionImage.instructionID==instructionID).delete()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "删除使用说明失败", False
+        try:
+            db.session.delete(targetInstruction)
+            db.session.commit()
+            return "ok", True
+        except:
+            db.session.rollback()
+            return "删除使用说明失败", False
+

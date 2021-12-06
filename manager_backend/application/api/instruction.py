@@ -96,3 +96,17 @@ def getInstructionList():
         }for item in instructionList_raw
     ]
     return jsonify({"errCode": 0, "instructionList": instructionList}), 200
+
+@bp_instruction.route('/api/v1/instruction/deleteInstruction',methods=['POST'])
+@login_required
+def deleteInstruction():
+    try:
+        instructionID = int(request.json["instructionID"])
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    msg, deleteStatus = InstructionService.deleteInstruction(instructionID)
+    if not deleteStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    else:
+        return jsonify({"errCode":0}), 200
