@@ -53,4 +53,18 @@ def addInstruction():
     instructionCover.save('./application/static/instructioncover/'+new_cover_name)
     return jsonify({"errCode": 0}), 200
     
-    
+@bp_instruction.route('/api/v1/instruction/updateInstruction',methods=['POST'])
+@login_required
+def updateInstruction():
+    try:
+        instructionName = request.form["instructionName"]
+        instructionContent = request.form["instructionContent"]
+        instructionID = int(request.form["instructionID"])
+        instructionTags = request.form["instructionTags"].split(',')
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    msg, updateStatus = InstructionService.updateInstruction(instructionID, instructionName,instructionTags,instructionContent)
+    if not updateStatus:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200
+    else:
+        return jsonify({"errCode": 0}), 200

@@ -60,3 +60,46 @@ class InstructionService():
                 return "为使用说明创建标签失败", False
         
         return instructionCoverURL, True
+
+    def updateInstruction(instructionID, instructionName, instructionTags, instructionContent):
+        targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
+        if targetInstruction is None:
+            return "此说明不存在", False
+        targetInstruction.instructionContent = instructionContent
+        targetInstruction.instructionName = instructionName
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "更新说明失败", False
+        exist_Tags = InstructionTag.query.filter(InstructionTag.instructionID==instructionID).all()
+        exist_Tag_Names = [x.tagName for x in exist_Tags]
+        """
+        删除不再出现的tag
+        """
+        for tag in exist_Tags:
+            if tag.tagName not in instructionTags:
+                try:
+                    db.session.delete(tag)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    return "更新tag时出错", False
+        
+        """
+        增加新的tag
+        """
+        for tag in instructionTags:
+            if tag not in exist_Tag_Names:
+                try:
+                    new_tag = InstructionTag()
+                    new_tag.instructionID = instructionID
+                    new_tag.tagName = tag
+                    db.session.add(new_tag)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    return "更新tag时出错", False
+        
+        return "ok", True
+
