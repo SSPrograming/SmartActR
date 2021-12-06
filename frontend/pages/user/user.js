@@ -73,10 +73,12 @@ Page({
         console.log(res)
       },
       fail(err) {
-        
+
       }
     })
   },
+
+
 
   //身份绑定
   identityCheck() {
@@ -89,7 +91,22 @@ Page({
             app.$util.openBind();
           } else if (res.data.isBind) {
             wx.showModal({
-              content: "您已经绑定",
+              content: "您已经绑定身份",
+              confirmText: "解绑身份",
+              success(res) {
+                if (res.confirm) {
+                  //解绑身份
+                  app.$api.user.unbind()
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((err) => {
+                      this.dealError(err, 'API');
+                    });
+                }
+              },
+
+
             })
           }
         } else {

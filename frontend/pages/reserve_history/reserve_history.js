@@ -12,7 +12,6 @@ Page({
     reservation_list: {},
     loading: false,
     reservationStatus2imagePath: [],
-
   },
 
   switch_current() {
@@ -36,7 +35,7 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          console.log(this.data.reservation_list);
+          //console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -61,7 +60,7 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          console.log(this.data.reservation_list);
+          //console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -79,6 +78,25 @@ Page({
       });
   },
 
+  cancelReservation(e) {
+    console.log(e.currentTarget.dataset.status);
+    if (e.currentTarget.dataset.status === "成功") {
+      wx.showModal({
+        content: "请问您要取消预约么？",
+        success(res) {
+          if (res.confirm) {
+            app.$api.reserve.cancelReserve({
+                reserveID: e.currentTarget.dataset.reserveid,
+              })
+              .catch((err) => {
+                app.dealError(err, 'API')
+              })
+            //console.log(e.currentTarget.dataset.reserveid);
+          }
+        }
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */

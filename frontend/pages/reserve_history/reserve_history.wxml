@@ -20,9 +20,10 @@
     </view>
     <view class="history_container">
         <scroll-view class="equipment_scroll" scroll-y="true">
-            <view class="history_container" wx:for="{{reservation_list}}" wx:key="index" data-index="{{index}}">
+            <view class="history_container" wx:for="{{reservation_list}}" wx:key="index" data-status="{{item.status}}" data-reserveID="{{item.reserveID}}" data-item="{{item}}" data-index="{{index}}" bindtap="cancelReservation">
                 <view class="history_content">
-                    <view class="equipmentName">预约设备：{{item.equipmentName}}号</view>
+                    <view class="equipmentName">预约设备：{{item.equipmentName}}</view>
+                    <view class="equipmentName">预约编号：{{item.reserveID}}</view>
                     <view class="equipmentID">设备编号：{{item.equipmentID}}号</view>
                     <view class="reserve_date">预约日期：{{item.month}}月{{item.date}}日</view>
                     <view class="reserve_time">预约时间：{{item.startTime}}~{{item.endTime}}</view>
