@@ -103,3 +103,8 @@ class InstructionService():
         
         return "ok", True
 
+    def getSingleInstruction(instructionID):
+        targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
+        if targetInstruction is None:
+            return "此说明不存在", False
+        return targetInstruction.instructionContent, True

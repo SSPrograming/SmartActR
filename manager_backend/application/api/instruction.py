@@ -68,3 +68,17 @@ def updateInstruction():
         return jsonify({"errCode": 1,"errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
+
+@bp_instruction.route('/api/v1/instruction/getSingleInstruction',methods=['POST'])
+@login_required
+def getSingleInstruction():
+    try:
+        instructionID = int(request.json["instructionID"])
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    msg, getStatus = InstructionService.getSingleInstruction(instructionID)
+    if not getStatus:
+        return jsonify({"errCode": 1, "errMsg": msg})
+    else:
+        return jsonify({"errCode": 0, "instructionContent": msg}), 200
