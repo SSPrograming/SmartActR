@@ -105,6 +105,7 @@ class Instruction(db.Model):
     instructionContent = db.Column(db.Text, doc="html格式说明内容")
     instructionID = db.Column(db.Integer, autoincrement=True, primary_key=True, doc="ID")
     instructionName = db.Column(db.String(64), doc="说明标题")
+    instructionCoverURL = db.Column(db.String(1024))
 
 class Admin(db.Model):
     """
