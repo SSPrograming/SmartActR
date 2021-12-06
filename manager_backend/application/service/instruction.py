@@ -108,3 +108,10 @@ class InstructionService():
         if targetInstruction is None:
             return "此说明不存在", False
         return targetInstruction.instructionContent, True
+
+    def getInstructionList():
+        return Instruction.query.all()
+
+    def getInstructionTags(instructionID):
+        instructionTags = InstructionTag.query.filter(InstructionTag.instructionID==instructionID).all()
+        return [item.tagName for item in instructionTags]

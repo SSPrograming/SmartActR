@@ -82,3 +82,17 @@ def getSingleInstruction():
         return jsonify({"errCode": 1, "errMsg": msg})
     else:
         return jsonify({"errCode": 0, "instructionContent": msg}), 200
+
+@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['GET'])
+@login_required
+def getInstructionList():
+    instructionList_raw = InstructionService.getInstructionList()
+    instructionList = [
+        {
+            "instructionID": item.instructionID,
+            "instructionName": item.instructionName,
+            "instructionCoverURL": item.instructionCoverURL,
+            "instructionTags": InstructionService.getInstructionTags(item.instructionID)
+        }for item in instructionList_raw
+    ]
+    return jsonify({"errCode": 0, "instructionList": instructionList}), 200
