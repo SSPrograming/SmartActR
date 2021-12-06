@@ -13,7 +13,7 @@ class EquipmentService():
         return target_type.equipmentName, True
     
     def get_all_equipmentType():
-        return equipmentType.query.all()
+        return equipmentType.query.order_by(equipmentType.equipmentOrder.asc()).all()
 
     def get_type_count(Type):
         return Equipment.query.filter(Equipment.equipmentType==Type).count()
@@ -221,4 +221,32 @@ class EquipmentService():
         recordList = Reserve_Record.query.filter(Reserve_Record.equipmentType==equipmentType,
                                                  Reserve_Record.equipmentID==equipmentID).all()
         return recordList
+    
+    def swap_equipmentOrder(Type1, Type2):
+        target_type1 = equipmentType.query.filter(equipmentType.equipmentType==Type1).first()
+        target_type2 = equipmentType.query.filter(equipmentType.equipmentType==Type2).first()
+        if target_type1 is None or target_type2 is None:
+            return "设备种类不存在", False
+        Type1_order = target_type1.equipmentOrder
+        Type2_order = target_type2.equipmentOrder
+        target_type1.equipmentOrder = 2147483647
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        target_type2.equipmentOrder = Type1_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
         
+        target_type1.equipmentOrder = Type2_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        
+        return "ok", True

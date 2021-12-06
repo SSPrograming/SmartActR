@@ -184,3 +184,17 @@ def getEquipmentRecordList():
                     "status": item.status
     })
     return jsonify({"errCode": 0, "RecordList": recordList}), 200
+
+@bp_equipment.route('/api/v1/equipment/swapEquipmentOrder', methods=['POST'])
+@login_required
+def swapEquipmentOrder():
+    try:
+        equipmentType1 = request.json["equipmentType1"]
+        equipmentType2 = request.json["equipmentType2"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    msg, swapStatus = EquipmentService.swap_equipmentOrder(equipmentType1, equipmentType2)
+    if not swapStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    else:
+        return jsonify({"errCode": 0}), 200
