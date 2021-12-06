@@ -232,14 +232,14 @@ export default {
 }
 
 .freeze {
-  color: steelblue;
+  color: $--color-freeze;
 
   &:focus, &:hover {
-    color: mix(steelblue, $--color-white, 75%);
+    color: mix($--color-freeze, $--color-white, 75%);
   }
 
   &:active {
-    color: mix(steelblue, $--color-black, 75%);
+    color: mix($--color-freeze, $--color-black, 75%);
   }
 }
 

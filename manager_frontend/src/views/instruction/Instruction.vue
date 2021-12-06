@@ -172,14 +172,14 @@ export default {
 }
 
 .lookup {
-  color: green;
+  color: $--color-lookup;
 
   &:focus, &:hover {
-    color: mix(green, $--color-white, 75%);
+    color: mix($--color-lookup, $--color-white, 75%);
   }
 
   &:active {
-    color: mix(green, $--color-black, 75%);
+    color: mix($--color-lookup, $--color-black, 75%);
   }
 }
 </style>

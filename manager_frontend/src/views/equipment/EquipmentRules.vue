@@ -227,27 +227,27 @@ export default {
 
     .repeat {
       padding: 1px 5px;
-      background: lightsteelblue;
+      background: $--color-repeat;
 
       &:focus, &:hover {
-        background: mix(lightsteelblue, $--color-white, 75%);
+        background: mix($--color-repeat, $--color-white, 75%);
       }
 
       &:active {
-        background: mix(lightsteelblue, $--color-black, 75%);
+        background: mix($--color-repeat, $--color-black, 75%);
       }
     }
 
     .once {
       padding: 1px 5px;
-      background: lightgreen;
+      background: $--color-once;
 
       &:focus, &:hover {
-        background: mix(lightgreen, $--color-white, 75%);
+        background: mix($--color-once, $--color-white, 75%);
       }
 
       &:active {
-        background: mix(lightgreen, $--color-black, 75%);
+        background: mix($--color-once, $--color-black, 75%);
       }
     }
   }
