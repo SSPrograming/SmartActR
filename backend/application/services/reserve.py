@@ -70,7 +70,7 @@ class ReserveService:
             if target_startTime<=now:
                 return '超时，不可取消',False
         try:
-            query_reserve_record.status = 'cancel'
+            query_reserve_record.status = '取消'
             db.session.commit()
             return 'ok',True
         except Exception as e:

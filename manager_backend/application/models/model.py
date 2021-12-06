@@ -103,7 +103,6 @@ class Instruction(db.Model):
     """
     __tablename__ = 'instruction'
     instructionContent = db.Column(db.Text, doc="html格式说明内容")
-    instructionTag = db.Column(db.String(256), doc="标签")
     instructionID = db.Column(db.Integer, autoincrement=True, primary_key=True, doc="ID")
     instructionName = db.Column(db.String(64), doc="说明标题")
 

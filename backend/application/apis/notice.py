@@ -11,7 +11,6 @@ bp_notice = Blueprint(
 @login_required
 def notice():
     notice = NoticeService.get_notice()
-    print(type(notice))
     if notice is None:
         return jsonify({
 	    "errCode": 1,
