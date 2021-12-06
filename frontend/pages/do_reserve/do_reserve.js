@@ -30,7 +30,9 @@ Page({
   },
 
   getEquipmentStatus() {
-    const params = { ...this.data.equipmentInfo };
+    const params = {
+      ...this.data.equipmentInfo
+    };
     delete params.equipmentName;
     delete params.equipmentStatus;
     app.$api.reserve.getEquipmentStatus(params)
@@ -119,6 +121,9 @@ Page({
 
   doReserve() {
     const needToDo = () => {
+      //判断冻结
+
+      //判断是否bind
       app.$api.user.getBindStatus()
         .then((res) => {
           if (res.data.errCode === 0) {
@@ -223,8 +228,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-  },
+  onShow() {},
 
   /**
    * 生命周期函数--监听页面隐藏

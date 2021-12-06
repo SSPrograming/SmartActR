@@ -7,6 +7,7 @@ App({
   $util: $util,
   globalData: {
     login: false,
+    freeze: false,
   },
   login_timer: null,
   loginCallBack: [],

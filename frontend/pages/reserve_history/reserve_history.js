@@ -79,7 +79,7 @@ Page({
   },
 
   cancelReservation(e) {
-    console.log(e.currentTarget.dataset.status);
+    //console.log(e.currentTarget.dataset.reserveId);
     if (e.currentTarget.dataset.status === "成功") {
       wx.showModal({
         content: "请问您要取消预约么？",
