@@ -15,16 +15,16 @@
             </view>
             <view class="equipment-info-description">
                 <view class="label"> 设备简介： </view>
-                <view class="content">{{ equipmentInfo.eqipmentDescription }}3D打印机通过增材制造的方式打印你所需的模型！</view>
+                <view class="content">{{ equipmentInfo.equipmentDescription }}</view>
             </view>
         </view>
         <view class="equipment-info-image-containter">
             <view class="whitespace"></view>
-            <image class="equipment-info-image" src="{{ equipmentType2imagePath[equipmentInfo.equipmentType] }}"></image>
+            <image class="equipment-info-image" src="{{ equipmentInfo.equipmentImageURL }}" mode="widthFix"></image>
             <view class="whitespace"></view>
         </view>
     </view>
-    <view class="delimeter">目前可预约时间段：</view>
+    <view class="delimeter">目前可预约时间段：{{ equipmentInfo.month }}月{{ equipmentInfo.date }}日</view>
     <view class="time-available-container">
         <view class="time-available" wx:for="{{ equipmentSpareTime }}" wx:key="index">
             {{ item.startTime }} ~ {{ item.endTime }}
