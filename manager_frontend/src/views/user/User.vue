@@ -210,6 +210,7 @@ export default {
   margin-bottom: $--toolbar-margin-bottom;
 
   .choose-num {
+    margin-left: 5px;
     flex-basis: 160px;
   }
 
