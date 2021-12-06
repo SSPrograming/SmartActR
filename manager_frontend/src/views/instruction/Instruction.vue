@@ -54,7 +54,7 @@ export default {
           instructionName: '3D辉夜机使用说明',
           instructionID: 1,
           instructionTags: ['快乐', '好用'],
-          instructionCoverImage: null
+          instructionCover: null
         }
       ],
       sortType: {
@@ -68,7 +68,7 @@ export default {
       form: {
         instructionName: '',
         instructionTags: [],
-        instructionCoverImage: null
+        instructionCover: null
       }
     }
   },
@@ -106,7 +106,7 @@ export default {
         this.form = {
           instructionName: '',
           instructionTags: [],
-          instructionCoverImage: null
+          instructionCover: null
         }
       }
       this.showInstructionInfoEditor = true
@@ -116,7 +116,7 @@ export default {
       this.form = {
         instructionName: row.instructionName,
         instructionTags: row.instructionTags.concat(),
-        instructionCoverImage: row.instructionCoverImage
+        instructionCover: row.instructionCover
       }
       this.showInstructionInfoEditor = true
     },
@@ -142,8 +142,38 @@ export default {
       this.showInstructionInfoEditor = false
     },
     editorConfirm() {
-      console.log(this.form)
-      this.showInstructionInfoEditor = true
+      this.dialogLoading = true
+      // 创建
+      if (!this.editInstructionID) {
+        let formData = new FormData()
+        formData.append('instructionName', this.form.instructionName)
+        formData.append('instructionTags', this.form.instructionTags)
+        formData.append('instructionCover', this.form.instructionCover)
+        this.$api.instruction.addInstruction(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '添加成功', 'success')
+            this.form = {
+              instructionName: '',
+              instructionTags: [],
+              instructionCover: null
+            }
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        })
+      }
+      // 编辑
+      else {
+        this.dialogLoading = false
+        this.showInstructionInfoEditor = false
+      }
     }
   }
 }

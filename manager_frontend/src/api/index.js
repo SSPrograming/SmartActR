@@ -7,6 +7,7 @@ import reserve from './reserve'
 import equipment from './equipment'
 import qrcode from './qrcode'
 import rule from './rule'
+import instruction from './instruction'
 import user from './user'
 
 export default {
@@ -16,5 +17,6 @@ export default {
   equipment,
   qrcode,
   rule,
+  instruction,
   user
 }

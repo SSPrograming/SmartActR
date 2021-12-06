@@ -33,15 +33,15 @@ export default {
     form: {
       instructionName: String,
       instructionTags: Array,
-      instructionCoverImage: String | File
+      instructionCover: String | File
     }
   },
   computed: {
     imageUrl() {
-      if (typeof this.form.instructionCoverImage === 'object') {
-        return this.form.instructionCoverImage && URL.createObjectURL(this.form.instructionCoverImage) || ''
+      if (typeof this.form.instructionCover === 'object') {
+        return this.form.instructionCover && URL.createObjectURL(this.form.instructionCover) || ''
       } else {
-        return this.form.instructionCoverImage
+        return this.form.instructionCover
       }
     }
   },
@@ -66,7 +66,7 @@ export default {
       } else if (!isLt1M) {
         this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
       } else {
-        this.form.instructionCoverImage = file.raw
+        this.form.instructionCover = file.raw
       }
       return isImage && isLt1M
     },
