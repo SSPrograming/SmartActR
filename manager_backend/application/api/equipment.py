@@ -161,3 +161,26 @@ def addEquipment():
         return jsonify({"errCode": 1, "errMsg": "新增设备失败"}), 200
     else:
         return jsonify({"errCode": 0}), 200
+
+@bp_equipment.route('/api/v1/equipment/getEquipmentRecordList', methods=['POST'])
+@login_required
+def getEquipmentRecordList():
+    try:
+        equipmentType = request.json["equipmentType"]
+        equipmentID = request.json["equipmentID"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    recordList_raw = EquipmentService.get_equipment_recordList(equipmentType, equipmentID)
+    recordList = []
+    for item in recordList_raw:
+        print(item)
+        recordList.append({"recordID": item.recordID,
+                    "postTime": item.postTime.strftime("%Y-%m-%d %H:%M"),
+                    "reserveDate": str(item.reserveDate),
+                    "startTime": item.startTime.strftime("%H:%M"),
+                    "endTime": item.endTime.strftime("%H:%M"),
+                    "userName": UserService.get_name_by_id(item.userID),
+                    "status": item.status
+    })
+    return jsonify({"errCode": 0, "RecordList": recordList}), 200

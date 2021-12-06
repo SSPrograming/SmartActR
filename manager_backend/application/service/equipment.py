@@ -216,4 +216,9 @@ class EquipmentService():
         if target_type is None:
             return "设备种类不存在", False
         return target_type.equipmentImageURL, True
+    
+    def get_equipment_recordList(equipmentType, equipmentID):
+        recordList = Reserve_Record.query.filter(Reserve_Record.equipmentType==equipmentType,
+                                                 Reserve_Record.equipmentID==equipmentID).all()
+        return recordList
         
