@@ -53,7 +53,8 @@ export default {
         {
           instructionName: '3D辉夜机使用说明',
           instructionID: 1,
-          instructionTags: ['快乐', '好用']
+          instructionTags: ['快乐', '好用'],
+          instructionCoverImage: null
         }
       ],
       sortType: {
@@ -66,7 +67,8 @@ export default {
       editInstructionID: null,
       form: {
         instructionName: '',
-        instructionTags: []
+        instructionTags: [],
+        instructionCoverImage: null
       }
     }
   },
@@ -103,7 +105,8 @@ export default {
         this.editInstructionID = null
         this.form = {
           instructionName: '',
-          instructionTags: []
+          instructionTags: [],
+          instructionCoverImage: null
         }
       }
       this.showInstructionInfoEditor = true
@@ -113,6 +116,7 @@ export default {
       this.form = {
         instructionName: row.instructionName,
         instructionTags: row.instructionTags.concat(),
+        instructionCoverImage: row.instructionCoverImage
       }
       this.showInstructionInfoEditor = true
     },
