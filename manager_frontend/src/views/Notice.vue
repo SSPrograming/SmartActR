@@ -107,44 +107,16 @@ export default {
       this.$utils.sort(this.noticeList, this.sortType, 'noticeID')
     },
     getNoticeList() {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+        this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+        return
+      }
       let params = {
         num: this.toolbar.showNums
       }
-      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStr) {
-        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
-          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
-          return
-        }
-        params = {
-          ...params,
-          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
-          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
-          queryStr: this.toolbar.queryStr,
-          queryType: 3
-        }
-      } else if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
-        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
-          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
-          return
-        }
-        params = {
-          ...params,
-          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
-          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
-          queryType: 1
-        }
-      } else if (this.toolbar.queryStr) {
-        params = {
-          ...params,
-          queryStr: this.toolbar.queryStr,
-          queryType: 2
-        }
-      } else {
-        params = {
-          ...params,
-          queryType: 0
-        }
-      }
+      this.toolbar.queryStartDate && (params.queryStartDate = this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.toolbar.queryEndDate && (params.queryEndDate = this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'))
+      this.toolbar.queryStr && (params.queryStr = this.toolbar.queryStr)
       this.tableLoading = true
       this.$api.notice.getNoticeList(params).then((res) => {
         if (res.data.errCode === 0) {

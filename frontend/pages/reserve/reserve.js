@@ -82,7 +82,7 @@ Page({
     });
   },
 
-  onEnter(e) {},
+  onEnter(e) { },
 
   switchDate(e) {
     if (e.currentTarget.dataset.index != this.data.selected) {

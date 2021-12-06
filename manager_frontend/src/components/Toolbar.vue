@@ -7,10 +7,10 @@
       </el-option>
     </el-select>
     <el-date-picker class="choose-date pointer" v-model="toolbar.queryStartDate" type="date" placeholder="选择开始日期"
-                    :editable="false" @change="toolbar.queryEndDate && $emit('query')" v-if="chooseDate">
+                    :editable="false" @change="$emit('query')" v-if="chooseDate">
     </el-date-picker>
     <el-date-picker class="choose-date pointer" v-model="toolbar.queryEndDate" type="date" placeholder="选择结束日期"
-                    :editable="false" @change="toolbar.queryStartDate && $emit('query')" v-if="chooseDate">
+                    :editable="false" @change="$emit('query')" v-if="chooseDate">
     </el-date-picker>
     <el-input class="input-query" v-model="toolbar.queryStr" placeholder="请输入查找内容"
               prefix-icon="el-icon-search" @keyup.enter.native="$emit('query')" clearable v-if="query">
