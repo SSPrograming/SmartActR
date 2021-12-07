@@ -146,4 +146,20 @@ def getSingleInstructionImageList():
         } for item in imageList_raw
     ]
     return jsonify({"imageList":imageList, "errCode": 0}), 200
+
+@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+@login_required
+def deleteImage():
+    try:
+        instructionID = request.json["instructionID"]
+        instructionImageID = request.json["instructionImageID"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    msg, deleteStatus = InstructionService.deleteImage(instructionID, instructionImageID)
+    if not deleteStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    else:
+        return jsonify({"errCode": 0}), 200
+
+
     

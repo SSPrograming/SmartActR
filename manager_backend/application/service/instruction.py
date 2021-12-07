@@ -161,3 +161,20 @@ class InstructionService():
     def getSingleInstructionImageList(instructionID):
         ImageList = InstructionImage.query.filter(InstructionImage.instructionID==instructionID).all()
         return ImageList
+
+    def deleteImage(instructionID, instructionImageID):
+        target_entry = InstructionImage.query.filter(InstructionImage.instructionID==instructionID, 
+                                                         InstructionImage.instructionImageID==instructionImageID).first()
+        if target_entry is None:
+            return "找不到这张图片的记录", False
+        targetImageURL = target_entry.imageURL
+        targetImageName = targetImageURL.split('/')[-1]
+        if os.path.exists('./application/static/instruction/'+targetImageName):
+            os.remove('./application/static/instruction/'+targetImageName)    
+        try:
+            db.session.delete(target_entry)
+            db.session.commit()
+            return "ok", True
+        except:
+            db.session.rollback()
+            return "删除图片失败", False
