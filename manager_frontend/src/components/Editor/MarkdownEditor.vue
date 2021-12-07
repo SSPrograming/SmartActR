@@ -146,19 +146,19 @@ export default {
       formData.append('file', params.file)
       return this.$api.instruction.addImage(formData)
     },
-    handleSuccess(res, file/*, fileList*/) {
+    handleSuccess(res, file, fileList) {
       if (res.data.errCode === 0) {
         file.instructionImageID = res.data.instructionImageID
         file.url = res.data.ImageURL
         this.$utils.alertMessage(this, '上传成功', 'success')
       } else {
         this.$utils.error.APIError(this, res.data)
-        this.$refs.imageUploader.handleRemove(file)
+        fileList.splice(fileList.indexOf(file), 1)
       }
     },
-    handleError(err, file/*, fileList*/) {
+    handleError(err, /*file, fileList*/) {
       this.$utils.error.ServerError(this, err)
-      this.$refs.imageUploader.handleRemove(file)
+      // fileList.splice(fileList.indexOf(file), 1)
     },
     handleRefresh() {
       this.$refs.imageUploader.fileList.splice(0, this.$refs.imageUploader.fileList.length)
