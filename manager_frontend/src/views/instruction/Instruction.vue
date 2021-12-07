@@ -50,12 +50,14 @@ export default {
       dialogLoading: false,
       tableLoading: false,
       instructionList: [
+        /*
         {
           instructionName: '3D辉夜机使用说明',
           instructionID: 1,
           instructionTags: ['快乐', '好用'],
           instructionCover: null
         }
+        */
       ],
       sortType: {
         prop: 'instructionID',
@@ -83,6 +85,9 @@ export default {
               this.pageSize * this.currentPage : this.instructionList.length)
     }
   },
+  mounted() {
+    this.getInstructionList()
+  },
   methods: {
     changeSortType(event) {
       if (event) {
@@ -98,7 +103,19 @@ export default {
       this.$utils.sort(this.instructionList, this.sortType, 'instructionID')
     },
     getInstructionList() {
-
+      this.tableLoading = true
+      this.$api.instruction.getInstructionList().then((res) => {
+        if (res.data.errCode === 0) {
+          this.instructionList = res.data.instructionList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
+      })
     },
     handleAdd() {
       if (this.editInstructionID) {
@@ -126,7 +143,19 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        this.tableLoading = true
+        this.$api.instruction.deleteInstruction({instructionID: row.instructionID}).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '删除成功', 'success')
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.tableLoading = false
+        })
       }).catch(() => {
       })
     },
