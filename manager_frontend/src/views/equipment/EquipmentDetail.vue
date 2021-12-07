@@ -158,10 +158,10 @@ export default {
       }
       const params = {
         equipmentType: this.equipmentType,
-        equipmentID: this.recordInfo.equipmentID,
-        startDate: this.recordInfo.toolbar.queryStartDate && this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'),
-        endDate: this.recordInfo.toolbar.queryEndDate && this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd')
+        equipmentID: this.recordInfo.equipmentID
       }
+      this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
       this.recordInfo.tableLoading = true
       this.$api.equipment.getEquipmentRecordList(params).then((res) => {
         if (res.data.errCode === 0) {
