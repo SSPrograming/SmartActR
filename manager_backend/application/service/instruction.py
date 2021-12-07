@@ -1,16 +1,15 @@
-from yaml.tokens import TagToken
 from application.database import db
 from application.models import Equipment, equipmentType, QRCode, Reserve_Record, Instruction, InstructionImage, InstructionTag
 from application.utils import strToTime, strToDate, now
 import datetime
-
+import os
 from config import query_yaml
 
 class InstructionService():
     def addImage(imageName, instructionID):
         targetInstrucion = Instruction.query.filter(Instruction.instructionID==instructionID).first()
         if targetInstrucion is None:
-            return "找不到这篇使用说明","", False
+            return "找不到这篇使用说明", False
         
         now_timestamp = str(int(now().timestamp()))
 
@@ -21,10 +20,11 @@ class InstructionService():
         new_instructionImage.imageURL = image_url
         try:
             db.session.add(new_instructionImage)
-            return image_url, unique_imageName, True
+            db.session.commit()
+            return [image_url, unique_imageName, new_instructionImage.instructionImageID], True
         except:
             db.session.rollback()
-            return "插入数据库时失败，可能是图片名过长","", False
+            return "插入数据库时失败，可能是图片名过长", False
         
     
     def addInstruction(instructionName, instructionTags, instructionCoverName):
@@ -61,11 +61,17 @@ class InstructionService():
         
         return instructionCoverURL, True
 
-    def updateInstruction(instructionID, instructionName, instructionTags, instructionContent):
+    def updateInstruction(instructionID, instructionName, instructionTags, instructionCoverName):
         targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
         if targetInstruction is None:
             return "此说明不存在", False
-        targetInstruction.instructionContent = instructionContent
+        if instructionCoverName is not None:
+            old_cover_url = targetInstruction.instructionCoverURL
+            old_img_name = old_cover_url.split('/')[-1]
+            if os.path.exists("/code/application/static/instructioncover/"+old_img_name):
+                os.remove("/code/application/static/instructioncover/"+old_img_name)
+            new_img_url = query_yaml("app.MANAGERSERVERURL") + 'image/instructioncover/' + str(instructionID) + '_' + instructionCoverName
+            targetInstruction.instructionCoverURL = new_img_url
         targetInstruction.instructionName = instructionName
         try:
             db.session.commit()
@@ -102,6 +108,17 @@ class InstructionService():
                     return "更新tag时出错", False
         
         return "ok", True
+    
+    def updateInstructionContent(instructionID, instructionContent):
+        targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
+        if targetInstruction is None:
+            return "此说明不存在", False
+        targetInstruction.instructionContent = instructionContent
+        try:
+            db.session.commit()
+            return "ok", True
+        except:
+            return "更新内容失败", False
 
     def getSingleInstruction(instructionID):
         targetInstruction = Instruction.query.filter(Instruction.instructionID==instructionID).first()
@@ -141,3 +158,6 @@ class InstructionService():
             db.session.rollback()
             return "删除使用说明失败", False
 
+    def getSingleInstructionImageList(instructionID):
+        ImageList = InstructionImage.query.filter(InstructionImage.instructionID==instructionID).all()
+        return ImageList

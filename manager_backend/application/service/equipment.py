@@ -2,7 +2,7 @@ from application.database import db
 from application.models import Equipment, equipmentType, QRCode, Reserve_Record
 from application.utils import strToTime, strToDate, now
 import datetime
-
+from sqlalchemy import and_
 from config import query_yaml
 
 class EquipmentService():
@@ -217,10 +217,24 @@ class EquipmentService():
             return "设备种类不存在", False
         return target_type.equipmentImageURL, True
     
-    def get_equipment_recordList(equipmentType, equipmentID):
-        recordList = Reserve_Record.query.filter(Reserve_Record.equipmentType==equipmentType,
-                                                 Reserve_Record.equipmentID==equipmentID).all()
-        return recordList
+    def get_equipment_recordList(equipmentType, equipmentID,startDate, endDate):
+        query_condition = and_(Reserve_Record.equipmentType==equipmentType,Reserve_Record.equipmentID==equipmentID)
+        if startDate is not None:
+            try:
+                startDate = strToDate(startDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate>=startDate)
+        
+        if endDate is not None:
+            try:
+                endDate = strToDate(endDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
+
+        recordList = Reserve_Record.query.filter(query_condition).all()
+        return recordList, True
     
     def swap_equipmentOrder(Type1, Type2):
         target_type1 = equipmentType.query.filter(equipmentType.equipmentType==Type1).first()

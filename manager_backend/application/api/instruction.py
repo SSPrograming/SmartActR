@@ -1,4 +1,5 @@
 from flask import json, request, jsonify, Blueprint, g
+from flask.globals import session
 from sqlalchemy.sql.operators import exists
 from config import query_yaml
 from application.database import db
@@ -23,11 +24,11 @@ def addImage():
     if not os.path.exists("./application/static/instruction/"):
         os.makedirs("./application/static/instruction")
     ImageName = Image.filename
-    msg_or_url, _or_name, addStatus = InstructionService.addImage(ImageName, instructionID)
+    msg_or_info, addStatus = InstructionService.addImage(ImageName, instructionID)
     if not addStatus:
-        return jsonify({"errCode": 1, "errMsg": msg_or_url}), 200
-    Image.save("./application/static/instruction/" + _or_name)
-    return jsonify({"errCode": 0, "ImageURL": msg_or_url}), 200
+        return jsonify({"errCode": 1, "errMsg": msg_or_info}), 200
+    Image.save("./application/static/instruction/" + msg_or_info[1])
+    return jsonify({"errCode": 0, "ImageURL": msg_or_info[0], "instructionImageID": msg_or_info[2]}), 200
 
 
 @bp_instruction.route('/api/v1/instruction/addInstruction',methods=['POST'])
@@ -58,12 +59,30 @@ def addInstruction():
 def updateInstruction():
     try:
         instructionName = request.form["instructionName"]
-        instructionContent = request.form["instructionContent"]
         instructionID = int(request.form["instructionID"])
         instructionTags = request.form["instructionTags"].split(',')
+    except Exception as e:
+        print(e)
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    instructionCover = request.files["instructionCover"] if "instructionCover" in request.files.keys() else None
+    instructionCoverName = instructionCover.filename if instructionCover is not None else None
+    msg, updateStatus = InstructionService.updateInstruction(instructionID, instructionName,instructionTags,instructionCoverName)
+    if instructionCover is not None:
+        instructionCover.save("./application/static/instructioncover/" + str(instructionID) + '_' + instructionCoverName)
+    if not updateStatus:
+        return jsonify({"errCode": 1,"errMsg": msg}), 200
+    else:
+        return jsonify({"errCode": 0}), 200
+
+@bp_instruction.route('/api/v1/instruction/updateContent',methods=['POST'])
+@login_required
+def updateContent():
+    try:
+        instructionID = int(request.form["instructionID"])
+        instructionContent = request.form["instructionContent"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    msg, updateStatus = InstructionService.updateInstruction(instructionID, instructionName,instructionTags,instructionContent)
+    msg, updateStatus = InstructionService.updateInstructionContent(instructionID, instructionContent)
     if not updateStatus:
         return jsonify({"errCode": 1,"errMsg": msg}), 200
     else:
@@ -110,3 +129,21 @@ def deleteInstruction():
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode":0}), 200
+
+@bp_instruction.route('/api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
+@login_required
+def getSingleInstructionImageList():
+    try:
+        instructionID = request.json["instructionID"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    imageList_raw = InstructionService.getSingleInstructionImageList(instructionID)
+    imageList = [
+        {
+            "imageURL": item.imageURL,
+            "instructionImageID": item.instructionImageID
+        } for item in imageList_raw
+    ]
+    return jsonify({"imageList":imageList, "errCode": 0}), 200
+    

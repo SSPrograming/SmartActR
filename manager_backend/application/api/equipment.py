@@ -170,11 +170,15 @@ def getEquipmentRecordList():
         equipmentID = request.json["equipmentID"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    
-    recordList_raw = EquipmentService.get_equipment_recordList(equipmentType, equipmentID)
+    startDate = request.json["startDate"] if "startDate" in request.json.keys() else None
+    endDate = request.json["endDate"] if "endDate" in request.json.keys() else None
+    recordList_raw, getStatus = EquipmentService.get_equipment_recordList(equipmentType, equipmentID,startDate, endDate)
+
+    if not getStatus:
+        return jsonify({"errCode": 1, "errMsg": recordList_raw}), 200
+
     recordList = []
     for item in recordList_raw:
-        print(item)
         recordList.append({"recordID": item.recordID,
                     "postTime": item.postTime.strftime("%Y-%m-%d %H:%M"),
                     "reserveDate": str(item.reserveDate),
@@ -183,7 +187,7 @@ def getEquipmentRecordList():
                     "userName": UserService.get_name_by_id(item.userID),
                     "status": item.status
     })
-    return jsonify({"errCode": 0, "RecordList": recordList}), 200
+    return jsonify({"errCode": 0, "recordList": recordList}), 200
 
 @bp_equipment.route('/api/v1/equipment/swapEquipmentOrder', methods=['POST'])
 @login_required
