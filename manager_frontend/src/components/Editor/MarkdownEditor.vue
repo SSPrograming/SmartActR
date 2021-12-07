@@ -46,6 +46,7 @@ export default {
   props: {
     instruction: {
       instructionID: Number,
+      imageList: Array,
       content: String,
       html: String
     }
@@ -91,15 +92,36 @@ export default {
     },
     handleInsert(file) {
       const textarea = this.$refs.input.$refs.textarea
+      const input = `![](${file.url})`
+      let startPos = 0
       if (textarea.selectionStart || textarea.selectionStart === 0) {
-        this.instruction.content = this.instruction.content.substring(0, textarea.selectionStart)
-            + `![](${file.url})` + this.instruction.content.substring(textarea.selectionEnd)
+        startPos = textarea.selectionStart
+        this.instruction.content = this.instruction.content.substring(0, startPos)
+            + input + this.instruction.content.substring(textarea.selectionEnd)
       } else {
-        this.instruction.content += `![](${file.url})`
+        startPos = this.instruction.content.length
+        this.instruction.content += input
       }
+      textarea.focus()
+      this.$nextTick(() => {
+        textarea.setSelectionRange(startPos, startPos + input.length)
+      })
     },
     handleRemove(file) {
-      this.$refs.imageUploader.handleRemove(file)
+      const params = {
+        instructionID: this.instruction.instructionID,
+        instructionImageID: file.instructionImageID
+      }
+      this.$api.instruction.deleteImage(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '删除成功', 'success')
+          this.$refs.imageUploader.handleRemove(file)
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+      })
     },
     handleHotkey(event) {
       // Ctrl + S
@@ -109,12 +131,12 @@ export default {
       }
     },
     handleBefore(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
+      const isLt1M = file.size / 1024 / 1024 < 10
       const isImage = file.type.match(/image/)
       if (!isImage) {
         this.$utils.alertMessage(this, '请上传图片文件', 'error')
       } else if (!isLt1M) {
-        this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
+        this.$utils.alertMessage(this, '上传图片大小不能超过10MB', 'error')
       }
       return isImage && isLt1M
     },
@@ -124,18 +146,28 @@ export default {
       formData.append('file', params.file)
       return this.$api.instruction.addImage(formData)
     },
-    handleSuccess(res, file, fileList) {
+    handleSuccess(res, file/*, fileList*/) {
       if (res.data.errCode === 0) {
+        file.instructionImageID = res.data.instructionImageID
         file.url = res.data.ImageURL
         this.$utils.alertMessage(this, '上传成功', 'success')
       } else {
         this.$utils.error.APIError(this, res.data)
-        fileList.splice(fileList.indexOf(file), 1)
+        this.$refs.imageUploader.handleRemove(file)
       }
     },
-    handleError(err, file, fileList) {
+    handleError(err, file/*, fileList*/) {
       this.$utils.error.ServerError(this, err)
-      fileList.splice(fileList.indexOf(file), 1)
+      this.$refs.imageUploader.handleRemove(file)
+    },
+    handleRefresh() {
+      this.$refs.imageUploader.fileList.splice(0, this.$refs.imageUploader.fileList.length)
+      this.instruction.imageList.forEach((image) => {
+        this.$refs.imageUploader.fileList.push({
+          instructionImageID: image.instructionImageID,
+          url: image.imageURL
+        })
+      })
     }
   },
   watch: {

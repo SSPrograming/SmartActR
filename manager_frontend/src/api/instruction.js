@@ -22,8 +22,14 @@ const instruction = {
   getSingleInstruction(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/getSingleInstruction`, params)
   },
+  getSingleInstructionImageList(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/getSingleInstructionImageList`, params)
+  },
   addImage(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/addImage`, params)
+  },
+  deleteImage(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/deleteImage`, params)
   },
   updateContent(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/updateContent`, params)

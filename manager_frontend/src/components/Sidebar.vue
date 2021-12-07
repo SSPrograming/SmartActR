@@ -28,7 +28,7 @@
         </el-menu-item>
         <el-menu-item index="HistoryRecord">
           <template slot="title">
-            <span>历史预约</span>
+            <span>所有预约</span>
           </template>
         </el-menu-item>
       </el-submenu>

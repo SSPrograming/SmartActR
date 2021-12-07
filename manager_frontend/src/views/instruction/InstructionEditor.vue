@@ -2,11 +2,12 @@
   <div class="instruction-editor">
     <div class="container">
       <div class="header">
-        <Toolbar back refresh @back="$router.push({name: 'Instruction'})" @refresh="getSingleInstruction"></Toolbar>
+        <Toolbar back refresh @back="$router.push({name: 'Instruction'})"
+                 @refresh="refresh"></Toolbar>
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
       <div class="editor" v-loading="loading">
-        <MarkdownEditor :instruction="instruction" @editorSave="handleSave"></MarkdownEditor>
+        <MarkdownEditor ref="MarkdownEditor" :instruction="instruction" @editorSave="handleSave"></MarkdownEditor>
       </div>
     </div>
   </div>
@@ -27,6 +28,7 @@ export default {
       loading: false,
       instruction: {
         instructionID: 0,
+        imageList: [],
         content: '',
         html: ''
       }
@@ -36,6 +38,7 @@ export default {
     if (this.$route.query.instructionID) {
       this.instruction.instructionID = this.$route.query.instructionID
       this.getSingleInstruction()
+      this.getSingleInstructionImageList()
     } else {
       this.$router.push({name: 'Instruction'})
     }
@@ -69,6 +72,22 @@ export default {
         this.$utils.error.ServerError(this, err)
         this.loading = false
       })
+    },
+    getSingleInstructionImageList() {
+      this.$api.instruction.getSingleInstructionImageList({instructionID: this.instruction.instructionID}).then((res) => {
+        if (res.data.errCode === 0) {
+          this.instruction.imageList = res.data.imageList
+          this.$refs.MarkdownEditor.handleRefresh()
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+      })
+    },
+    refresh() {
+      this.getSingleInstruction()
+      // this.getSingleInstructionImageList()
     }
   }
 }
