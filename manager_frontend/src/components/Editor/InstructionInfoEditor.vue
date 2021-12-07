@@ -31,17 +31,18 @@ export default {
   name: "InstructionInfoEditor",
   props: {
     form: {
+      instructionID: Number,
       instructionName: String,
       instructionTags: Array,
-      instructionCover: String | File
+      instructionCoverURL: String | File
     }
   },
   computed: {
     imageUrl() {
-      if (typeof this.form.instructionCover === 'object') {
-        return this.form.instructionCover && URL.createObjectURL(this.form.instructionCover) || ''
+      if (typeof this.form.instructionCoverURL === 'object') {
+        return this.form.instructionCoverURL && URL.createObjectURL(this.form.instructionCoverURL) || ''
       } else {
-        return this.form.instructionCover
+        return this.form.instructionCoverURL
       }
     }
   },
@@ -70,7 +71,7 @@ export default {
       } else if (!isLt1M) {
         this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
       } else {
-        this.form.instructionCover = file.raw
+        this.form.instructionCoverURL = file.raw
       }
       return isImage && isLt1M
     },

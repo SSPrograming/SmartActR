@@ -22,6 +22,7 @@ export default {
   name: "NoticeEditor",
   props: {
     form: {
+      noticeID: Number,
       expireDate: Date,
       noticeContent: String,
     }

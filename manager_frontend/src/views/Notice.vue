@@ -71,8 +71,8 @@ export default {
       currentPage: 1,
       dialogLoading: false,
       showNoticeEditor: false,
-      editNoticeID: null,
       form: {
+        noticeID: null,
         expireDate: null,
         noticeContent: '',
       }
@@ -136,9 +136,9 @@ export default {
       this.getNoticeList()
     },
     handleCreate() {
-      if (this.editNoticeID) {
-        this.editNoticeID = null
+      if (this.form.noticeID) {
         this.form = {
+          noticeID: null,
           expireDate: null,
           noticeContent: '',
         }
@@ -146,8 +146,8 @@ export default {
       this.showNoticeEditor = true
     },
     handleEdit(row) {
-      this.editNoticeID = row.noticeID
       this.form = {
+        noticeID: row.noticeID,
         expireDate: new Date(row.expireDate),
         noticeContent: row.content,
       }
@@ -185,11 +185,12 @@ export default {
       }
       this.dialogLoading = true
       // 创建
-      if (!this.editNoticeID) {
+      if (!this.form.noticeID) {
         this.$api.notice.createNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '创建成功', 'success')
             this.form = {
+              noticeID: null,
               expireDate: null,
               noticeContent: '',
             }
@@ -207,10 +208,7 @@ export default {
       }
       // 编辑
       else {
-        params = {
-          ...params,
-          noticeID: this.editNoticeID
-        }
+        this.form.noticeID && (params.noticeID = this.form.noticeID)
         this.$api.notice.updateNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '编辑成功', 'success')

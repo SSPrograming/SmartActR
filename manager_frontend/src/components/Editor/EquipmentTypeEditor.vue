@@ -5,7 +5,7 @@
         <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="设备数量" required>
-        <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>
+        <el-input-number v-model="form.equipmentCount" :min="1" :disabled="edit"></el-input-number>
       </el-form-item>
       <el-form-item label="设备描述" required>
         <el-input type="textarea" v-model="form.equipmentDescription" placeholder="请输入设备描述"
@@ -32,14 +32,17 @@ export default {
   name: "EquipmentTypeEditor",
   props: {
     form: {
+      equipmentType: Number,
       equipmentName: String,
       equipmentCount: Number,
       equipmentDescription: String,
       equipmentImage: String | Object,
-    },
-    add: Boolean
+    }
   },
   computed: {
+    edit() {
+      return Boolean(this.form.equipmentType)
+    },
     imageUrl() {
       if (typeof this.form.equipmentImage === 'object') {
         return this.form.equipmentImage && URL.createObjectURL(this.form.equipmentImage) || ''

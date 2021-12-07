@@ -55,7 +55,7 @@ export default {
           instructionName: '3D辉夜机使用说明',
           instructionID: 1,
           instructionTags: ['快乐', '好用'],
-          instructionCover: null
+          instructionCoverURL: null
         }
         */
       ],
@@ -66,11 +66,11 @@ export default {
       pageSize: 10,
       currentPage: 1,
       showInstructionInfoEditor: false,
-      editInstructionID: null,
       form: {
+        instructionID: null,
         instructionName: '',
         instructionTags: [],
-        instructionCover: null
+        instructionCoverURL: null
       }
     }
   },
@@ -118,22 +118,22 @@ export default {
       })
     },
     handleAdd() {
-      if (this.editInstructionID) {
-        this.editInstructionID = null
+      if (this.form.instructionID) {
         this.form = {
+          instructionID: null,
           instructionName: '',
           instructionTags: [],
-          instructionCover: null
+          instructionCoverURL: null
         }
       }
       this.showInstructionInfoEditor = true
     },
     handleEdit(row) {
-      this.editInstructionID = row.instructionID
       this.form = {
+        instructionID: row.instructionID,
         instructionName: row.instructionName,
         instructionTags: row.instructionTags.concat(),
-        instructionCover: row.instructionCover
+        instructionCoverURL: row.instructionCoverURL
       }
       this.showInstructionInfoEditor = true
     },
@@ -173,18 +173,19 @@ export default {
     editorConfirm() {
       this.dialogLoading = true
       // 创建
-      if (!this.editInstructionID) {
+      if (!this.form.instructionID) {
         let formData = new FormData()
         formData.append('instructionName', this.form.instructionName)
         formData.append('instructionTags', this.form.instructionTags)
-        formData.append('instructionCover', this.form.instructionCover)
+        formData.append('instructionCover', this.form.instructionCoverURL)
         this.$api.instruction.addInstruction(formData).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '添加成功', 'success')
             this.form = {
+              instructionID: null,
               instructionName: '',
               instructionTags: [],
-              instructionCover: null
+              instructionCoverURL: null
             }
             this.getInstructionList()
           } else {
@@ -200,8 +201,25 @@ export default {
       }
       // 编辑
       else {
-        this.dialogLoading = false
-        this.showInstructionInfoEditor = false
+        let formData = new FormData()
+        formData.append('instructionID', this.form.instructionID)
+        formData.append('instructionName', this.form.instructionName)
+        formData.append('instructionTags', this.form.instructionTags)
+        formData.append('instructionCover', this.form.instructionCoverURL)
+        this.$api.instruction.updateInstruction(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '编辑成功', 'success')
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        })
       }
     }
   }
