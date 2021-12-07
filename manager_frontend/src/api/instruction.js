@@ -18,6 +18,15 @@ const instruction = {
   },
   deleteInstruction(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/deleteInstruction`, params)
+  },
+  getSingleInstruction(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/getSingleInstruction`, params)
+  },
+  addImage(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/addImage`, params)
+  },
+  updateContent(params) {
+    return axios.post(`${config.baseUrl}/${subUrl}/updateContent`, params)
   }
 }
 

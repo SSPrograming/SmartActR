@@ -52,11 +52,15 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        if (!value.match(this.$utils.error.invalidToken)) {
-          this.form.instructionTags.push(value)
-        } else {
-          this.$utils.alertMessage(this, '请勿输入特殊字符', 'warning')
+        if (this.form.instructionTags.indexOf(value) !== -1) {
+          this.$utils.alertMessage(this, '请勿添加重复标签', 'warning')
+          return
         }
+        if (value.match(this.$utils.error.invalidToken)) {
+          this.$utils.alertMessage(this, '请勿输入特殊字符', 'warning')
+          return
+        }
+        this.form.instructionTags.push(value)
       }).catch(() => {
       });
     },

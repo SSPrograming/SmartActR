@@ -205,7 +205,9 @@ export default {
         formData.append('instructionID', this.form.instructionID)
         formData.append('instructionName', this.form.instructionName)
         formData.append('instructionTags', this.form.instructionTags)
-        formData.append('instructionCover', this.form.instructionCoverURL)
+        if (typeof this.form.instructionCoverURL === "object") {
+          formData.append('instructionCover', this.form.instructionCoverURL)
+        }
         this.$api.instruction.updateInstruction(formData).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '编辑成功', 'success')
