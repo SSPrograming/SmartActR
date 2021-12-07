@@ -15,7 +15,7 @@
         <el-table-column prop="instructionName" label="标题" width="250" :sortable="'custom'"></el-table-column>
         <el-table-column prop="instructionTags" label="标签" width="auto">
           <template slot-scope="scope">
-            <el-tag v-for="tag in scope.row.instructionTags" :key="tag" type="success">
+            <el-tag v-for="tag in scope.row.instructionTags" :key="tag" type="success" disable-transitions>
               {{ tag }}
             </el-tag>
           </template>

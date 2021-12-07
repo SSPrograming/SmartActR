@@ -4,7 +4,9 @@
       <img class="dialog-image" :src="dialogImageUrl" alt="">
     </el-dialog>
     <div class="image-uploader">
-      <el-upload ref="imageUploader" action="" :auto-upload="false" list-type="picture-card" accept="image/*">
+      <el-upload ref="imageUploader" action="" :auto-upload="true" list-type="picture-card" accept="image/*"
+                 :before-upload="handleBefore" :http-request="handleUpload" :on-success="handleSuccess"
+                 :on-error="handleError">
         <i slot="default" class="el-icon-plus"></i>
         <div class="image-file-container" slot="file" slot-scope="{file}">
           <img class="el-upload-list__item-thumbnail image-file" :src="file.url" alt="">
@@ -24,7 +26,7 @@
     </div>
     <div class="main">
       <div class="left">
-        <el-input class="input" type="textarea" v-model="instruction.content" placeholder="请输入内容"
+        <el-input ref="input" class="input" type="textarea" v-model="instruction.content" placeholder="请输入内容"
                   :rows="24" @keydown.native="handleHotkey"></el-input>
       </div>
       <div class="right">
@@ -43,6 +45,7 @@ export default {
   name: "MarkdownEditor",
   props: {
     instruction: {
+      instructionID: Number,
       content: String,
       html: String
     }
@@ -87,7 +90,13 @@ export default {
       this.dialogVisible = true
     },
     handleInsert(file) {
-      console.log(file)
+      const textarea = this.$refs.input.$refs.textarea
+      if (textarea.selectionStart || textarea.selectionStart === 0) {
+        this.instruction.content = this.instruction.content.substring(0, textarea.selectionStart)
+            + `![](${file.url})` + this.instruction.content.substring(textarea.selectionEnd)
+      } else {
+        this.instruction.content += `![](${file.url})`
+      }
     },
     handleRemove(file) {
       this.$refs.imageUploader.handleRemove(file)
@@ -98,6 +107,35 @@ export default {
         event.preventDefault()
         this.$emit('editorSave')
       }
+    },
+    handleBefore(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+      const isImage = file.type.match(/image/)
+      if (!isImage) {
+        this.$utils.alertMessage(this, '请上传图片文件', 'error')
+      } else if (!isLt1M) {
+        this.$utils.alertMessage(this, '上传图片大小不能超过1MB', 'error')
+      }
+      return isImage && isLt1M
+    },
+    handleUpload(params) {
+      let formData = new FormData()
+      formData.append('instructionID', this.instruction.instructionID)
+      formData.append('file', params.file)
+      return this.$api.instruction.addImage(formData)
+    },
+    handleSuccess(res, file, fileList) {
+      if (res.data.errCode === 0) {
+        file.url = res.data.ImageURL
+        this.$utils.alertMessage(this, '上传成功', 'success')
+      } else {
+        this.$utils.error.APIError(this, res.data)
+        fileList.splice(fileList.indexOf(file), 1)
+      }
+    },
+    handleError(err, file, fileList) {
+      this.$utils.error.ServerError(this, err)
+      fileList.splice(fileList.indexOf(file), 1)
     }
   },
   watch: {
@@ -121,12 +159,12 @@ export default {
   width: 100%;
 
   .left {
-    flex-basis: 50%;
+    width: 50%;
     margin-right: 5px;
   }
 
   .right {
-    flex-basis: 50%;
+    width: 50%;
     height: 32em;
     margin-left: 5px;
     border: 1px solid #dcdfe6;
@@ -186,6 +224,19 @@ export default {
   h2 {
     padding-bottom: .3em;
     border-bottom: 1px solid #d8dee4;
+  }
+
+  hr {
+    height: .1em;
+    padding: 0;
+    margin: 24px 0;
+    background-color: #d0d7de;
+    border: 0;
+  }
+
+  img {
+    max-width: 100%;
+    background: #ffffff;
   }
 
   blockquote {

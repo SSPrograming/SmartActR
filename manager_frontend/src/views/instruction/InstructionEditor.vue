@@ -2,10 +2,10 @@
   <div class="instruction-editor">
     <div class="container">
       <div class="header">
-        <Toolbar back @back="$router.push({name: 'Instruction'})"></Toolbar>
+        <Toolbar back refresh @back="$router.push({name: 'Instruction'})" @refresh="getSingleInstruction"></Toolbar>
         <el-button type="primary" plain @click="handleSave">保存</el-button>
       </div>
-      <div class="editor">
+      <div class="editor" v-loading="loading">
         <MarkdownEditor :instruction="instruction" @editorSave="handleSave"></MarkdownEditor>
       </div>
     </div>
@@ -24,44 +24,51 @@ export default {
   },
   data() {
     return {
-      instructionID: 0,
+      loading: false,
       instruction: {
-        content: '# SmartActR\n' +
-            '\n' +
-            '&emsp;&emsp;机械系科协活动室的管理系统——智慧活动室。\n' +
-            '\n' +
-            '## 分支\n' +
-            '\n' +
-            '+ `main`：每一次迭代发布的版本\n' +
-            '+ `develop`：开发版本\n' +
-            '+ `frontend`：前端分支\n' +
-            '+ `backend`：后端分支\n' +
-            '+ `manager-frontend`：管理端前端分支\n' +
-            '+ `manager-backend`：管理端后端分支\n' +
-            '+ `meeting`：会议记录\n' +
-            '+ `doc`：文档\n' +
-            '\n' +
-            '```cpp\n' +
-            '#include <iostream>\n' +
-            'using namespace std;\n' +
-            'int main() {\n' +
-            '    cout << "Hello, world" << endl;\n' +
-            '}\n' +
-            '```',
+        instructionID: 0,
+        content: '',
         html: ''
       }
     }
   },
   mounted() {
     if (this.$route.query.instructionID) {
-      this.instructionID = this.$route.query.instructionID
+      this.instruction.instructionID = this.$route.query.instructionID
+      this.getSingleInstruction()
     } else {
       this.$router.push({name: 'Instruction'})
     }
   },
   methods: {
     handleSave() {
-      console.log(this.instruction.html)
+      let formData = new FormData()
+      formData.append('instructionID', this.instruction.instructionID)
+      formData.append('instructionContent', this.instruction.content)
+      this.$api.instruction.updateContent(formData).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '保存成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+      })
+    },
+    getSingleInstruction() {
+      this.loading = true
+      this.$api.instruction.getSingleInstruction({instructionID: this.instruction.instructionID}).then((res) => {
+        if (res.data.errCode === 0) {
+          this.instruction.content = res.data.instructionContent
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.loading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.loading = false
+      })
     }
   }
 }
