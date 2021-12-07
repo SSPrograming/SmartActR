@@ -34,11 +34,10 @@ params:
 
 ````
 {
-	"num": number, #-1表示全部
-	"queryType": number,	#时间为1，内容为2，不搜索为0，结合为3
-	"queryStartDate": "",
-	"queryEndDate": "",
-	"queryStr": ""
+	"num": number, #-1表示全部, not optional
+	"queryStartDate": "",	#optional
+	"queryEndDate": "",		#optional
+	"queryStr": ""			#optional
 }
 ````
 
@@ -628,7 +627,7 @@ ret:
 
 @login_required
 
-params:
+params: **form-data**
 
 ```
 {
@@ -636,7 +635,8 @@ params:
 	"instructionTags": 
 	[
 		"",""
-	]
+	],
+	"instructionCover": a file
 }
 ```
 
@@ -667,7 +667,8 @@ ret:
 
 ```
 {
-	"ImageURL": ""	
+	"ImageURL": "",
+    "instructionImageID": number
 }
 ```
 
@@ -700,17 +701,17 @@ ret:
 
 @login_required
 
-params:
+params:**form-data**
 
 ```
 {
-	"instructionName": "",
-	"instructionContent": "",
-	"instructionID": number,
-	"instructionTags": 
+	"instructionName": "",			#not optional
+	"instructionID": number,		#not optional
+	"instructionTags": 				#optional
 	[
 		"",""
-	]
+	],
+	"instructionCover": a file
 }
 ```
 
@@ -721,6 +722,37 @@ ret:
 	"errCode":
 }
 ```
+
+
+
+
+
+
+
+@bp_instruction.route('/api/v1/instruction/updateContent',methods=['POST'])
+
+@login_required
+
+params: **form-data**
+
+```
+{
+	"instructionID": number,
+	"instructionContent": ""
+}
+```
+
+ret；
+
+```
+{
+	"errCode": 
+}
+```
+
+
+
+
 
 
 
@@ -746,9 +778,59 @@ ret:
 
 
 
+@bp_instruction.route('/api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionID": number
+}
+```
+
+ret:
+
+```
+{
+	"imageList":[
+		{
+			"imageURL": "",
+			"instructionImageID": number
+		}
+	]
+}
+```
 
 
-@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['POST'])
+
+
+
+@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"instructionID": number,
+	"instructionImageID": number
+}
+```
+
+ret:
+
+```
+{
+	"errCode": number
+}
+```
+
+
+
+@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['GET'])
 
 @login_required
 
@@ -764,7 +846,8 @@ ret:
 			"instructionTags":
 			[
 				"",""
-			]
+			],
+			"instructionCoverURL": ""
 		}
 	]
 }
