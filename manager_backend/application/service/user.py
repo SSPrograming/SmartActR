@@ -1,6 +1,6 @@
 from sqlalchemy.sql.functions import user
 from application.database import db
-from application.models import User, Student
+from application.models import User, Student, Reserve_Record
 from application.utils import strToTime, strToDate, now
 from sqlalchemy import and_
 import datetime
@@ -60,3 +60,46 @@ class UserService():
             if user.freezeStatus and now_date>=user.freezeDate+datetime.timedelta(days=freezelen):
                 user.freezeStatus = 0
             db.session.commit()
+
+    def update_studentStatus(stuID, status):
+        target_student = Student.query.filter(Student.stuID==stuID).first()
+        if target_student is None:
+            return "找不到这名学生", False
+        target_user = User.query.filter(User.userID==target_student.userID).first()
+        now_datetime = now()
+        now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+        if status==1:
+            target_user.freezeStatus = 1
+            target_user.freezeDate = now_date
+        elif status==0:
+            target_user.freezeStatus = 0
+        else:
+            return "bad arguments", False
+        try:
+            db.session.commit()
+            return "ok", True
+        except:
+            db.session.rollback()
+            return "数据库更新失败", False
+    
+    def get_user_recordList(stuID,startDate, endDate):
+        target_student = Student.query.filter(Student.stuID==stuID).first()
+        if target_student is None:
+            return "找不到这名学生", False
+        query_condition = and_(Reserve_Record.userID==target_student.userID)
+        if startDate is not None:
+            try:
+                startDate = strToDate(startDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate>=startDate)
+        
+        if endDate is not None:
+            try:
+                endDate = strToDate(endDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
+
+        recordList = Reserve_Record.query.filter(query_condition).all()
+        return recordList, True
