@@ -10,6 +10,10 @@
         <i slot="default" class="el-icon-plus"></i>
         <div class="image-file-container" slot="file" slot-scope="{file}">
           <img class="el-upload-list__item-thumbnail image-file" :src="file.url" alt="">
+          <el-progress
+              v-if="file.status === 'uploading'" type="circle" :stroke-width="6" :width="80"
+              :percentage="parsePercentage(file.percentage)">
+          </el-progress>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
               <i class="el-icon-zoom-in"></i>
@@ -86,11 +90,24 @@ export default {
       });
       this.instruction.html = md.render(this.instruction.content);
     },
+    checkFileStatus(file) {
+      if (file.status !== 'success') {
+        this.$utils.alertMessage(this, '正在上传中', 'warning')
+        return false
+      }
+      return true
+    },
     handlePictureCardPreview(file) {
+      if (!this.checkFileStatus(file)) {
+        return
+      }
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
     handleInsert(file) {
+      if (!this.checkFileStatus(file)) {
+        return
+      }
       const textarea = this.$refs.input.$refs.textarea
       const input = `![](${file.url})`
       let startPos = 0
@@ -108,6 +125,9 @@ export default {
       })
     },
     handleRemove(file) {
+      if (!this.checkFileStatus(file)) {
+        return
+      }
       const params = {
         instructionID: this.instruction.instructionID,
         instructionImageID: file.instructionImageID
@@ -144,7 +164,7 @@ export default {
       let formData = new FormData()
       formData.append('instructionID', this.instruction.instructionID)
       formData.append('file', params.file)
-      return this.$api.instruction.addImage(formData)
+      return this.$api.instruction.addImage(formData, this.$refs.imageUploader.handleProgress, params.file)
     },
     handleSuccess(res, file, fileList) {
       if (res.data.errCode === 0) {
@@ -168,7 +188,10 @@ export default {
           url: image.imageURL
         })
       })
-    }
+    },
+    parsePercentage(val) {
+      return parseInt(val, 10);
+    },
   },
   watch: {
     'instruction.content'() {
@@ -242,6 +265,10 @@ export default {
 
   .el-upload-list--picture-card .el-upload-list__item-actions span + span {
     margin-left: 10px;
+  }
+
+  .el-upload-list--picture-card .el-progress {
+    width: 80px;
   }
 }
 

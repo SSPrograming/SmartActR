@@ -25,8 +25,16 @@ const instruction = {
   getSingleInstructionImageList(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/getSingleInstructionImageList`, params)
   },
-  addImage(params) {
-    return axios.post(`${config.baseUrl}/${subUrl}/addImage`, params)
+  addImage(params, onUploadProgress, rawFile) {
+    return axios({
+      url: `${config.baseUrl}/${subUrl}/addImage`,
+      method: 'post',
+      data: params,
+      onUploadProgress: (ev) => {
+        ev.percent = ev.loaded * 100 / ev.total || 0
+        onUploadProgress(ev, rawFile)
+      }
+    })
   },
   deleteImage(params) {
     return axios.post(`${config.baseUrl}/${subUrl}/deleteImage`, params)
