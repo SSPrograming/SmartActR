@@ -102,7 +102,7 @@ export default {
         },
         tableLoading: false,
         recordList: [],
-        equipmentID: 0
+        stuID: 0
       },
     }
   },
@@ -165,6 +165,24 @@ export default {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
+      const params = {
+        stuID: this.recordInfo.stuID
+      }
+      this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
+      this.recordInfo.tableLoading = true
+      this.$api.user.getStudentRecordList(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.recordInfo.recordList = res.data.recordList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.recordInfo.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.recordInfo.tableLoading = false
+      })
     },
     query() {
       this.getStuList()
@@ -178,7 +196,23 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        const params = {
+          stuID: row.stuID,
+          status: 1
+        }
+        this.recordInfo.tableLoading = true
+        this.$api.user.updateUserStatus(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '冻结成功', 'success')
+            this.getStuList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.recordInfo.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.recordInfo.tableLoading = false
+        })
       }).catch(() => {
       })
     },
@@ -188,12 +222,29 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        const params = {
+          stuID: row.stuID,
+          status: 0
+        }
+        this.recordInfo.tableLoading = true
+        this.$api.user.updateUserStatus(params).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '冻结成功', 'success')
+            this.getStuList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.recordInfo.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.recordInfo.tableLoading = false
+        })
       }).catch(() => {
       })
     },
     handleLookUp(row) {
-      console.log(row)
+      this.recordInfo.stuID = row.stuID
+      this.getRecordList()
       this.showReserveRecord = true
     }
   }
