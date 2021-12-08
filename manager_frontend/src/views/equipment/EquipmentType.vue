@@ -14,9 +14,9 @@
           <div slot="header" class="card-header">
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
-            <el-button class="button move" type="text" @click="handleMoveUp(index)" :disabled="index===0">上移</el-button>
+            <el-button class="button move" type="text" @click="handleMoveUp(index)" :disabled="index===0">前移</el-button>
             <el-button class="button move" type="text" @click="handleMoveDown(index)"
-                       :disabled="index===equipmentTypeList.length - 1">下移
+                       :disabled="index===equipmentTypeList.length - 1">后移
             </el-button>
             <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
             <el-button class="button delete" type="text" @click="handleDelete(item)">删除</el-button>
@@ -131,7 +131,7 @@ export default {
       this.loading = true
       this.$api.equipment.swapEquipmentOrder(params).then((res) => {
         if (res.data.errCode === 0) {
-          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.$utils.alertMessage(this, '前移成功', 'success')
           this.getAllEquipmentType()
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -152,7 +152,7 @@ export default {
       this.loading = true
       this.$api.equipment.swapEquipmentOrder(params).then((res) => {
         if (res.data.errCode === 0) {
-          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.$utils.alertMessage(this, '前移成功', 'success')
           this.getAllEquipmentType()
         } else {
           this.$utils.error.APIError(this, res.data)
