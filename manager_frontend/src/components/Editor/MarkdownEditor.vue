@@ -75,7 +75,7 @@ export default {
         linkify: false,
         typographer: true,
         quotes: '“”‘’',
-        highlight: function (str, lang) {
+        highlight(str, lang) {
           if (lang && hljs.getLanguage(lang)) {
             try {
               return '<pre class="hljs">' +
@@ -109,7 +109,7 @@ export default {
         return
       }
       const textarea = this.$refs.input.$refs.textarea
-      const input = `![](${file.url})`
+      const input = `![](${file.url.replaceAll(' ', '%20')})`
       let startPos = 0
       if (textarea.selectionStart || textarea.selectionStart === 0) {
         startPos = textarea.selectionStart
@@ -148,6 +148,24 @@ export default {
       if (event.ctrlKey && event.keyCode === 83) {
         event.preventDefault()
         this.$emit('editorSave')
+      }
+      // Tab
+      else if (event.keyCode === 9) {
+        event.preventDefault()
+        const textarea = this.$refs.input.$refs.textarea
+        const input = '    '
+        let startPos = 0
+        if (textarea.selectionStart || textarea.selectionStart === 0) {
+          startPos = textarea.selectionStart
+          this.instruction.content = this.instruction.content.substring(0, startPos)
+              + input + this.instruction.content.substring(textarea.selectionEnd)
+        } else {
+          startPos = this.instruction.content.length
+          this.instruction.content += input
+        }
+        this.$nextTick(() => {
+          textarea.setSelectionRange(startPos + input.length, startPos + input.length)
+        })
       }
     },
     handleBefore(file) {
