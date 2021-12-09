@@ -229,7 +229,7 @@ export default {
         this.recordInfo.tableLoading = true
         this.$api.user.updateUserStatus(params).then((res) => {
           if (res.data.errCode === 0) {
-            this.$utils.alertMessage(this, '冻结成功', 'success')
+            this.$utils.alertMessage(this, '解冻成功', 'success')
             this.getStuList()
           } else {
             this.$utils.error.APIError(this, res.data)
