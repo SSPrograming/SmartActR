@@ -27,6 +27,7 @@
                     <view class="reserve_date">预约日期：{{item.month}}月{{item.date}}日</view>
                     <view class="reserve_time">预约时间：{{item.startTime}}~{{item.endTime}}</view>
                 </view>
+                <view class="white_space"></view>
                 <image class="reservation_status" src="{{ reservationStatus2imagePath[item.status] }}"></image>
             </view>
         </scroll-view>

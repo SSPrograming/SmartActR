@@ -95,6 +95,11 @@ Page({
           }
         }
       })
+    } else {
+      var con = "本次预约已" + e.currentTarget.dataset.status;
+      wx.showModal({
+        content: con,
+      })
     }
   },
   /**
