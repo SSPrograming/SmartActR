@@ -2,7 +2,7 @@
   <div class="user">
     <el-dialog title="预约记录" :visible.sync="showReserveRecord" v-loading="dialogLoading" width="80%">
       <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="recordQuery"
-                   @hide="showReserveRecord=false" show-user-name show-equipment-name dialog></ReserveView>
+                   @hide="showReserveRecord=false" show-equipment-name dialog></ReserveView>
     </el-dialog>
     <div class="container">
       <div class="header">
