@@ -366,7 +366,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/checkIn', methods=['POST'])
+@bp_user.route('/api/v1/checkIn', methods=['POST'])
 
 @login_required
 
@@ -382,8 +382,8 @@ ret:
 
 ```
 {
-	#0为签到成功，1为码无效，2为无相关记录
 	"errCode": number,
+	"checkInStatus": number, 	#0为签到成功，1为码无效，2为无相关记录
 	"errMsg": ""
 }
 ```

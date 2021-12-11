@@ -423,7 +423,7 @@ ret:
 
 ```
 {
-	"RecordList":
+	"rvsecordList":
 	[
 		{
 			"recordID":number,
@@ -916,7 +916,45 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/user/updateUserStatus',methods=['POST'])
+@bp_user.route('/api/v1/user/getStudentRecordList',methods=['POST'])
+
+@login_required
+
+params:
+
+```
+{
+	"stuID": number,
+	"startDate": "",							#optional
+	"endDate": "",								#optional
+	"limitNum": number							#optional
+}
+```
+
+ret:
+
+```
+{
+	"recordList":
+	[
+		{
+			"recordID":number,
+			"postTime": "",
+			"reserveDate": "",
+			"startTime": "",
+			"endTime": "",
+			"userName": "",
+			"status": "",
+		}
+	]
+}
+```
+
+
+
+
+
+@bp_user.route('/api/v1/user/updateUserStatus',methods=['POST'])
 
 @login_required
 
@@ -925,7 +963,7 @@ params:
 ```
 {
 	"stuID": "",
-	"status": ""
+	"status": number #0表示解冻，1表示冻结
 }
 ```
 
