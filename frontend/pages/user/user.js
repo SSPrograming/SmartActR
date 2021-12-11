@@ -73,6 +73,7 @@ Page({
     app.$api.reserve.checkIn(param)
       .then((res) => {
         if (res.data.errCode === 0) {
+          //if(res.data.checkInStatus === 0)
           wx.showToast({
             title: "签到成功！",
           })

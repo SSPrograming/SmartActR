@@ -63,7 +63,7 @@ const reserve = {
   },
   checkIn(params) {
     return request({
-      url: '/reserve/checkIn',
+      url: '/checkIn',
       method: 'Post',
       data: params,
     })
