@@ -8,8 +8,12 @@ bp_freeze = Blueprint(
 )
 
 
-@bp_freeze.route('/api/v1/instruction/getFreezeStatus', method=['GET'])
-@login_required 
+@bp_freeze.route('/api/v1/instruction/getFreezeStatus', methods=['GET'])
+# @login_required 
 def get_freeze_status():
-    UserService.get_freeze_info(g.userID)
-    return jsonify({"errCode":0}),200
+    #freezeStatus,freezeDate = UserService.get_freeze_info(str(g.userID))
+    freezeStatus,freezeDate = UserService.get_freeze_info('2')
+    return jsonify({
+        "freezeStatus" : freezeStatus,
+        "freezeDate" : freezeDate
+    }) #返回freezeStatus为0/1，未冻结/冻结
