@@ -79,14 +79,25 @@ Page({
   },
 
   cancelReservation(e) {
-    //console.log(e.currentTarget.dataset.reserveId);
+    console.log(e.currentTarget.dataset);
     if (e.currentTarget.dataset.status === "成功") {
       wx.showModal({
         content: "请问您要取消预约么？",
         success(res) {
           if (res.confirm) {
             app.$api.reserve.cancelReserve({
-                reserveID: e.currentTarget.dataset.reserveid,
+                reserveID: e.currentTarget.dataset.reserveId,
+              })
+              .then((res) => {
+                if (res.data.errCode === 0) {
+                  wx.showToast({
+                    title: '已成功取消',
+                    duration: 0,
+                    icon: 'success',
+                  })
+                } else {
+                  app.dealError(res.data, 'SERVER');
+                }
               })
               .catch((err) => {
                 app.dealError(err, 'API')

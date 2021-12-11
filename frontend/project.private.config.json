@@ -35,6 +35,12 @@
           "pathName": "pages/reserve_history/reserve_history",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "使用说明",
+          "pathName": "pages/instruction/instruction",
+          "query": "",
+          "scene": null
         }
       ]
     }

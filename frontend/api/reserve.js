@@ -61,6 +61,13 @@ const reserve = {
       method: 'GET',
     });
   },
+  checkIn(params) {
+    return request({
+      url: '/reserve/checkIn',
+      method: 'Post',
+      data: params,
+    })
+  }
 };
 
 export default {

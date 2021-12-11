@@ -14,6 +14,7 @@ Page({
     loading: false,
     isShowNotice: false,
     reservationList: [],
+    codeScanned: '',
   },
 
   /**
@@ -65,12 +66,35 @@ Page({
     })
   },
 
+  checkIn() {
+    const param = {
+      hashCode: this.data.codeScanned,
+    };
+    app.$api.reserve.checkIn(param)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          wx.showToast({
+            title: "签到成功！",
+          })
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+  },
   //扫码签到
   scanCode(e) {
+    let that = this
     wx.scanCode({
       onlyFromCamera: true,
-      success(res) {
-        console.log(res)
+      success: (res) => {
+        this.setData({
+          codeScanned: res.result,
+        });
+        console.log(this.data.codeScanned);
+        app.dealThing(this.checkIn);
       },
       fail(err) {
 
@@ -78,10 +102,17 @@ Page({
     })
   },
 
+  unbind() {
+    app.$api.user.unbind()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        this.dealError(err, 'API');
+      });
+  },
 
-
-  //身份绑定
-  identityCheck() {
+  getBindStatus() {
     app.$api.user.getBindStatus()
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -96,17 +127,9 @@ Page({
               success(res) {
                 if (res.confirm) {
                   //解绑身份
-                  app.$api.user.unbind()
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((err) => {
-                      this.dealError(err, 'API');
-                    });
+                  app.dealThing(this.unbind);
                 }
               },
-
-
             })
           }
         } else {
@@ -118,6 +141,11 @@ Page({
         // 如果后端 api 调用失败
         app.dealError(err, 'API');
       });
+  },
+
+  //身份绑定
+  identityCheck() {
+    app.dealThing(this.getBindStatus);
   },
 
   //意见反馈
