@@ -19,7 +19,7 @@ def get_single_instruction_info():
     }) 
 
 @bp_instruction.route('/api/v1/instruction/getInstructionList', methods=['GET'])
-#@login_required
+@login_required
 def get_all_instruction_info():
     instructionList = InstructionService.get_all_instrucion()
     return jsonify({
