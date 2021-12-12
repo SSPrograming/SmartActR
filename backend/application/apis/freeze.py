@@ -12,7 +12,7 @@ bp_freeze = Blueprint(
 # @login_required 
 def get_freeze_status():
     #freezeStatus,freezeDate = UserService.get_freeze_info(str(g.userID))
-    freezeStatus,freezeDate = UserService.get_freeze_info('2')
+    freezeStatus,freezeDate = UserService.get_freeze_info('2')  # for test
     return jsonify({
         "freezeStatus" : freezeStatus,
         "freezeDate" : freezeDate

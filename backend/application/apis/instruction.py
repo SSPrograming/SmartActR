@@ -10,9 +10,18 @@ bp_instruction = Blueprint(
 
 @bp_instruction.route('/api/v1/instruction/getSingleInstruction', methods=['POST'])
 # @login_required 
-def get_instruction_info():
+def get_single_instruction_info():
    # id = request.json['instructionID']
-    content = InstructionService.get_instruction(1)
+   #content = InstructionService.get_instruction(id)
+    content = InstructionService.get_instruction(1)  # for test
     return jsonify({
         "instructionContent" : content
     }) 
+
+@bp_instruction.route('/api/v1/instruction/getInstructionList', methods=['GET'])
+#@login_required
+def get_all_instruction_info():
+    instructionList = InstructionService.get_all_instrucion()
+    return jsonify({
+        "instructionList":instructionList
+    })
