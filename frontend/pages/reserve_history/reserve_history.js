@@ -83,7 +83,7 @@ Page({
     if (e.currentTarget.dataset.status === "成功") {
       wx.showModal({
         content: "请问您要取消预约么？",
-        success(res) {
+        success: (res) => {
           if (res.confirm) {
             app.$api.reserve.cancelReserve({
                 reserveID: e.currentTarget.dataset.reserveId,
@@ -92,9 +92,12 @@ Page({
                 if (res.data.errCode === 0) {
                   wx.showToast({
                     title: '已成功取消',
-                    duration: 0,
                     icon: 'success',
                   })
+                  this.setData({
+                    loading: true,
+                  })
+                  app.dealThing(this.getCurrentReserveInfo);
                 } else {
                   app.dealError(res.data, 'SERVER');
                 }
@@ -160,7 +163,14 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.setData({
+      loading: true,
+    })
+    if (this.data.selected === 0) {
+      app.dealThing(this.getCurrentReserveInfo);
+    } else {
+      app.dealThing(this.getHistoryReserveInfo);
+    }
   },
 
   /**

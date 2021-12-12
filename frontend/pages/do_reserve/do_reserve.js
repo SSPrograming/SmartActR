@@ -151,6 +151,13 @@ Page({
                           showCancel: false,
                           confirmText: '确定',
                           confirmColor: '#cf3c7f',
+                          success(res) {
+                            if (res.confirm) {
+                              wx.switchTab({
+                                url: '/pages/reserve/reserve',
+                              });
+                            }
+                          }
                         });
                         this.setData({
                           loading: true,
