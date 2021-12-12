@@ -45,6 +45,16 @@ Page({
             },
             equipmentSpareTime: res.data.equipmentSpareTime,
           });
+          let st = this.data.equipmentSpareTime[0]['startTime'].split(":");
+          let sh = parseInt(st[0]) - 8;
+          let sm = parseInt(st[1]) / 15;
+          let et = this.data.equipmentSpareTime[this.data.equipmentSpareTime.length - 1]['endTime'].split(":");
+          let eh = parseInt(et[0]) - 8;
+          let em = parseInt(et[1]) / 15;
+          this.setData({
+            startTime: [sh, sm],
+            endTime: [eh, em],
+          });
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -151,6 +161,13 @@ Page({
                           showCancel: false,
                           confirmText: '确定',
                           confirmColor: '#cf3c7f',
+                          success(res) {
+                            if (res.confirm) {
+                              wx.switchTab({
+                                url: '/pages/reserve/reserve',
+                              });
+                            }
+                          }
                         });
                         this.setData({
                           loading: true,

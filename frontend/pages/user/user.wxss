@@ -90,8 +90,9 @@
   height: 60rpx;
   margin: 15rpx 45rpx 0rpx;
 }
-.user_info_wrap .user_content .feedback {
-  border-bottom: 0rpx;
+.user_info_wrap .user_content .button {
+  width: 100%;
+  height: 100rpx;
 }
 .user_info_wrap .feedback_wrap {
   width: 60%;

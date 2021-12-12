@@ -35,6 +35,18 @@
           "pathName": "pages/reserve_history/reserve_history",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "使用说明",
+          "pathName": "pages/instruction/instruction",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "do_reserve",
+          "pathName": "pages/do_reserve/do_reserve",
+          "query": "equipmentType=3&equipmentID=1&equipmentName=%E6%BF%80%E5%85%89%E5%88%87%E5%89%B2%E6%9C%BA&equipmentStatus=0&equipmentImageURL=http%3A%2F%2F120.53.231.51%3A9999%2Fimage%2Fequipment%2F3_63d0f703918fa0ec8232191a7b9759ee3d6ddb34.jpg&year=2021&month=12&date=12",
+          "scene": null
         }
       ]
     }
