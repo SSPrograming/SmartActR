@@ -2,26 +2,21 @@
   <div class="equipment-type-editor">
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="设备名称" required>
-        <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称"></el-input>
+        <el-input v-model="form.equipmentName" style="width: 250px" placeholder="请输入设备名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="设备数量" required>
-        <el-input-number v-model="form.equipmentCount" :min="1" :disabled="!add"></el-input-number>
+        <el-input-number v-model="form.equipmentCount" :min="1" :disabled="edit"></el-input-number>
       </el-form-item>
       <el-form-item label="设备描述" required>
-        <el-input type="textarea" :rows="5" maxlength="50" show-word-limit placeholder="请输入设备描述"
-                  v-model="form.equipmentDescription">
+        <el-input type="textarea" v-model="form.equipmentDescription" placeholder="请输入设备描述"
+                  :rows="5" maxlength="50" show-word-limit>
         </el-input>
       </el-form-item>
       <el-form-item label="图片" required>
-        <el-upload
-            class="image-uploader" ref="uploader"
-            action=""
-            accept="image/*"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="imageChange">
-          <img v-if="imageUrl" :src="imageUrl" class="image" alt="">
-          <i v-else class="el-icon-plus image-uploader-icon"></i>
+        <el-upload class="image-uploader" ref="uploader" action="" :auto-upload="false"
+                   :show-file-list="false" accept="image/*" :on-change="imageChange">
+          <img :src="imageUrl" class="image" alt="" v-if="imageUrl">
+          <i class="el-icon-plus image-uploader-icon" v-else></i>
         </el-upload>
       </el-form-item>
       <div style="text-align: center;">
@@ -36,10 +31,18 @@
 export default {
   name: "EquipmentTypeEditor",
   props: {
-    form: Object,
-    add: Boolean
+    form: {
+      equipmentType: Number,
+      equipmentName: String,
+      equipmentCount: Number,
+      equipmentDescription: String,
+      equipmentImage: String | Object,
+    }
   },
   computed: {
+    edit() {
+      return Boolean(this.form.equipmentType)
+    },
     imageUrl() {
       if (typeof this.form.equipmentImage === 'object') {
         return this.form.equipmentImage && URL.createObjectURL(this.form.equipmentImage) || ''
@@ -89,10 +92,10 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-}
 
-.image-uploader .el-upload:hover {
-  border-color: #409EFF;
+  &:hover {
+    border-color: #409EFF;
+  }
 }
 
 .image-uploader-icon {
@@ -105,8 +108,8 @@ export default {
 }
 
 .image {
-  height: 178px;
   display: block;
+  height: 178px;
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <el-scrollbar class="scrollbar" style="height: 100%">
+  <div id="app" :style="specialDay ? 'filter: grayscale(100%);' : ''">
+    <el-scrollbar class="scrollbar">
       <header>
         <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
         <el-button v-if="!isLogin" type="primary" plain @click="logout">登出</el-button>
@@ -31,6 +31,9 @@ export default {
   computed: {
     isLogin() {
       return this.$route.name === 'Login'
+    },
+    specialDay() {
+      return this.$utils.time.format(new Date(), 'MM-dd') === '12-13'
     }
   },
   mounted() {
@@ -97,7 +100,6 @@ header {
 
   main {
     box-sizing: border-box;
-    margin: 0 auto;
   }
 }
 
@@ -106,7 +108,7 @@ header {
 }
 
 .sidebar-enter, .sidebar-leave-to {
-  margin-left: -240px;
+  margin-left: calc(-240px - 5%);
   opacity: 0;
 }
 </style>
@@ -133,9 +135,12 @@ html, body {
   }
 }
 
-.scrollbar > .el-scrollbar__wrap {
-  overflow-x: hidden;
-}
+.scrollbar {
+  height: 100%;
 
+  & > .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+}
 
 </style>

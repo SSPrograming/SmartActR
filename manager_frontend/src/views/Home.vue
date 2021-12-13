@@ -55,19 +55,19 @@ export default {
 .container {
   padding-top: 5vh;
   padding-left: 5%;
-}
 
-p {
-  font-size: $--my-font-size-medium;
-  padding-bottom: 16px;
-}
+  p {
+    font-size: $--my-font-size-medium;
+    padding-bottom: 16px;
 
-span {
-  font-size: $--my-font-size-large;
-  color: mix($--color-primary, $--color-danger);
-}
+    span {
+      font-size: $--my-font-size-large;
+      color: mix($--color-primary, $--color-danger);
+    }
 
-.time span {
-  font-size: $--my-font-size-extra-large;
+    &.time span {
+      font-size: $--my-font-size-extra-large;
+    }
+  }
 }
 </style>

@@ -3,14 +3,16 @@
  */
 
 const time = {
+  // 把数字转化为星期
   day2str(day) {
     const map = ['日', '一', '二', '三', '四', '五', '六']
     return map[day]
   },
+  // 以固定位数显示整数
   fix(num, length) {
-    // 以固定位数显示整数
     return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num
   },
+  // 把日期以特定格式显示
   format(date, fmt) {
     const o = {
       'M+': date.getMonth() + 1,

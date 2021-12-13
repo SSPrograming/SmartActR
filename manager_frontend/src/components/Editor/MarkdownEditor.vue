@@ -1,13 +1,19 @@
 <template>
   <div class="markdown-editor">
-    <el-dialog :visible.sync="dialogVisible" top="5vh">
+    <el-dialog :visible.sync="dialogVisible" top="10vh">
       <img class="dialog-image" :src="dialogImageUrl" alt="">
     </el-dialog>
     <div class="image-uploader">
-      <el-upload action="" ref="imageUploader" list-type="picture-card" :auto-upload="false">
+      <el-upload ref="imageUploader" action="" :auto-upload="true" list-type="picture-card" accept="image/*"
+                 :before-upload="handleBefore" :http-request="handleUpload" :on-success="handleSuccess"
+                 :on-error="handleError">
         <i slot="default" class="el-icon-plus"></i>
         <div class="image-file-container" slot="file" slot-scope="{file}">
           <img class="el-upload-list__item-thumbnail image-file" :src="file.url" alt="">
+          <el-progress
+              v-if="file.status === 'uploading'" type="circle" :stroke-width="6" :width="80"
+              :percentage="parsePercentage(file.percentage)">
+          </el-progress>
           <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
               <i class="el-icon-zoom-in"></i>
@@ -24,7 +30,8 @@
     </div>
     <div class="main">
       <div class="left">
-        <el-input class="input" :rows="20" type="textarea" placeholder="请输入内容" v-model="instruction.content"></el-input>
+        <el-input ref="input" class="input" type="textarea" v-model="instruction.content" placeholder="请输入内容"
+                  :rows="24" @keydown.native="handleHotkey"></el-input>
       </div>
       <div class="right">
         <el-scrollbar class="scrollbar" style="height: 100%">
@@ -41,12 +48,17 @@ import 'highlight.js/styles/github-gist.css'
 export default {
   name: "MarkdownEditor",
   props: {
-    instruction: Object
+    instruction: {
+      instructionID: Number,
+      imageList: Array,
+      content: String,
+      html: String
+    }
   },
   data() {
     return {
       dialogVisible: false,
-      dialogImageUrl: '',
+      dialogImageUrl: ''
     }
   },
   mounted() {
@@ -54,8 +66,8 @@ export default {
   },
   methods: {
     renderMarkdown() {
-      let hljs = require('highlight.js'); // https://highlightjs.org/
-      let md = require('markdown-it')({
+      const hljs = require('highlight.js') // https://highlightjs.org/
+      const md = require('markdown-it')({
         html: true,
         xhtmlOut: false,
         breaks: false,
@@ -63,7 +75,7 @@ export default {
         linkify: false,
         typographer: true,
         quotes: '“”‘’',
-        highlight: function (str, lang) {
+        highlight(str, lang) {
           if (lang && hljs.getLanguage(lang)) {
             try {
               return '<pre class="hljs">' +
@@ -78,16 +90,126 @@ export default {
       });
       this.instruction.html = md.render(this.instruction.content);
     },
+    checkFileStatus(file) {
+      if (file.status !== 'success') {
+        this.$utils.alertMessage(this, '正在上传中', 'warning')
+        return false
+      }
+      return true
+    },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      if (!this.checkFileStatus(file)) {
+        return
+      }
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
     handleInsert(file) {
-      console.log(file)
+      if (!this.checkFileStatus(file)) {
+        return
+      }
+      const textarea = this.$refs.input.$refs.textarea
+      const input = `![](${file.url.replaceAll(' ', '%20')})`
+      let startPos = 0
+      if (textarea.selectionStart || textarea.selectionStart === 0) {
+        startPos = textarea.selectionStart
+        this.instruction.content = this.instruction.content.substring(0, startPos)
+            + input + this.instruction.content.substring(textarea.selectionEnd)
+      } else {
+        startPos = this.instruction.content.length
+        this.instruction.content += input
+      }
+      textarea.focus()
+      this.$nextTick(() => {
+        textarea.setSelectionRange(startPos, startPos + input.length)
+      })
     },
     handleRemove(file) {
-      this.$refs.imageUploader.handleRemove(file)
-    }
+      if (!this.checkFileStatus(file)) {
+        return
+      }
+      const params = {
+        instructionID: this.instruction.instructionID,
+        instructionImageID: file.instructionImageID
+      }
+      this.$api.instruction.deleteImage(params).then((res) => {
+        if (res.data.errCode === 0) {
+          this.$utils.alertMessage(this, '删除成功', 'success')
+          this.$refs.imageUploader.handleRemove(file)
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+      })
+    },
+    handleHotkey(event) {
+      // Ctrl + S
+      if (event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault()
+        this.$emit('editorSave')
+      }
+      // Tab
+      else if (event.keyCode === 9) {
+        event.preventDefault()
+        const textarea = this.$refs.input.$refs.textarea
+        const input = '    '
+        let startPos = 0
+        if (textarea.selectionStart || textarea.selectionStart === 0) {
+          startPos = textarea.selectionStart
+          this.instruction.content = this.instruction.content.substring(0, startPos)
+              + input + this.instruction.content.substring(textarea.selectionEnd)
+        } else {
+          startPos = this.instruction.content.length
+          this.instruction.content += input
+        }
+        this.$nextTick(() => {
+          textarea.setSelectionRange(startPos + input.length, startPos + input.length)
+        })
+      }
+    },
+    handleBefore(file) {
+      const isLt1M = file.size / 1024 / 1024 < 10
+      const isImage = file.type.match(/image/)
+      if (!isImage) {
+        this.$utils.alertMessage(this, '请上传图片文件', 'error')
+      } else if (!isLt1M) {
+        this.$utils.alertMessage(this, '上传图片大小不能超过10MB', 'error')
+      }
+      return isImage && isLt1M
+    },
+    handleUpload(params) {
+      let formData = new FormData()
+      formData.append('instructionID', this.instruction.instructionID)
+      formData.append('file', params.file)
+      return this.$api.instruction.addImage(formData, this.$refs.imageUploader.handleProgress, params.file)
+    },
+    handleSuccess(res, file, fileList) {
+      if (res.data.errCode === 0) {
+        file.instructionImageID = res.data.instructionImageID
+        file.url = res.data.ImageURL
+        this.$utils.alertMessage(this, '上传成功', 'success')
+      } else {
+        this.$utils.error.APIError(this, res.data)
+        fileList.splice(fileList.indexOf(file), 1)
+      }
+    },
+    handleError(err, /*file, fileList*/) {
+      this.$utils.error.ServerError(this, err)
+      // fileList.splice(fileList.indexOf(file), 1)
+    },
+    handleRefresh() {
+      this.$refs.imageUploader.fileList.splice(0, this.$refs.imageUploader.fileList.length)
+      this.instruction.imageList.forEach((image) => {
+        this.$refs.imageUploader.fileList.push({
+          instructionImageID: image.instructionImageID,
+          url: image.imageURL
+        })
+      })
+    },
+    parsePercentage(val) {
+      return parseInt(val, 10);
+    },
   },
   watch: {
     'instruction.content'() {
@@ -110,13 +232,13 @@ export default {
   width: 100%;
 
   .left {
-    flex-basis: 50%;
+    width: 50%;
     margin-right: 5px;
   }
 
   .right {
-    flex-basis: 50%;
-    height: 27em;
+    width: 50%;
+    height: 32em;
     margin-left: 5px;
     border: 1px solid #dcdfe6;
     border-radius: 4px;
@@ -162,6 +284,10 @@ export default {
   .el-upload-list--picture-card .el-upload-list__item-actions span + span {
     margin-left: 10px;
   }
+
+  .el-upload-list--picture-card .el-progress {
+    width: 80px;
+  }
 }
 
 .output {
@@ -175,6 +301,19 @@ export default {
   h2 {
     padding-bottom: .3em;
     border-bottom: 1px solid #d8dee4;
+  }
+
+  hr {
+    height: .1em;
+    padding: 0;
+    margin: 24px 0;
+    background-color: #d0d7de;
+    border: 0;
+  }
+
+  img {
+    max-width: 100%;
+    background: #ffffff;
   }
 
   blockquote {
