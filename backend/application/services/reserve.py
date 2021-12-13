@@ -79,32 +79,17 @@ class ReserveService:
             return '数据库错误',False
 
     def get_history_record(userID):
-        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
-        rem_start = len(query_record)
         now_datetime = now()
         today = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
-        for i in range(len(query_record)-1, -1, -1):
-            if query_record[i].reserveDate >= today:
-                rem_start = i
-            else:
-                break
-        if rem_start < len(query_record):
-            del query_record[rem_start:]
-        
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
+                                                   Reserve_Record.reserveDate<today).order_by(Reserve_Record.reserveDate.desc()).all()      
         return query_record     
 
     def get_current_record(userID):
-        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
-        rem_start = len(query_record)
         now_datetime = now()
         today = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
-        for i in range(len(query_record)-1, -1, -1):
-            if query_record[i].reserveDate >= today:
-                rem_start = i
-            else:
-                break
-        if rem_start < len(query_record):
-            del query_record[:rem_start]
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
+                                                    Reserve_Record.reserveDate>=today).order_by(Reserve_Record.reserveDate.asc()).all()
         return query_record     
 
     def strToTime(strTime):

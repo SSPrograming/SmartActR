@@ -188,6 +188,7 @@ def reserveEquipment():
 @bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
 @login_required
 def cancelReserve():
+    print(request.json)
     try:
         recordID = request.json['reserveID']
     except Exception as e:
@@ -245,12 +246,3 @@ def getCurrentReserveInfo():
         "info": resp_record
     }), 200
 
-@bp_reserve.route('/api/v1/reserve/checkIn', methods=['POST'])
-@login_required
-def checkIn():
-    hash = request.json['equipmentType']
-    user_id = g.userID
-    t = CheckInService.test("testhash",1)
-    return jsonify({
-	    "errCode": t, #0代表签到失败，1签到成功
-        })

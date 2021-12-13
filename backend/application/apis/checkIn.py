@@ -19,4 +19,4 @@ def checkIn():
     return jsonify({
 	    "errCode": 0, #0代表签到失败，1签到成功
         "checkInStatus": t
-        })
+        }), 200
