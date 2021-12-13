@@ -2,6 +2,12 @@
  * 提示消息的统一入口
  */
 
+/**
+ * 提示消息
+ * @param that 调用该函数的组件指针
+ * @param message 需要提示的消息
+ * @param type 'success', 'warning', 'info', 'error'
+ */
 const alertMessage = (that, message, type) => {
   switch (type) {
     case 'success':
@@ -37,4 +43,4 @@ const alertMessage = (that, message, type) => {
   }
 }
 
-export default alertMessage;
+export default alertMessage

@@ -22,6 +22,7 @@ Page({
   // 后端数据获取
   getAllEquipmentStatus() {
     const params = this.data.dates[this.data.selected];
+    //console.log(params);
     app.$api.reserve.getAllEquipmentStatus(params)
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -71,11 +72,15 @@ Page({
   },
 
   showNotice(e) {
-    this.setData({ isShowNotice: true });
+    this.setData({
+      isShowNotice: true
+    });
   },
 
   hideNotice(e) {
-    this.setData({ isShowNotice: false });
+    this.setData({
+      isShowNotice: false
+    });
   },
 
   onEnter(e) { },
@@ -134,8 +139,8 @@ Page({
   onShow() {
     // 更新TabBar
     if (
-      typeof this.getTabBar === 'function'
-      && this.getTabBar()
+      typeof this.getTabBar === 'function' &&
+      this.getTabBar()
     ) {
       this.getTabBar().setData({
         selected: 1,

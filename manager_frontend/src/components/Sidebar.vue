@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <el-menu :default-active="routeName" class="el-menu-vertical-demo" @select="handleSelect">
+    <el-menu :default-active="routeName" @select="handleSelect">
       <!-- 首页 -->
       <el-menu-item index="Home">
         <template slot="title">
@@ -28,7 +28,7 @@
         </el-menu-item>
         <el-menu-item index="HistoryRecord">
           <template slot="title">
-            <span>历史预约</span>
+            <span>所有预约</span>
           </template>
         </el-menu-item>
       </el-submenu>
@@ -82,8 +82,9 @@ export default {
   name: "Sidebar",
   computed: {
     routeName() {
-      return this.$route.name === 'EquipmentDetail' ? 'EquipmentType' :
-          this.$route.name === 'InstructionEditor' ? 'Instruction' : this.$route.name
+      return this.$route.name === 'EquipmentDetail' ? 'EquipmentType'
+          : this.$route.name === 'InstructionEditor' ? 'Instruction'
+              : this.$route.name
     }
   },
   methods: {
@@ -98,6 +99,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

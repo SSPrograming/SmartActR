@@ -31,6 +31,8 @@ def addRule():
             expireDate = request.json["expireDate"]
             ruleContent["expireDate"] = expireDate
             day = request.json["day"]
+            if day==0:
+                day=7
             ruleContent["day"] = day
         except:
             return jsonify(argumentErr), 200
@@ -72,6 +74,8 @@ def updateRule():
             expireDate = request.json["expireDate"]
             ruleContent["expireDate"] = expireDate
             day = request.json["day"]
+            if day==0:
+                day=7
             ruleContent["day"] = day
         except:
             return jsonify(argumentErr), 200
@@ -103,7 +107,7 @@ def getRules():
         rule = {}
         rule["repeat"] = item.repeat
         if item.repeat==1:
-            rule["day"] = item.day
+            rule["day"] = item.day % 7
         else:
             rule["date"] = str(item.date)
         rule["startTime"] = item.startTime.strftime("%H:%M")

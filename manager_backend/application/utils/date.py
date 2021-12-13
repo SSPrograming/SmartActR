@@ -20,3 +20,4 @@ def next_weekday(day):
     for i in range(0,7):
         if (now_date + datetime.timedelta(days=i)).isoweekday() == day:
             return now_date + datetime.timedelta(days=i)
+    return None

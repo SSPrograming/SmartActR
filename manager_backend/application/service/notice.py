@@ -2,46 +2,20 @@ from application.database import db
 from application.models import TableNotcie
 from application.utils import strToTime, strToDate, now
 import datetime
-
+from sqlalchemy import and_
 class NoticeService():
-    def query_notice(num, query_type, query_startDate=None, query_endDate=None, query_str=None):
+    def query_notice(num, query_startDate=None, query_endDate=None, query_str=None):
+        query_condition = and_()
+        if query_startDate is not None:
+            query_condition = and_(query_condition, TableNotcie.noticeDate>=query_startDate)
+        if query_endDate is not None:
+            query_condition = and_(query_condition, TableNotcie.noticeDate<=query_endDate)
+        if query_str is not None:
+            query_condition = and_(query_condition, TableNotcie.noticeContent.like('%'+query_str+'%'))
         if num==-1:
-            if query_type==0:
-                return TableNotcie.query.all()
-            elif query_type==1:
-                startDate = strToDate(query_startDate)
-                endDate = strToDate(query_endDate)
-                return TableNotcie.query.filter(TableNotcie.noticeDate>=startDate,
-                                                TableNotcie.noticeDate<=endDate).all()
-            elif query_type==2:
-                return TableNotcie.query.filter(TableNotcie.noticeContent.like('%'+query_str+'%')).all()
-            
-            elif query_type==3:
-                startDate = strToDate(query_startDate)
-                endDate = strToDate(query_endDate)
-                return TableNotcie.query.filter(TableNotcie.noticeDate>=startDate,
-                                                TableNotcie.noticeDate<=endDate,
-                                                TableNotcie.noticeContent.like('%'+query_str+'%')).all()
-            else:
-                return None
+            return TableNotcie.query.filter(query_condition).all()
         elif num >=0:
-            if query_type==0:
-                return TableNotcie.query.limit(num).all()
-            elif query_type==1:
-                startDate = strToDate(query_startDate)
-                endDate = strToDate(query_endDate)
-                return TableNotcie.query.filter(TableNotcie.noticeDate>=startDate,
-                                                TableNotcie.noticeDate<=endDate).limit(num).all()
-            elif query_type==2:
-                return TableNotcie.query.filter(TableNotcie.noticeContent.like('%'+query_str+'%')).limit(num).all()
-            elif query_type==3:
-                startDate = strToDate(query_startDate)
-                endDate = strToDate(query_endDate)
-                return TableNotcie.query.filter(TableNotcie.noticeDate>=startDate,
-                                                TableNotcie.noticeDate<=endDate,
-                                                TableNotcie.noticeContent.like('%'+query_str+'%')).limit(num).all()
-            else:
-                return None
+            return TableNotcie.query.filter(query_condition).limit(num).all()
         else:
             return None
 

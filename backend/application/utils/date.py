@@ -71,4 +71,6 @@ def calculate_spare_time(date):
         if now_time>=end_time:
             return datetime.timedelta(0)
         else:
-            return datetime.datetime.combine(now_date,end_time)-datetime.datetime.combine(now_date,now_time)
+            return datetime.datetime.combine(now_date,end_time)- max(datetime.datetime.combine(now_date,now_time),datetime.datetime(
+                now_date.year, now_date.month, now_date.day, 8,0
+            ))

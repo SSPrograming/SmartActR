@@ -167,7 +167,6 @@ class ruleService():
                     if not (rule_.startTime>=endTime or rule_.endTime<=startTime):
                         return "更新规则失败：已有其他规则占用同一时间段", False
 
-            target_rule = ruleTable()
             target_rule.repeat = 1
             target_rule.day = day
             target_rule.startTime = startTime

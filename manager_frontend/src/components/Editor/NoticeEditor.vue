@@ -2,11 +2,11 @@
   <div class="notice-editor">
     <el-form class="form" ref="form" :model="form" label-width="80px">
       <el-form-item label="过期时间" required>
-        <el-date-picker class="pointer" v-model="form.expireDate" type="date" :editable="false" placeholder="选择过期时间">
+        <el-date-picker class="pointer" v-model="form.expireDate" type="date" placeholder="选择过期时间" :editable="false">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="公告内容">
-        <el-input type="textarea" :rows="10" placeholder="请输入公告内容" v-model="form.noticeContent">
+        <el-input type="textarea" v-model="form.noticeContent" placeholder="请输入公告内容" :rows="10">
         </el-input>
       </el-form-item>
       <div style="text-align: center;">
@@ -21,7 +21,11 @@
 export default {
   name: "NoticeEditor",
   props: {
-    form: Object
+    form: {
+      noticeID: Number,
+      expireDate: Date,
+      noticeContent: String,
+    }
   },
   methods: {
     submit() {

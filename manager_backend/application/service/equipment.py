@@ -2,7 +2,7 @@ from application.database import db
 from application.models import Equipment, equipmentType, QRCode, Reserve_Record
 from application.utils import strToTime, strToDate, now
 import datetime
-
+from sqlalchemy import and_
 from config import query_yaml
 
 class EquipmentService():
@@ -13,7 +13,7 @@ class EquipmentService():
         return target_type.equipmentName, True
     
     def get_all_equipmentType():
-        return equipmentType.query.all()
+        return equipmentType.query.order_by(equipmentType.equipmentOrder.asc()).all()
 
     def get_type_count(Type):
         return Equipment.query.filter(Equipment.equipmentType==Type).count()
@@ -173,10 +173,26 @@ class EquipmentService():
         return "ok", True
     
     def update_equipment_status(Type, id, status):
+        now_datetime = now()
+        now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
         target_equipment = Equipment.query.filter(Equipment.equipmentType==Type,
                                                   Equipment.equipmentID==id).first()
         if target_equipment is None:
             return "设备不存在", False
+        
+        if status=='损坏':
+            related_records = Reserve_Record.query.filter(Reserve_Record.equipmentType==Type,
+                                                          Reserve_Record.equipmentID==id,
+                                                          Reserve_Record.reserveDate>=now_date,
+                                                          Reserve_Record.status=='成功').all()
+            for record in related_records:
+                record.status='取消'
+                try:
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    return "数据库更新失败", False
+
         try:
             target_equipment.equipmentStatus = status
             db.session.commit()
@@ -200,4 +216,51 @@ class EquipmentService():
         if target_type is None:
             return "设备种类不存在", False
         return target_type.equipmentImageURL, True
+    
+    def get_equipment_recordList(equipmentType, equipmentID,startDate, endDate):
+        query_condition = and_(Reserve_Record.equipmentType==equipmentType,Reserve_Record.equipmentID==equipmentID)
+        if startDate is not None:
+            try:
+                startDate = strToDate(startDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate>=startDate)
         
+        if endDate is not None:
+            try:
+                endDate = strToDate(endDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
+
+        recordList = Reserve_Record.query.filter(query_condition).all()
+        return recordList, True
+    
+    def swap_equipmentOrder(Type1, Type2):
+        target_type1 = equipmentType.query.filter(equipmentType.equipmentType==Type1).first()
+        target_type2 = equipmentType.query.filter(equipmentType.equipmentType==Type2).first()
+        if target_type1 is None or target_type2 is None:
+            return "设备种类不存在", False
+        Type1_order = target_type1.equipmentOrder
+        Type2_order = target_type2.equipmentOrder
+        target_type1.equipmentOrder = 2147483647
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        target_type2.equipmentOrder = Type1_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        
+        target_type1.equipmentOrder = Type2_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        
+        return "ok", True

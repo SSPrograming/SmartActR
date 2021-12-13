@@ -1,6 +1,8 @@
+from operator import or_
 from application.database import db
 from application.models import Reserve_Record, ruleTable
 import datetime
+from sqlalchemy import or_
 from application.utils import now
 
 class ReserveService:
@@ -11,7 +13,7 @@ class ReserveService:
         records = Reserve_Record.query.filter(Reserve_Record.reserveDate==date,
                                               Reserve_Record.equipmentType==equipmentType,
                                               Reserve_Record.equipmentID==equipmentID,
-                                              Reserve_Record.status=="成功" or Reserve_Record.status=="完成").all()
+                                              or_(Reserve_Record.status=="成功",Reserve_Record.status=="完成")).all()
         return records
         
     def get_occupation_of_day(date):
@@ -68,7 +70,7 @@ class ReserveService:
             if target_startTime<=now:
                 return '超时，不可取消',False
         try:
-            query_reserve_record.status = 'cancel'
+            query_reserve_record.status = '取消'
             db.session.commit()
             return 'ok',True
         except Exception as e:
@@ -77,32 +79,17 @@ class ReserveService:
             return '数据库错误',False
 
     def get_history_record(userID):
-        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
-        rem_start = len(query_record)
-        now = datetime.datetime.now()
-        today = datetime.date(now.year, now.month, now.day)
-        for i in range(len(query_record)-1, -1, -1):
-            if query_record[i].reserveDate >= today:
-                rem_start = i
-            else:
-                break
-        if rem_start < len(query_record):
-            del query_record[rem_start:]
-        
+        now_datetime = now()
+        today = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
+                                                   Reserve_Record.reserveDate<today).order_by(Reserve_Record.reserveDate.desc()).all()      
         return query_record     
 
     def get_current_record(userID):
-        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID).order_by(Reserve_Record.reserveDate.asc()).all()
-        rem_start = len(query_record)
-        now = datetime.datetime.now()
-        today = datetime.date(now.year, now.month, now.day)
-        for i in range(len(query_record)-1, -1, -1):
-            if query_record[i].reserveDate >= today:
-                rem_start = i
-            else:
-                break
-        if rem_start < len(query_record):
-            del query_record[:rem_start]
+        now_datetime = now()
+        today = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+        query_record = Reserve_Record.query.filter(Reserve_Record.userID==userID,
+                                                    Reserve_Record.reserveDate>=today).order_by(Reserve_Record.reserveDate.asc()).all()
         return query_record     
 
     def strToTime(strTime):

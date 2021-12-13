@@ -33,16 +33,20 @@ export default {
   data() {
     return {
       tableLoading: false,
-      recordList: [{
-        recordID: 0,
-        postTime: '',
-        reserveDate: '',
-        startTime: '',
-        endTime: '',
-        username: '',
-        status: '',
-        equipmentName: ''
-      }],
+      recordList: [
+        /*
+        {
+          recordID: 0,
+          postTime: '',
+          reserveDate: '',
+          startTime: '',
+          endTime: '',
+          username: '',
+          status: '',
+          equipmentName: ''
+        }
+        */
+      ],
       sortType: {
         prop: 'recordID',
         order: 'descending'
@@ -109,5 +113,7 @@ export default {
 
 .pagination {
   margin-top: $--pagination-margin-top;
+  margin-bottom: $--pagination-margin-bottom;
 }
+
 </style>

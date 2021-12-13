@@ -2,6 +2,12 @@
  * 排序的统一入口
  */
 
+/**
+ * 排序对象数组
+ * @param array 数组
+ * @param sortType 排序方式 {prop: String, order: String}
+ * @param primaryKey 主键
+ */
 const sort = (array, sortType, primaryKey) => {
   array.sort((a, b) => {
     const var1 = a[sortType.prop]

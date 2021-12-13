@@ -12,6 +12,8 @@ class User(db.Model):
     violationTimes = db.Column(db.Integer, doc="违约次数")
     freezeDate = db.Column(db.Date, doc= "开始冻结日期")
     identity = db.Column(db.String(32), doc="身份")
+    violateToday = db.Column(db.Boolean, doc="今日是否违约")
+    freezeStatus = db.Column(db.Boolean, doc="是否冻结权限")
 
 
 class equipmentType(db.Model):
@@ -103,6 +105,7 @@ class Instruction(db.Model):
     instructionContent = db.Column(db.Text, doc="html格式说明内容")
     instructionID = db.Column(db.Integer, autoincrement=True, primary_key=True, doc="ID")
     instructionName = db.Column(db.String(64), doc="说明标题")
+    instructionCoverURL = db.Column(db.String(1024))
 
 class Admin(db.Model):
     """
@@ -150,3 +153,12 @@ class feedback(db.Model):
     feedbackID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     postDate = db.Column(db.Date)
     userID = db.Column(db.String(128), db.ForeignKey('user.userID'), nullable=False)
+
+class InstructionImage(db.Model):
+    """
+    使用说明-图片映射
+    """
+    __tablename__ = 'instructionImage'
+    instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
+    imageURL = db.Column(db.String(512), nullable=False, unique=True)
+    instructionImageID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)

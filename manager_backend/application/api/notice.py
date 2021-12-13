@@ -17,21 +17,21 @@ bp_notice = Blueprint(
 def getNoticeList():
     try:
         num = request.json['num']
-        query_type = request.json['queryType']
         query_startDate = None
         query_endDate = None
         query_str = None
-        if query_type==1 or query_type==3:
+        if 'queryStartDate' in request.json.keys():
             query_startDate = request.json['queryStartDate']
+        if 'queryEndDate' in request.json.keys():
             query_endDate = request.json['queryEndDate']
-        if query_type==2 or query_type==3:
+        if 'queryStr' in request.json.keys():
             query_str = request.json['queryStr']
     except Exception as e:
         print(e)
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     
     try:
-        query_result = NoticeService.query_notice(num, query_type, query_startDate, query_endDate, query_str)
+        query_result = NoticeService.query_notice(num, query_startDate, query_endDate, query_str)
     except Exception as e:
         print(e)
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200

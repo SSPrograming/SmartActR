@@ -33,11 +33,11 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.loading = true
       const params = {
         username: this.form.username,
         password: this.$utils.password.getHash(this.form.username, this.form.password)
       }
-      this.loading = true
       this.$api.admin.login(params).then((res) => {
         if (res.data.errCode === 0) {
           this.$store.commit({

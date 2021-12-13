@@ -62,12 +62,8 @@ export default {
   },
   data() {
     return {
-      dialogLoading: false,
-      showQRCode: false,
-      qrcodeURL: '',
-      qrcodeRef: {},
-      tableLoading: false,
       equipmentType: 0,
+      tableLoading: false,
       equipmentList: [],
       sortType: {
         prop: 'equipmentID',
@@ -75,11 +71,12 @@ export default {
       },
       pageSize: 5,
       currentPage: 1,
+      dialogLoading: false,
       showEquipmentEditor: false,
       form: {
         equipmentName: '',
         equipmentID: 0,
-        equipmentStatus: 0,
+        equipmentStatus: '',
       },
       showReserveRecord: false,
       recordInfo: {
@@ -90,6 +87,14 @@ export default {
         tableLoading: false,
         recordList: [],
         equipmentID: 0
+      },
+      showQRCode: false,
+      qrcodeURL: '',
+      qrcodeRef: {
+        /*
+        equipmentType: this.equipmentType,
+        equipmentID: row.equipmentID
+        */
       }
     }
   },
@@ -123,8 +128,8 @@ export default {
         this.sortType.order = event.order
       }
       if (!this.sortType.order) {
-        this.sortType.prop = 'noticeID'
-        this.sortType.order = 'descending'
+        this.sortType.prop = 'equipmentID'
+        this.sortType.order = 'ascending'
       }
     },
     doSort() {
@@ -146,17 +151,17 @@ export default {
       })
     },
     getRecordList() {
-      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate &&
           this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
       const params = {
         equipmentType: this.equipmentType,
-        equipmentID: this.recordInfo.equipmentID,
-        startDate: this.recordInfo.toolbar.queryStartDate && this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'),
-        endDate: this.recordInfo.toolbar.queryEndDate && this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd')
+        equipmentID: this.recordInfo.equipmentID
       }
+      this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
       this.recordInfo.tableLoading = true
       this.$api.equipment.getEquipmentRecordList(params).then((res) => {
         if (res.data.errCode === 0) {
@@ -172,9 +177,7 @@ export default {
       })
     },
     query() {
-      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
-        this.getRecordList()
-      }
+      this.getRecordList()
     },
     handleAdd() {
       this.$confirm('此操作将添加一台该类设备, 是否继续?', '提示', {
@@ -309,14 +312,9 @@ export default {
   margin-bottom: $--toolbar-margin-bottom;
 }
 
-.qrcode {
-  width: 298px;
-  height: 298px;
-  border: 1px dashed #d9d9d9;
-}
-
 .pagination {
   margin-top: $--pagination-margin-top;
+  margin-bottom: $--pagination-margin-bottom;
 }
 
 .operation {
@@ -336,14 +334,14 @@ export default {
   }
 
   .lookup {
-    color: green;
+    color: $--color-lookup;
 
     &:focus, &:hover {
-      color: mix(green, $--color-white, 75%);
+      color: mix($--color-lookup, $--color-white, 75%);
     }
 
     &:active {
-      color: mix(green, $--color-black, 75%);
+      color: mix($--color-lookup, $--color-black, 75%);
     }
   }
 
@@ -352,6 +350,12 @@ export default {
     height: 18px;
     margin-left: 10px;
   }
+}
+
+.qrcode {
+  width: 298px;
+  height: 298px;
+  border: 1px dashed #d9d9d9;
 }
 
 </style>

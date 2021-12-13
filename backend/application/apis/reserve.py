@@ -109,6 +109,8 @@ def getAllEquipmentStatus():
     equipments = EquipmentService.get_all_equipment()
     equipmentStatuses= []
     for equipment in equipments:
+        if equipment.equipmentStatus=="损坏":
+            continue
         occupation, hasOccupation = ReserveService.get_occupation_of_day(date)
         targetEquipmentType = EquipmentService.get_single_equipmentType(equipment.equipmentType)
         records = ReserveService.get_record_of_single_equipment(date, equipment.equipmentType, equipment.equipmentID)
@@ -186,6 +188,7 @@ def reserveEquipment():
 @bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
 @login_required
 def cancelReserve():
+    print(request.json)
     try:
         recordID = request.json['reserveID']
     except Exception as e:
@@ -243,12 +246,3 @@ def getCurrentReserveInfo():
         "info": resp_record
     }), 200
 
-@bp_reserve.route('/api/v1/reserve/checkIn', methods=['POST'])
-@login_required
-def checkIn():
-    hash = request.json['equipmentType']
-    user_id = g.userID
-    t = CheckInService.test("testhash",1)
-    return jsonify({
-	    "errCode": t, #0代表签到失败，1签到成功
-        })

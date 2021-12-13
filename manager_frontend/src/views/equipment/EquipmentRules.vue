@@ -39,7 +39,6 @@ export default {
       calendarLoading: false,
       rules: [],
       showRuleEditor: false,
-      editRuleID: null,
       form: {
         ruleID: null,
         repeat: false,
@@ -102,8 +101,7 @@ export default {
       return result
     },
     handleAdd() {
-      if (this.editRuleID) {
-        this.editRuleID = null
+      if (this.form.ruleID) {
         this.form = {
           ruleID: null,
           repeat: false,
@@ -118,7 +116,6 @@ export default {
       this.showRuleEditor = true
     },
     handleEdit(rule) {
-      this.editRuleID = rule.ruleID
       this.form = {
         ...rule,
         date: new Date(rule.date),
@@ -127,9 +124,9 @@ export default {
       this.showRuleEditor = true
     },
     handleDelete() {
-      if (this.editRuleID) {
+      if (this.form.ruleID) {
         this.dialogLoading = true
-        this.$api.rule.deleteRule({ruleID: this.editRuleID}).then((res) => {
+        this.$api.rule.deleteRule({ruleID: this.form.ruleID}).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '删除成功', 'success')
             this.getRules()
@@ -159,7 +156,7 @@ export default {
       }
       this.dialogLoading = true
       // 新建
-      if (!this.editRuleID) {
+      if (!this.form.ruleID) {
         this.$api.rule.addRule(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '添加成功', 'success')
@@ -187,10 +184,7 @@ export default {
       }
       // 编辑
       else {
-        params = {
-          ...params,
-          ruleID: this.editRuleID
-        }
+        this.form.ruleID && (params.ruleID = this.form.ruleID)
         this.$api.rule.updateRule(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '编辑成功', 'success')
@@ -227,27 +221,27 @@ export default {
 
     .repeat {
       padding: 1px 5px;
-      background: lightsteelblue;
+      background: $--color-repeat;
 
       &:focus, &:hover {
-        background: mix(lightsteelblue, $--color-white, 75%);
+        background: mix($--color-repeat, $--color-white, 75%);
       }
 
       &:active {
-        background: mix(lightsteelblue, $--color-black, 75%);
+        background: mix($--color-repeat, $--color-black, 75%);
       }
     }
 
     .once {
       padding: 1px 5px;
-      background: lightgreen;
+      background: $--color-once;
 
       &:focus, &:hover {
-        background: mix(lightgreen, $--color-white, 75%);
+        background: mix($--color-once, $--color-white, 75%);
       }
 
       &:active {
-        background: mix(lightgreen, $--color-black, 75%);
+        background: mix($--color-once, $--color-black, 75%);
       }
     }
   }
