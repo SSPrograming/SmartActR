@@ -1,0 +1,8 @@
+*.yaml
+.env
+__pycache__/
+migrations/
+*.conf
+*.jpg
+*.png
+static/

@@ -1,1 +1,1 @@
-from .model import User, Reserve_Record, Student, Equipment, equipmentType, OccupationInfo, TableNotcie, Instruction
+from .model import User, Reserve_Record, Student, Equipment, equipmentType, ruleTable, TableNotcie, Instruction,QRCode,feedback,InstructionImage,InstructionTag
