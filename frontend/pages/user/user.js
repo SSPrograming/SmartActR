@@ -14,6 +14,7 @@ Page({
     loading: false,
     isShowNotice: false,
     reservationList: [],
+    codeScanned: '',
   },
 
   /**
@@ -65,21 +66,60 @@ Page({
     })
   },
 
+  checkIn() {
+    const param = {
+      hashCode: this.data.codeScanned,
+    };
+    app.$api.reserve.checkIn(param)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          //if(res.data.checkInStatus === 0)
+          wx.showToast({
+            title: "签到成功！",
+          });
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      });
+  },
   //扫码签到
   scanCode(e) {
     wx.scanCode({
       onlyFromCamera: true,
-      success(res) {
-        console.log(res)
+      success: (res) => {
+        this.setData({
+          codeScanned: res.result,
+        });
+        app.dealThing(this.checkIn);
       },
-      fail(err) {
-        
+      fail: (err) => {
       }
-    })
+    });
   },
 
-  //身份绑定
-  identityCheck() {
+  unbind() {
+    const needToDo = () => {
+      app.$api.user.unbind()
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            wx.showToast({
+              title: "解绑成功！",
+            });
+          } else {
+            app.dealError(res.data, 'SERVER');
+          }
+        })
+        .catch((err) => {
+          app.dealError(err, 'API');
+        });
+    };
+    app.dealThing(needToDo);
+  },
+
+  getBindStatus() {
     app.$api.user.getBindStatus()
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -89,7 +129,14 @@ Page({
             app.$util.openBind();
           } else if (res.data.isBind) {
             wx.showModal({
-              content: "您已经绑定",
+              content: "您已经绑定身份",
+              confirmText: "解绑身份",
+              success: (res) => {
+                if (res.confirm) {
+                  //解绑身份
+                  app.dealThing(this.unbind);
+                }
+              },
             })
           }
         } else {
@@ -101,6 +148,11 @@ Page({
         // 如果后端 api 调用失败
         app.dealError(err, 'API');
       });
+  },
+
+  //身份绑定
+  identityCheck() {
+    app.dealThing(this.getBindStatus);
   },
 
   //意见反馈

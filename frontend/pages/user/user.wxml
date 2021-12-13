@@ -37,15 +37,11 @@
             <div class="text">身份认证</div>
             <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
         </view>
-        <view class="feedback content" bindtap="feedBack">
+        <view class="feedback content">
+            <button class="button" style="position: absolute; background: transparent;" open-type="feedback"></button>
             <image class="icon" src="/resources/icons/user/feedback.png"></image>
             <div class="text">意见反馈</div>
             <image class="notice-look" src="/resources/icons/reserve/look.png"></image>
         </view>
     </view>
-
-    <view class="feedback_wrap">
-        <input type="text" class="feedback" placeholder="" />
-    </view>
-
 </view>

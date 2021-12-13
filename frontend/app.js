@@ -7,6 +7,7 @@ App({
   $util: $util,
   globalData: {
     login: false,
+    freeze: false,
   },
   login_timer: null,
   loginCallBack: [],
@@ -71,18 +72,7 @@ App({
   onLaunch() {
     // 调用API
     this.$util.hello();
-    // 解绑（仅用于测试）
-    /*
-    this.loginCallBack.push(() => {
-      this.$api.user.unbind()
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          this.dealError(err, 'API');
-        });
-    });
-    */
+
     // 把绑定加入登录回调函数列表
     this.loginCallBack.push(() => {
       // 获取绑定状态
@@ -104,6 +94,7 @@ App({
           this.dealError(err, 'API');
         });
     });
+
     // 登录
     this.login();
   },

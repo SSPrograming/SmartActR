@@ -30,7 +30,7 @@
 
             .chosen_tab {
                 position: absolute;
-                margin-top: 10rpx;
+                margin-top: 12rpx;
                 left: 50%;
                 transform: translateX(-50%);
                 height: 60rpx;
@@ -55,7 +55,6 @@
             .history_container {
                 display: flex;
                 width: 80%;
-                height: 250rpx;
                 padding: 20rpx;
                 margin: 30rpx auto 0 auto;
                 font-size: 30rpx;
@@ -63,16 +62,21 @@
                 background: #ffffff;
                 box-shadow: 5rpx 5rpx 10rpx rgba(240, 194, 214, .6);
                 border-radius: 30rpx;
+                align-items: center;
 
                 .history_content {
                     padding: 15rpx;
                 }
 
+                .white_space {
+                    flex: 1;
+                }
+
                 .reservation_status {
-                    margin: 30rpx 20rpx 20rpx 50rpx;
+                    margin-right: 30rpx;
+                    float: right;
                     width: 180rpx;
                     height: 180rpx;
-                    float: right;
                     transform: rotate(345deg);
                 }
             }

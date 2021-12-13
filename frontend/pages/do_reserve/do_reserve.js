@@ -30,7 +30,9 @@ Page({
   },
 
   getEquipmentStatus() {
-    const params = { ...this.data.equipmentInfo };
+    const params = {
+      ...this.data.equipmentInfo
+    };
     delete params.equipmentName;
     delete params.equipmentStatus;
     app.$api.reserve.getEquipmentStatus(params)
@@ -42,6 +44,20 @@ Page({
               equipmentDescription: res.data.equipmentDescription,
             },
             equipmentSpareTime: res.data.equipmentSpareTime,
+          });
+          let st = this.data.equipmentSpareTime[0]['startTime'].split(":");
+          let sh = parseInt(st[0]) - 8;
+          let sm = parseInt(st[1]) / 15;
+          let et = this.data.equipmentSpareTime[this.data.equipmentSpareTime.length - 1]['endTime'].split(":");
+          let eh = parseInt(et[0]) - 8;
+          let em = parseInt(et[1]) / 15;
+          if (eh - sh > 4) {
+            eh = sh + 4;
+            em = sm;
+          }
+          this.setData({
+            startTime: [sh, sm],
+            endTime: [eh, em],
           });
         } else {
           app.dealError(res.data, 'SERVER');
@@ -119,6 +135,9 @@ Page({
 
   doReserve() {
     const needToDo = () => {
+      //判断冻结
+
+      //判断是否bind
       app.$api.user.getBindStatus()
         .then((res) => {
           if (res.data.errCode === 0) {
@@ -146,6 +165,13 @@ Page({
                           showCancel: false,
                           confirmText: '确定',
                           confirmColor: '#cf3c7f',
+                          success(res) {
+                            if (res.confirm) {
+                              wx.switchTab({
+                                url: '/pages/reserve/reserve',
+                              });
+                            }
+                          }
                         });
                         this.setData({
                           loading: true,
@@ -223,8 +249,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-  },
+  onShow() { },
 
   /**
    * 生命周期函数--监听页面隐藏

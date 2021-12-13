@@ -22,6 +22,7 @@ Page({
   // 后端数据获取
   getAllEquipmentStatus() {
     const params = this.data.dates[this.data.selected];
+    //console.log(params);
     app.$api.reserve.getAllEquipmentStatus(params)
       .then((res) => {
         if (res.data.errCode === 0) {

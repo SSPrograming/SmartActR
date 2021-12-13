@@ -12,20 +12,19 @@ Page({
     reservation_list: {},
     loading: false,
     reservationStatus2imagePath: [],
-
   },
 
   switch_current() {
     this.setData({
       selected: 0,
-    })
+    });
     app.dealThing(this.getCurrentReserveInfo);
   },
 
   switch_history() {
     this.setData({
       selected: 1,
-    })
+    });
     app.dealThing(this.getHistoryReserveInfo);
   },
 
@@ -36,7 +35,6 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -61,7 +59,6 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -79,6 +76,42 @@ Page({
       });
   },
 
+  cancelReservation(e) {
+    if (e.currentTarget.dataset.status === "成功") {
+      wx.showModal({
+        content: "请问您要取消预约么？",
+        success: (res) => {
+          if (res.confirm) {
+            app.$api.reserve.cancelReserve({
+              reserveID: e.currentTarget.dataset.reserveId,
+            })
+              .then((res) => {
+                if (res.data.errCode === 0) {
+                  wx.showToast({
+                    title: '已成功取消',
+                    icon: 'success',
+                  })
+                  this.setData({
+                    loading: true,
+                  })
+                  app.dealThing(this.getCurrentReserveInfo);
+                } else {
+                  app.dealError(res.data, 'SERVER');
+                }
+              })
+              .catch((err) => {
+                app.dealError(err, 'API')
+              })
+          }
+        }
+      });
+    } else {
+      var con = "本次预约已" + e.currentTarget.dataset.status;
+      wx.showModal({
+        content: con,
+      });
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -126,7 +159,14 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.setData({
+      loading: true,
+    })
+    if (this.data.selected === 0) {
+      app.dealThing(this.getCurrentReserveInfo);
+    } else {
+      app.dealThing(this.getHistoryReserveInfo);
+    }
   },
 
   /**
