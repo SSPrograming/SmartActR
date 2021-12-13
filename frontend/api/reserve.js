@@ -66,8 +66,8 @@ const reserve = {
       url: '/checkIn',
       method: 'Post',
       data: params,
-    })
-  }
+    });
+  },
 };
 
 export default {

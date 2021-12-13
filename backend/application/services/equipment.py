@@ -1,6 +1,5 @@
 from application.database import db
 from application.models import Equipment, equipmentType
-import datetime
 
 class EquipmentService:
     def get_all_equipmentType():
@@ -10,7 +9,13 @@ class EquipmentService:
         return equipmentType.query.all()
 
     def get_all_equipment():
-        return Equipment.query.all()
+        EquipmentTypeList = equipmentType.query.order_by(equipmentType.equipmentOrder).all()
+        EquipmentList = []
+        for Type in EquipmentTypeList:
+            TypeID = Type.equipmentType
+            m_equipmentList = Equipment.query.filter(Equipment.equipmentType==TypeID).all()
+            EquipmentList.extend(m_equipmentList)
+        return EquipmentList
 
     def get_single_equipmentType(equipmentTypeID):
         """
@@ -49,7 +54,7 @@ class EquipmentService:
         插入单台设备
         """
         newEquipment = Equipment(equipmentType=equipmentTypeID,equipmentID=equipmentID,
-                                equipmentStatus='fine')
+                                equipmentStatus='完好')
         try:
             db.session.add(newEquipment)
             db.session.commit()
@@ -58,3 +63,10 @@ class EquipmentService:
             print(e)
             db.session.rollback()
             return False
+    
+    def get_name_by_Type(Type):
+        target_type = equipmentType.query.filter(equipmentType.equipmentType==Type).first()
+        if target_type is None:
+            return "不存在的设备"
+        else:
+            return target_type.equipmentName
