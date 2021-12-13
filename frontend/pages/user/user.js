@@ -131,7 +131,7 @@ Page({
             wx.showModal({
               content: "您已经绑定身份",
               confirmText: "解绑身份",
-              success(res) {
+              success: (res) => {
                 if (res.confirm) {
                   //解绑身份
                   app.dealThing(this.unbind);
