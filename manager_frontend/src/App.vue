@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="specialDay ? 'filter: grayscale(100%);' : ''">
     <el-scrollbar class="scrollbar">
       <header>
         <h1><img class="logo" src="./assets/logo.png" alt="Logo"/>智慧活动室</h1>
@@ -31,6 +31,9 @@ export default {
   computed: {
     isLogin() {
       return this.$route.name === 'Login'
+    },
+    specialDay() {
+      return this.$utils.time.format(new Date(), 'MM-dd') === '12-13'
     }
   },
   mounted() {

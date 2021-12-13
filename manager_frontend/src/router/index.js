@@ -12,7 +12,7 @@ import EquipmentRules from '@/views/equipment/EquipmentRules'
 import Instruction from '@/views/instruction/Instruction'
 import InstructionEditor from '@/views/instruction/InstructionEditor'
 import User from '@/views/user/User'
-import FeedBack from '@/views/user/FeedBack'
+// import FeedBack from '@/views/user/FeedBack'
 import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
@@ -90,7 +90,9 @@ const routes = [
   {
     path: '/user/feedback',
     name: 'FeedBack',
-    component: FeedBack
+    beforeEnter() {
+      open('https://mp.weixin.qq.com/')
+    }
   },
   {
     path: '/404',
