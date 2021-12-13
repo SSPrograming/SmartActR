@@ -76,41 +76,47 @@ Page({
           //if(res.data.checkInStatus === 0)
           wx.showToast({
             title: "签到成功！",
-          })
+          });
         } else {
           app.dealError(res.data, 'SERVER');
         }
       })
       .catch((err) => {
         app.dealError(err, 'API');
-      })
+      });
   },
   //扫码签到
   scanCode(e) {
-    let that = this
     wx.scanCode({
       onlyFromCamera: true,
       success: (res) => {
         this.setData({
           codeScanned: res.result,
         });
-        console.log(this.data.codeScanned);
         app.dealThing(this.checkIn);
       },
-      fail(err) {
-
+      fail: (err) => {
       }
-    })
+    });
   },
 
   unbind() {
-    app.$api.user.unbind()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        this.dealError(err, 'API');
-      });
+    const needToDo = () => {
+      app.$api.user.unbind()
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            wx.showToast({
+              title: "解绑成功！",
+            });
+          } else {
+            app.dealError(res.data, 'SERVER');
+          }
+        })
+        .catch((err) => {
+          app.dealError(err, 'API');
+        });
+    };
+    app.dealThing(needToDo);
   },
 
   getBindStatus() {

@@ -51,6 +51,10 @@ Page({
           let et = this.data.equipmentSpareTime[this.data.equipmentSpareTime.length - 1]['endTime'].split(":");
           let eh = parseInt(et[0]) - 8;
           let em = parseInt(et[1]) / 15;
+          if (eh - sh > 4) {
+            eh = sh + 4;
+            em = sm;
+          }
           this.setData({
             startTime: [sh, sm],
             endTime: [eh, em],
@@ -245,7 +249,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {},
+  onShow() { },
 
   /**
    * 生命周期函数--监听页面隐藏
