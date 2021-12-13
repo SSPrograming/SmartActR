@@ -9,13 +9,52 @@ Page({
    */
   data: {
     loading: false,
+    tag_list: [{
+      name: "tag1"
+    }, {
+      name: "tag2"
+    }, {
+      name: "tag3"
+    }],
+    equipmentList: [],
+
+  },
+
+  getAllEquipmentStatus() {
+    const params = {
+      year: 2021,
+      month: 12,
+      date: 9,
+      day: "周四"
+    };
+    app.$api.reserve.getAllEquipmentStatus(params)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          this.setData({
+            equipmentList: res.data.status,
+          });
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+        wx.stopPullDownRefresh();
+        this.setData({
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+        wx.stopPullDownRefresh();
+        this.setData({
+          loading: false,
+        });
+      });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**
@@ -31,8 +70,8 @@ Page({
   onShow() {
     // 更新TabBar
     if (
-      typeof this.getTabBar === 'function'
-      && this.getTabBar()
+      typeof this.getTabBar === 'function' &&
+      this.getTabBar()
     ) {
       this.getTabBar().setData({
         selected: 0,
