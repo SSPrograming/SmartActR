@@ -19,6 +19,7 @@ export default {
     return {
       recordInfo: {
         toolbar: {
+          showNums: 20,
           queryStartDate: null,
           queryEndDate: null
         },
@@ -54,7 +55,9 @@ export default {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
-      let params = {}
+      const params = {
+        num: this.recordInfo.toolbar.showNums
+      }
       this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
       this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
       this.recordInfo.tableLoading = true
