@@ -1,3 +1,4 @@
+from sqlalchemy.sql.expression import desc
 from application.database import db
 from application.models import User, Student
 import datetime
@@ -8,6 +9,8 @@ class UserService():
             frzTime = datetime.date(year=1970,month=1,day=1)
             nuser = User(userID=userID, status='not bind', violationTimes=0,
                         freezeDate=frzTime, identity=identity)
+            nuser.freezeStatus = 0
+            nuser.violateToday = 0
             db.session.add(nuser)
             db.session.commit()
             return 'ok', True
@@ -63,7 +66,7 @@ class UserService():
     def bind_user(self, userID, stuInfo):
         # TODO:失败时回滚
         try:
-            msg, bindStatus = self.update_user_status(self, userID, 'binded')
+            msg, bindStatus = self.update_user_status(self, userID, '已绑定')
             self.update_user_identity(self, userID, 'student')
             stuID = stuInfo['stuID']
             stuName = stuInfo['stuName']
@@ -87,7 +90,7 @@ class UserService():
             return e, False
 
     def update_user_status(self, userID, newStatus):
-        statuses = ['not bind', 'binded', 'freeze']
+        statuses = ['已绑定', '未绑定', '冻结']
         if newStatus not in statuses:
             return "未定义的状态", False
         user, isExist = self.get_user(self, userID)
@@ -129,3 +132,18 @@ class UserService():
         except Exception as e:
             db.session.rollback()
             return e, False
+    
+    def get_freeze_info(user):
+        print('user:',user)
+        individual = User.query.filter(User.userID == user).first()
+        print("开始user.get_freeze_info()")
+        print('indivivual:')
+        print(type(individual.userID),individual.userID)
+        print(individual.status)
+        # individual = list[0]
+        if individual.status == '1': #状态是0，表示冻结
+            print('冻结了:',individual.userID,individual.status)
+            return 1,individual.freezeDate #返回freezeStatus为1，冻结
+        else:
+            print('没有冻结:',individual.userID,individual.status)
+            return 0,individual.freezeDate #返回freezeStatus为0，未冻结

@@ -139,7 +139,7 @@ Page({
     const needToDo = () => {
       //判断冻结
 
-      //判断是否bind
+      //判断是否
       app.$api.user.getBindStatus()
         .then((res) => {
           if (res.data.errCode === 0) {
