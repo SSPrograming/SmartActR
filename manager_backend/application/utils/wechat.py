@@ -1,5 +1,6 @@
 import requests
 from config import query_yaml
+
 class WechatService():
     def getAccessToken():
         wechatAppID = query_yaml('app.APPID')
@@ -16,8 +17,6 @@ class WechatService():
     def sendMessage(content, token):
         requestURL = query_yaml('app.SENDMESSAGEURL')
         payload = {'access_token': token}
-        wechatResponse = requests.post(requestURL, params=payload, json=content)
-        wechatResponseContent = wechatResponse.json()
-        print(wechatResponseContent)
+        requests.post(requestURL, params=payload, json=content)
     
 
