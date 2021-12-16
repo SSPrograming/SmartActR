@@ -170,7 +170,7 @@ Page({
                           success: (res) => {
                             if (res.confirm) {
                               wx.requestSubscribeMessage({
-                                tmplIds: ['dxPlNmH8nMSh6kWMlHnb1jQqeNaq4LyAhfGVj4oPDrg']
+                                tmplIds: ['dxPlNmH8nMSh6kWMlHnb1iZFFyv29MQuEmCgCxYwKW4']
                               }).then((res) => {
                               }).catch((err) => { })
                               wx.switchTab({
