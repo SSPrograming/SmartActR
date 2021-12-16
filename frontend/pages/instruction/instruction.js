@@ -9,6 +9,7 @@ Page({
    */
   data: {
     loading: false,
+    isFocus: false,
     tag_list: [{
       name: "tag1"
     }, {
@@ -16,45 +17,20 @@ Page({
     }, {
       name: "tag3"
     }],
-    equipmentList: [],
+    instructionList: [],
 
   },
 
-  getAllEquipmentStatus() {
-    const params = {
-      year: 2021,
-      month: 12,
-      date: 9,
-      day: "周四"
-    };
-    app.$api.reserve.getAllEquipmentStatus(params)
-      .then((res) => {
-        if (res.data.errCode === 0) {
-          this.setData({
-            equipmentList: res.data.status,
-          });
-        } else {
-          app.dealError(res.data, 'SERVER');
-        }
-        wx.stopPullDownRefresh();
-        this.setData({
-          loading: false,
-        });
-      })
-      .catch((err) => {
-        app.dealError(err, 'API');
-        wx.stopPullDownRefresh();
-        this.setData({
-          loading: false,
-        });
-      });
+  openInstruction(){
+
   },
+
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    app.dealThing(this.getAllEquipmentStatus);
+    //app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**

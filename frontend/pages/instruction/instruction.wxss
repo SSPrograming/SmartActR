@@ -1,149 +1,43 @@
 .container .search_container {
-  background-color: #ffffff;
+  background-color: #bb3479;
   align-items: center;
-  height: 80rpx;
+  height: 100rpx;
   position: relative;
 }
-
 .container .search_container .e_search {
   position: absolute;
-  left: 50%;
   top: 10rpx;
+  left: 50%;
   transform: translateX(-50%);
-  padding: 10rpx auto 10rpx auto;
-  height: 40rpx;
+  height: 70rpx;
   width: 90%;
   background-color: #e7e7e7;
-  font-size: 27rpx;
+  font-size: 35rpx;
   text-align: center;
-  border-radius: 20rpx;
+  border-radius: 70rpx;
 }
-
 .container .search_container .placeholder {
   text-align: center;
-  background-position: 60rpx center;
-  background-repeat: no-repeat;
-  background-size: 27rpx;
-  background-image: url("/resources/icons/instruction/macroscope.png");
 }
-
+.container .search_container .placeholder-focus {
+  text-align: left;
+}
 .container .chosing_container {
   display: flex;
   width: 100%;
 }
-
 .container .chosing_container .tag_container {
+  flex-shrink: 0;
   height: 1000rpx;
   width: 30%;
-  border: 5rpx solid #bb3479;
-  border-top: #e7e7e7;
   background-color: white;
 }
-
-.container .chosing_container .tag_container .tag_title {
-  margin-right: -10rpx;
-  height: 80rpx;
-  width: 100%;
-  color: #e7e7e7;
-  background-color: #fc82c1;
-  position: relative;
-}
-
-.container .chosing_container .tag_container .tag_title .name {
-  position: absolute;
-  top: 15rpx;
-  left: 25rpx;
-  text-align: center;
-  font-family: "YouYuan";
-}
-
 .container .chosing_container .tag_container .tag {
-  margin: 20rpx 10rpx;
+  height: 100rpx;
   border: 3rpx solid black;
-  border-radius: 30rpx;
   text-align: center;
 }
-
-
-
-.equipments-container {
-  /* 大小 */
-  margin-top: 30rpx;
-}
-
-.equipment-scroll {
-  /* 大小 */
-  max-height: 100vh;
-}
-
-.equipment-container {
-  /* 位置 */
-  display: flex;
-  /* 大小 */
-  width: 90%;
-  height: 180rpx;
-  padding: 20rpx;
-  margin: 15rpx auto 15rpx auto;
-  /* 文字 */
-  font-size: 32rpx;
-  /* 背景 */
-  background: #ffffff;
-  border: #bb3479 4rpx solid;
-  /* CSS3 */
-  box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
-  border-radius: 20rpx;
-}
-
-.equipment-container:last-child {
-  /* 大小 */
-  margin-bottom: 200rpx;
-}
-
-.equipment-image-container {
-  flex-basis: 240rpx;
-  width: 220rpx;
-}
-
-.equipment-image {
-  /* 大小 */
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.equipment-vertical-delimiter {
-  /* 大小 */
-  flex-basis: 4rpx;
-  margin: 0 20rpx 0 20rpx;
-  /* 背景 */
-  background: linear-gradient(#a52d72, #cf3c7e);
-  /* CSS3 */
-  border-radius: 2rpx;
-}
-
-.equipment-content {
-  /* 位置 */
-  display: flex;
-  flex-direction: column;
-  /* 大小 */
-  flex: 1;
-  /* 文字 */
-  text-align: right;
-}
-
-.equipment-status {
-  /* 文字 */
-  font-size: 48rpx;
-}
-
-.whitespace {
-  /* 大小 */
-  flex: 1;
-}
-
-::-webkit-scrollbar {
-  /* 大小 */
-  width: 0;
-  height: 0;
-  /* 文字 */
-  color: transparent;
+.container .chosing_container .instruction_container {
+  width: 80%;
+  height: 250rpx;
 }

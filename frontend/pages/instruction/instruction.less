@@ -2,29 +2,29 @@
     .search_container {
         background-color: #bb3479;
         align-items: center;
-        height: 80rpx;
+        height: 100rpx;
         position: relative;
 
         .e_search {
             position: absolute;
-            left: 50%;
             top: 10rpx;
+            left: 50%;
             transform: translateX(-50%);
-            padding: 10rpx auto 10rpx auto;
-            height: 30rpx;
+            //padding: 10rpx auto 10rpx auto;
+            height: 70rpx;
             width: 90%;
             background-color: #e7e7e7;
-            font-size: 27rpx;
+            font-size: 35rpx;
             text-align: center;
-            border-radius: 20rpx;
+            border-radius: 70rpx;
         }
 
         .placeholder {
             text-align: center;
-            background-position: 60rpx center;
-            background-repeat: no-repeat;
-            background-size: 27rpx;
-            background-image: url("/resources/icons/instruction/macroscope.png");
+        }
+
+        .placeholder-focus {
+            text-align: left;
         }
     }
 
@@ -33,41 +33,27 @@
         width: 100%;
 
         .tag_container {
+            flex-shrink: 0;
             height: 1000rpx;
             width: 30%;
-            border: 5rpx solid #bb3479;
-            border-top: #e7e7e7;
+            //border: 5rpx solid #bb3479;
+            //border-top: #e7e7e7;
             background-color: white;
 
-            .tag_title {
-                margin-right: -10rpx;
-                height: 80rpx;
-                width: 100%;
-                color: #e7e7e7;
-                background-color: #fc82c1;
-                position: relative;
-
-                .name {
-                    position: absolute;
-                    top: 15rpx;
-                    left: 25rpx;
-                    text-align: center;
-                    font-family: "YouYuan";
-                }
-
-            }
-
             .tag {
-                margin: 20rpx 10rpx;
+                height: 100rpx;
                 border: 3rpx solid black;
-                border-radius: 30rpx;
+                //border-radius: 30rpx;
                 text-align: center;
-                .tag_name {
-                    
-                }
+
+                .tag_name {}
             }
         }
 
-        .instruction_container {}
+        .instruction_container {
+            width: 80%;
+            height: 250rpx;
+            //background-color: white;
+        }
     }
 }

@@ -48,9 +48,13 @@ Page({
           let st = this.data.equipmentSpareTime[0]['startTime'].split(":");
           let sh = parseInt(st[0]) - 8;
           let sm = parseInt(st[1]) / 15;
-          let et = this.data.equipmentSpareTime[this.data.equipmentSpareTime.length - 1]['endTime'].split(":");
+          let et = this.data.equipmentSpareTime[0]['endTime'].split(":");
           let eh = parseInt(et[0]) - 8;
           let em = parseInt(et[1]) / 15;
+          if ((eh > (sh + 4)) || (eh === (eh + 4) && em >= sm)) {
+            eh = sh + 4;
+            em = sm;
+          }
           this.setData({
             startTime: [sh, sm],
             endTime: [eh, em],
