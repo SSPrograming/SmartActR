@@ -172,10 +172,14 @@ Page({
                               wx.requestSubscribeMessage({
                                 tmplIds: ['dxPlNmH8nMSh6kWMlHnb1iZFFyv29MQuEmCgCxYwKW4']
                               }).then((res) => {
-                              }).catch((err) => { })
-                              wx.switchTab({
-                                url: '/pages/reserve/reserve',
-                              });
+                                wx.switchTab({
+                                  url: '/pages/reserve/reserve',
+                                });
+                              }).catch((err) => {
+                                wx.switchTab({
+                                  url: '/pages/reserve/reserve',
+                                });
+                              })
                             }
                           }
                         });
