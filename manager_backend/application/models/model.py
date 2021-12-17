@@ -33,7 +33,7 @@ class Equipment(db.Model):
                               doc="设备种类")
     equipmentID = db.Column(db.Integer, primary_key=True)
     equipmentStatus = db.Column(db.String(32),
-                                doc="设备状态,是否损坏等,默认为完好")
+                                doc="设备状态,是否损坏等,默认为fine")
 
 class Reserve_Record(db.Model):
     """
@@ -160,5 +160,5 @@ class InstructionImage(db.Model):
     """
     __tablename__ = 'instructionImage'
     instructionID = db.Column(db.Integer, db.ForeignKey('instruction.instructionID'), nullable=False)
-    imageURL = db.Column(db.String(512), nullable=False, unique=True)
+    imageURL = db.Column(db.String(1024), nullable=False, unique=True)
     instructionImageID = db.Column(db.BigInteger, primary_key=True, autoincrement=True)

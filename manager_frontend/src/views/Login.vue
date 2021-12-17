@@ -49,6 +49,7 @@ export default {
             name: 'Home'
           })
         } else {
+          console.log(this.$utils.password.getHash(this.form.username, this.form.password))
           this.$utils.error.APIError(this, res.data)
         }
         this.loading = false
