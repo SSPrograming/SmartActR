@@ -448,9 +448,12 @@ ret:
 
 @login_required
 
+params:
+
 ```
 {
-	
+	"equipmentType": number,
+	"equipmentID": number
 }
 ```
 
