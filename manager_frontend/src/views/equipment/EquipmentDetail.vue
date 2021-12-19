@@ -69,7 +69,7 @@ export default {
         prop: 'equipmentID',
         order: 'ascending'
       },
-      pageSize: 5,
+      pageSize: 10,
       currentPage: 1,
       dialogLoading: false,
       showEquipmentEditor: false,
