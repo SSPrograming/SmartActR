@@ -49,12 +49,13 @@ def updateUserStatus():
 @login_required
 def getEquipmentRecordList():
     try:
+        num = request.json["num"]
         stuID = request.json["stuID"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     startDate = request.json["startDate"] if "startDate" in request.json.keys() else None
     endDate = request.json["endDate"] if "endDate" in request.json.keys() else None
-    recordList_raw, getStatus = UserService.get_user_recordList(stuID,startDate, endDate)
+    recordList_raw, getStatus = UserService.get_user_recordList(stuID,startDate, endDate, num)
 
     if not getStatus:
         return jsonify({"errCode": 1, "errMsg": recordList_raw}), 200
