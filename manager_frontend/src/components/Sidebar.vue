@@ -45,7 +45,7 @@
         </el-menu-item>
         <el-menu-item index="EquipmentRules">
           <template slot="title">
-            <span>独占规则</span>
+            <span>不可用时间</span>
           </template>
         </el-menu-item>
       </el-submenu>

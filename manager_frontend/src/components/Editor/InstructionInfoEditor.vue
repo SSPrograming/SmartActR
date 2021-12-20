@@ -83,6 +83,10 @@ export default {
       this.$refs.form.validate().then((valid) => {
         if (!this.form.instructionName) {
           this.$utils.alertMessage(this, '请输入标题', 'warning')
+        } else if (this.form.instructionTags.length <= 0) {
+          this.$utils.alertMessage(this, '请至少添加一个标签', 'warning')
+        } else if (!this.form.instructionCoverURL) {
+          this.$utils.alertMessage(this, '请上传封面图片', 'warning')
         } else {
           if (valid) {
             this.$emit('editorConfirm')

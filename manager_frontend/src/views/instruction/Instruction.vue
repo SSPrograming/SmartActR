@@ -138,7 +138,7 @@ export default {
       this.showInstructionInfoEditor = true
     },
     handleDelete(row) {
-      this.$confirm('此操作将删除该公告, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该使用说明, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

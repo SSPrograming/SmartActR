@@ -69,7 +69,7 @@ export default {
         prop: 'equipmentID',
         order: 'ascending'
       },
-      pageSize: 5,
+      pageSize: 10,
       currentPage: 1,
       dialogLoading: false,
       showEquipmentEditor: false,
@@ -81,6 +81,7 @@ export default {
       showReserveRecord: false,
       recordInfo: {
         toolbar: {
+          showNums: 20,
           queryStartDate: null,
           queryEndDate: null
         },
@@ -158,7 +159,8 @@ export default {
       }
       const params = {
         equipmentType: this.equipmentType,
-        equipmentID: this.recordInfo.equipmentID
+        equipmentID: this.recordInfo.equipmentID,
+        num: this.recordInfo.toolbar.showNums
       }
       this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
       this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
