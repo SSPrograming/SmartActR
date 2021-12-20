@@ -74,6 +74,12 @@ const reserve = {
       method: 'GET',
     })
   },
+  getTagList() {
+    return request({
+      url: '/instruction/getTagList',
+      method: 'GET',
+    })
+  },
 };
 
 export default {

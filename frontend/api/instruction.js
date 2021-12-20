@@ -4,18 +4,22 @@
  */
 
 import {
-  reqiest
+  request
 } from './common.js';
 
-const reserve = {
+const instruction = {
   getInstructionList() {
     return request({
       url: '/instruction/getInstructionList',
       method: 'GET',
     })
   },
+  getTagList() {
+    return request({
+      url: '/instruction/getTagList',
+      method: 'GET',
+    })
+  },
 };
 
-export default {
-  ...reserve,
-}
+export default instruction;

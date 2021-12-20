@@ -12,7 +12,7 @@
         </view>
         <view class="right_contianer">
             <view class="searchbar_container">
-                <input placeholder-class="placeholder {{isFocus? '' : ''}}" type="text" class="e_search" confirm-type="search" selection-start="15" selection-end="30" placeholder="请输入要搜索的设备名" />
+                <input placeholder-class="placeholder {{isFocus? '' : ''}}" type="text" class="e_search" confirm-type="search" selection-start="15" selection-end="30" placeholder="请输入要搜索的设备名" bindinput="search_event"/>
             </view>
         </view>
 
@@ -21,11 +21,11 @@
         <scroll-view class="tag_scroll" scroll-y="true">
             <view class="tag_container">
                 <view class="tag_content">
-                    <view class="tag" wx:for="{{tag_list}}" wx:key="index" data-index="{{index}}" data-name="{{item.tagName}}" bindtap="screenInstruction">
+                    <view class="tag" wx:for="{{tagList}}" wx:key="index" data-index="{{index}}" data-name="{{item}}" bindtap="screenInstruction">
                         <view class="{{selected === index ? 'vertical_bar' : '' }}"></view>
                         <view class="{{selected === index ? 'tag_selected tag_name' : 'tag_name'}}">
                             <view class="tag_name_text">
-                                {{item.tagName}}
+                                {{item}}
                             </view>
                         </view>
                     </view>

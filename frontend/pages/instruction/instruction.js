@@ -10,57 +10,68 @@ Page({
   data: {
     loading: false,
     isFocus: false,
-    tag_list: [{
-        "tagName": "开心",
-      }, {
-        "tagName": "蛤",
-      }, {
-        "tagName": "官方",
-      }
-
-
-
-    ],
+    tagList: [],
     instructionList: [],
     screenedList: [],
-    selected: -1,
+    selected: 0,
     loading: false,
 
   },
 
-  selectTag(e) {
-    if (e.currentTarget.dataset.index != this.data.selected) {
-      this.setData({
-        selected: e.currentTarget.dataset.index,
-        loading: true,
-      })
-    };
-    app.dealThing(this.getInstructionInfo);
-  },
-
-  getInstructionList() {
-    app.$api.reserve.getInstructionList()
+  getTagList() {
+    app.$api.instruction.getTagList()
       .then((res) => {
-        this.setData({
-          instructionList: res.data.instructionList,
-          screenedList: res.data.instructionList,
-        });
-        console.log(this.data.instructionList);
-      });
+        if (res.data.errCode === 0) {
+          let List = res.data.tagList;
+          List.unshift("全部");
+          this.setData({
+            tagList: List,
+          })
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+  },
+  getInstructionList() {
+    app.$api.instruction.getInstructionList()
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          this.setData({
+            instructionList: res.data.instructionList,
+            screenedList: res.data.instructionList,
+          });
+          console.log(this.data.instructionList);
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+
     this.setData({
       loading: false,
     });
   },
 
   screenInstruction(e) {
-    if (e.currentTarget.dataset.index != this.data.selected) {
+    if (e.currentTarget.dataset.index === 0) {
+      let List = this.data.instructionList;
+      this.setData({
+        selected: 0,
+        screenedList: List,
+      })
+    } else if (e.currentTarget.dataset.index != this.data.selected) {
       let tag = e.currentTarget.dataset.name;
       let newTagList = [];
       //console.log(tag);
       //console.log(this.data.instructionList);
-      for (var i = 0; i < this.data.instructionList.length; i++) {
+      for (let i = 0; i < this.data.instructionList.length; i++) {
         //console.log(this.data.instructionList[i]);
-        for (var j = 0; j < this.data.instructionList[i].instructionTags.length; j++) {
+        for (let j = 0; j < this.data.instructionList[i].instructionTags.length; j++) {
           if (tag === this.data.instructionList[i].instructionTags[j]) {
             newTagList.push(this.data.instructionList[i]);
           }
@@ -69,12 +80,6 @@ Page({
       this.setData({
         screenedList: newTagList,
         selected: e.currentTarget.dataset.index,
-      })
-    } else {
-      let List = this.data.instructionList;
-      this.setData({
-        selected: -1,
-        screenedList: List,
       })
     }
 
@@ -96,6 +101,7 @@ Page({
   onLoad(options) {
     //app.dealThing(this.getAllEquipmentStatus);
     app.dealThing(this.getInstructionList);
+    app.dealThing(this.getTagList);
   },
 
   /**
