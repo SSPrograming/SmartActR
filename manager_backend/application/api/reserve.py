@@ -36,12 +36,13 @@ def getTodayRecord():
 @login_required
 def getHistoryRecord():
     try:
-        start_date = request.json["startDate"]
-        end_date = request.json["endDate"]
+        num = request.json["num"]
+        start_date = request.json["startDate"] if "startDate" in request.json.keys() else None
+        end_date = request.json["endDate"] if "endDate" in request.json.keys() else None
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     try:
-        record_list_raw = ReserveService.get_history_record(start_date, end_date)
+        record_list_raw = ReserveService.get_history_record(start_date, end_date, num)
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     record_list = []

@@ -10,7 +10,7 @@ def generate_jwt(payload, expiry=None):
     """
     if expiry == None:
         now = datetime.datetime.now()
-        expire_hours = 24
+        expire_hours = query_yaml('app.EXPIREHOURS')
         expiry = now + datetime.timedelta(hours=expire_hours)
 
     _payload = {'exp': expiry}

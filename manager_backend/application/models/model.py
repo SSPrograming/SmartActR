@@ -53,6 +53,7 @@ class Reserve_Record(db.Model):
                                 doc="设备种类", nullable=False)                      
     equipmentID = db.Column(db.Integer,
                             doc="设备号",nullable=False)
+    noticed = db.Column(db.Boolean, default=False)
     # 复合外键约束
     __table_args__ = (
         db.ForeignKeyConstraint(

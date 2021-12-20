@@ -82,7 +82,7 @@ class UserService():
             db.session.rollback()
             return "数据库更新失败", False
     
-    def get_user_recordList(stuID,startDate, endDate):
+    def get_user_recordList(stuID,startDate, endDate, num):
         target_student = Student.query.filter(Student.stuID==stuID).first()
         if target_student is None:
             return "找不到这名学生", False
@@ -101,5 +101,5 @@ class UserService():
                 return "bad arguments", False
             query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
 
-        recordList = Reserve_Record.query.filter(query_condition).all()
+        recordList = Reserve_Record.query.filter(query_condition).limit(num).all()
         return recordList, True
