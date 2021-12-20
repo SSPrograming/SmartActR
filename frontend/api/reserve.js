@@ -67,7 +67,13 @@ const reserve = {
       method: 'Post',
       data: params,
     })
-  }
+  },
+  getInstructionList() {
+    return request({
+      url: '/instruction/getInstructionList',
+      method: 'GET',
+    })
+  },
 };
 
 export default {

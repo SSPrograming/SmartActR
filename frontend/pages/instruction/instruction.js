@@ -11,18 +11,82 @@ Page({
     loading: false,
     isFocus: false,
     tag_list: [{
-      name: "tag1"
-    }, {
-      name: "tag2"
-    }, {
-      name: "tag3"
-    }],
+        "tagName": "开心",
+      }, {
+        "tagName": "蛤",
+      }, {
+        "tagName": "官方",
+      }
+
+
+
+    ],
     instructionList: [],
+    screenedList: [],
+    selected: -1,
+    loading: false,
 
   },
 
-  openInstruction(){
+  selectTag(e) {
+    if (e.currentTarget.dataset.index != this.data.selected) {
+      this.setData({
+        selected: e.currentTarget.dataset.index,
+        loading: true,
+      })
+    };
+    app.dealThing(this.getInstructionInfo);
+  },
 
+  getInstructionList() {
+    app.$api.reserve.getInstructionList()
+      .then((res) => {
+        this.setData({
+          instructionList: res.data.instructionList,
+          screenedList: res.data.instructionList,
+        });
+        console.log(this.data.instructionList);
+      });
+    this.setData({
+      loading: false,
+    });
+  },
+
+  screenInstruction(e) {
+    if (e.currentTarget.dataset.index != this.data.selected) {
+      let tag = e.currentTarget.dataset.name;
+      let newTagList = [];
+      //console.log(tag);
+      //console.log(this.data.instructionList);
+      for (var i = 0; i < this.data.instructionList.length; i++) {
+        //console.log(this.data.instructionList[i]);
+        for (var j = 0; j < this.data.instructionList[i].instructionTags.length; j++) {
+          if (tag === this.data.instructionList[i].instructionTags[j]) {
+            newTagList.push(this.data.instructionList[i]);
+          }
+        }
+      }
+      this.setData({
+        screenedList: newTagList,
+        selected: e.currentTarget.dataset.index,
+      })
+    } else {
+      let List = this.data.instructionList;
+      this.setData({
+        selected: -1,
+        screenedList: List,
+      })
+    }
+
+  },
+
+  openInstruction(e) {
+    console.log(e.currentTarget.dataset);
+  },
+
+  test1(e) {
+    console.log(e.currentTarget.dataset);
+    console.log("wonderful");
   },
 
 
@@ -31,14 +95,13 @@ Page({
    */
   onLoad(options) {
     //app.dealThing(this.getAllEquipmentStatus);
+    app.dealThing(this.getInstructionList);
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {
-
-  },
+  onReady() {},
 
   /**
    * 生命周期函数--监听页面显示

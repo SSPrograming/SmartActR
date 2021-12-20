@@ -1,26 +1,63 @@
 .container {
     .search_container {
-        background-color: #bb3479;
-        align-items: center;
+        background-color: #A62E73;
+        display: flex;
         height: 100rpx;
-        position: relative;
+        //align-items: center;
 
-        .e_search {
-            position: absolute;
-            top: 10rpx;
-            left: 50%;
-            transform: translateX(-50%);
-            //padding: 10rpx auto 10rpx auto;
-            height: 70rpx;
-            width: 90%;
-            background-color: #e7e7e7;
-            font-size: 35rpx;
-            text-align: center;
-            border-radius: 70rpx;
+        .left_contianer {
+            width: 20%;
+            height: 100%;
+
+            .mic_container {
+                float: right;
+                height: 70rpx;
+                margin-top: 10%;
+                width: 75%;
+                background-color: white;
+                border-radius: 70rpx 0 0 70rpx;
+                display: flex;
+
+                .mic {
+                    margin-top: 10rpx;
+                    margin-left: 20%;
+                    max-width: 80%;
+                    max-height: 80%;
+                }
+
+            }
+
+
+        }
+
+        .right_contianer {
+            width: 80%;
+            height: 100%;
+
+            .searchbar_container {
+                float: left;
+                height: 100%;
+                width: 94%;
+
+                .e_search {
+                    // position: absolute;
+                    // //top: 50%;
+                    // left: 50%;
+                    // top: 50%;
+                    // transform: translate(-50%, -50%);
+                    margin-top: 15rpx;
+                    height: 70rpx;
+                    width: 100%;
+                    background-color: white;
+                    font-size: 35rpx;
+                    border-radius: 0 70rpx 70rpx 0;
+                }
+            }
         }
 
         .placeholder {
-            text-align: center;
+            text-align: left;
+
         }
 
         .placeholder-focus {
@@ -32,28 +69,136 @@
         display: flex;
         width: 100%;
 
-        .tag_container {
-            flex-shrink: 0;
-            height: 1000rpx;
-            width: 30%;
-            //border: 5rpx solid #bb3479;
-            //border-top: #e7e7e7;
-            background-color: white;
+        .tag_scroll {
+            width: 200rpx;
 
-            .tag {
-                height: 100rpx;
-                border: 3rpx solid black;
-                //border-radius: 30rpx;
-                text-align: center;
+            .tag_container {
+                flex-shrink: 0;
+                height: 1000rpx;
+                width: 200rpx;
+                //border: 5rpx solid #bb3479;
+                //border-top: #e7e7e7;
+                background-color: white;
 
-                .tag_name {}
+                .tag {
+                    height: 100rpx;
+                    background-color: white;
+                    display: flex;
+                    //border: 3rpx solid black;
+                    //border-radius: 30rpx;
+
+                    .vertical_bar {
+                        /* 大小 */
+                        flex-basis: 10rpx;
+                        margin: 15rpx 7rpx 15rpx 7rpx;
+                        /* 背景 */
+                        background: #D03B7F;
+                        /* CSS3 */
+                        border-radius: 7rpx;
+                    }
+
+                    .tag_name {
+                        margin: auto 0 auto auto;
+                        height: 80rpx;
+                        width: 90%;
+                        text-align: center;
+
+                        .tag_name_text {
+                            margin-top: 17rpx;
+                            font-size: 35rpx;
+                        }
+                    }
+
+                    .tag_selected {
+                        border-radius: 30rpx 0 0 30rpx;
+                        background-color: #EBEBEB;
+                    }
+                }
             }
         }
 
-        .instruction_container {
+
+        .instruction_container_wrap {
             width: 80%;
-            height: 250rpx;
+
             //background-color: white;
+            .instruction-scroll {
+                max-height: calc(100vh - 585rpx);
+
+                .instruction-container {
+                    /* 位置 */
+                    display: flex;
+                    /* 大小 */
+                    width: 80%;
+                    height: 180rpx;
+                    padding: 20rpx;
+                    margin: 30rpx auto 30rpx auto;
+
+                    /* 背景 */
+                    background: #ffffff;
+                    //border: #bb3479 4rpx solid;
+                    /* CSS3 */
+                    box-shadow: 8rpx 8rpx 10rpx #DED1DA;
+                    border-radius: 20rpx;
+
+                    .instruction-image-container {
+                        flex-basis: 240rpx;
+                        width: 220rpx;
+
+                        .instruction-image {
+                            /* 大小 */
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
+                    }
+
+                    .instruction-content {
+                        /* 位置 */
+                        display: flex;
+                        flex-direction: column;
+                        /* 大小 */
+                        flex: 1;
+                        /* 文字 */
+                        text-align: center;
+
+                        .instruction-title {
+                            font-size: 35rpx;
+                        }
+
+                        .whitespace {
+                            /* 大小 */
+                            flex: 1;
+                        }
+
+                        .instruciton-tag-container {
+                            flex-basis: 100rpx;
+                            height: 100rpx;
+                            display: flex;
+
+                            .left-container {
+                                width: 50%;
+                                font-size: 32rpx;
+
+                                .tag-text {
+                                    float: right;
+                                    color: purple;
+                                }
+
+                            }
+
+                            .right-container {
+                                width: 50%;
+                            }
+                        }
+
+                    }
+                }
+
+                .equipment-container:last-child {
+                    /* 大小 */
+                    margin-bottom: 200rpx;
+                }
+            }
         }
     }
 }
