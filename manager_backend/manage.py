@@ -7,8 +7,10 @@ from application.api import bp
 from verify_identity import verify_identity
 from threading import Timer
 from application.utils import now
-from application.service import ReserveService, UserService
+from application.service import ReserveService, UserService, AdminService
+from timetasks import FileLock
 import datetime
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = query_yaml('db.MYSQL')
@@ -17,6 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 manager = Manager(app)
 migrate = Migrate(app, db)
+app.lock = FileLock()
 
 app.before_request(verify_identity)
 for bluep in bp:
@@ -25,8 +28,7 @@ for bluep in bp:
 manager.add_command('db', MigrateCommand)
 
 def start_timer_perminute():
-    interval = query_yaml('app.INTERVAL')
-    t = Timer(interval, auto_update_perminute)
+    t = Timer(5, auto_update_perminute)
     t.start()
 
 def start_timer_perday():
@@ -53,5 +55,7 @@ def auto_update_daily():
 
 start_timer_perminute()
 
+with app.app_context():
+    AdminService.create_admin()
 if __name__ == '__main__':
     manager.run()
