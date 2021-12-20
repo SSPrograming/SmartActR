@@ -97,6 +97,7 @@ export default {
       showReserveRecord: false,
       recordInfo: {
         toolbar: {
+          showNums: 20,
           queryStartDate: null,
           queryEndDate: null
         },
@@ -166,7 +167,8 @@ export default {
         return
       }
       const params = {
-        stuID: this.recordInfo.stuID
+        stuID: this.recordInfo.stuID,
+        num: this.recordInfo.toolbar.showNums
       }
       this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
       this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))

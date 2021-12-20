@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
     <el-button type="primary" icon="el-icon-back" plain @click="$emit('back')" v-if="back"></el-button>
-    <el-select class="choose-num" v-model="toolbar.showNums" placeholder="请选择" @change="$emit('query')"
+    <el-select class="choose-num" v-model="toolbar.showNums" placeholder="请选择查看条数" @change="$emit('query')"
                v-if="chooseNum">
       <el-option v-for="item in numOptions" :key="item.value" :label="item.label" :value="item.value">
       </el-option>
@@ -43,7 +43,7 @@ export default {
         {label: '查看近50条', value: 50},
         {label: '查看近100条', value: 100},
         {label: '查看近500条', value: 500},
-        {label: '查看全部', value: -1}
+        // {label: '查看全部', value: -1}
       ]
     }
   }

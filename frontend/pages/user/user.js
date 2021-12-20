@@ -73,10 +73,23 @@ Page({
     app.$api.reserve.checkIn(param)
       .then((res) => {
         if (res.data.errCode === 0) {
-          //if(res.data.checkInStatus === 0)
-          wx.showToast({
-            title: "签到成功！",
-          });
+          if (res.data.checkInStatus === 0) {
+            wx.showToast({
+              title: "签到成功！",
+            });
+          } else if (res.data.checkInStatus === 1) {
+            wx.showToast({
+              title: "无效的二维码",
+              icon: 'error',
+            });
+          } else if (res.data.checkInStatus === 2) {
+            wx.showToast({
+              title: "无相关预约记录",
+              icon: 'error',
+            });
+          } else {
+            app.dealError(res.data, 'SERVER');
+          }
         } else {
           app.dealError(res.data, 'SERVER');
         }

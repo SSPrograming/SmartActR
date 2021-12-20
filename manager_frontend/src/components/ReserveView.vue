@@ -1,7 +1,7 @@
 <template>
   <div class="reserve-view">
     <div class="header">
-      <Toolbar :toolbar="recordInfo.toolbar" choose-date refresh @refresh="$emit('refresh')"
+      <Toolbar :toolbar="recordInfo.toolbar" choose-num choose-date refresh @refresh="$emit('refresh')"
                @query="$emit('query')"></Toolbar>
     </div>
     <el-table class="table" :data="slicedData" v-loading="recordInfo.tableLoading" @sort-change="changeSortType"

@@ -4,8 +4,10 @@
  */
 import user from './user';
 import reserve from './reserve'
+import instruction from './instruction'
 
 export default {
   user,
   reserve,
+  instruction,
 };

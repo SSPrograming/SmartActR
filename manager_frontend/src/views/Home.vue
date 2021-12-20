@@ -4,8 +4,11 @@
       <p>今天是 <span>{{ year }}</span> 年 <span>{{ month }}</span> 月 <span>{{ date }}</span> 日星期
         <span>{{ day }}</span></p>
       <p class="time"><span>{{ hours }}</span>:<span>{{ minutes }}</span>:<span>{{ seconds }}</span></p>
+      <!--
       <p>共 <span>{{ reserveNum }}</span> 个预约记录，其中 <span>{{ failNum }}</span> 个已违约</p>
       <p>小程序访问量为 <span>{{ visitNum }}</span> 人</p>
+      -->
+      <p>欢迎来到 <span>智慧活动室</span> 管理端</p>
     </div>
   </div>
 </template>
