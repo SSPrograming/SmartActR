@@ -22,7 +22,7 @@ class ReserveService():
         if end_date_raw:
             end_date = strToDate(end_date_raw)
             query_condition = and_(query_condition, Reserve_Record.reserveDate<=end_date)
-        record_list = Reserve_Record.query.filter(query_condition).limit(num).all()
+        record_list = Reserve_Record.query.filter(query_condition).order_by(Reserve_Record.recordID.desc()).limit(num).all()
         return record_list
     
     def update_all_record_status():

@@ -48,7 +48,7 @@ def AddEquipmentType():
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     imgName = equipmentImage.filename
-    msg, addStatus = EquipmentService.add_equipmentType(EquipmentService, equipmentName,
+    msg, addStatus = EquipmentService.add_equipmentType(equipmentName,
                                                         equipmentCount, equipmentDescription,imgName)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg})
