@@ -35,6 +35,7 @@ Page({
         app.dealError(err, 'API');
       })
   },
+
   getInstructionList() {
     app.$api.instruction.getInstructionList()
       .then((res) => {

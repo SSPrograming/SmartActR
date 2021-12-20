@@ -10,7 +10,7 @@
 .container .search_container .left_contianer .mic_container {
   float: right;
   height: 70rpx;
-  margin-top: 10%;
+  margin-top: 15rpx;
   width: 75%;
   background-color: white;
   border-radius: 70rpx 0 0 70rpx;
@@ -54,7 +54,7 @@
 }
 .container .chosing_container .tag_scroll .tag_container {
   flex-shrink: 0;
-  height: 1000rpx;
+  height: 100vh;
   width: 200rpx;
   background-color: white;
 }
@@ -146,6 +146,8 @@
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .right-container {
   width: 50%;
+  font-size: 32rpx;
+  color: #d80077;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .equipment-container:last-child {
   /* 大小 */
