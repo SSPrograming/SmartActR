@@ -17,14 +17,14 @@ Page({
   switch_current() {
     this.setData({
       selected: 0,
-    })
+    });
     app.dealThing(this.getCurrentReserveInfo);
   },
 
   switch_history() {
     this.setData({
       selected: 1,
-    })
+    });
     app.dealThing(this.getHistoryReserveInfo);
   },
 
@@ -35,7 +35,6 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          //console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -60,7 +59,6 @@ Page({
           this.setData({
             reservation_list: res.data.info,
           });
-          //console.log(this.data.reservation_list);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -79,15 +77,14 @@ Page({
   },
 
   cancelReservation(e) {
-    console.log(e.currentTarget.dataset);
     if (e.currentTarget.dataset.status === "成功") {
       wx.showModal({
         content: "请问您要取消预约么？",
         success: (res) => {
           if (res.confirm) {
             app.$api.reserve.cancelReserve({
-                reserveID: e.currentTarget.dataset.reserveId,
-              })
+              reserveID: e.currentTarget.dataset.reserveId,
+            })
               .then((res) => {
                 if (res.data.errCode === 0) {
                   wx.showToast({
@@ -105,15 +102,14 @@ Page({
               .catch((err) => {
                 app.dealError(err, 'API')
               })
-            //console.log(e.currentTarget.dataset.reserveid);
           }
         }
-      })
+      });
     } else {
       var con = "本次预约已" + e.currentTarget.dataset.status;
       wx.showModal({
         content: con,
-      })
+      });
     }
   },
   /**
