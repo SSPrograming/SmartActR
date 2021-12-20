@@ -5,32 +5,53 @@
 
 <veiw class="container">
     <view class="search_container">
-        <input placeholder-class="placebolder" type="text" class="e_search" confirm-type="go" placeholder="请输入要搜索的设备名" />
+        <view class="left_contianer">
+            <view class="mic_container">
+                <image class="mic" src="/resources/icons/instruction/microscope.png" mode="aspectFit"></image>
+            </view>
+        </view>
+        <view class="right_contianer">
+            <view class="searchbar_container">
+                <input placeholder-class="placeholder {{isFocus? '' : ''}}" type="text" class="e_search" confirm-type="search" selection-start="15" selection-end="30" placeholder="请输入要搜索的设备名" bindinput="search_event"/>
+            </view>
+        </view>
+
     </view>
     <view class="chosing_container">
-        <view class="tag_container">
-            <view class="tag_title">
-                <view class="name">可选标签：</view>
-            </view>
-            <view class="tag_content">
-                <view class="tag" wx:for="{{tag_list}}" wx:key="index">
-                    <view class="tag_name">
-                        {{item.name}}
+        <scroll-view class="tag_scroll" scroll-y="true">
+            <view class="tag_container">
+                <view class="tag_content">
+                    <view class="tag" wx:for="{{tagList}}" wx:key="index" data-index="{{index}}" data-name="{{item}}" bindtap="screenInstruction">
+                        <view class="{{selected === index ? 'vertical_bar' : '' }}"></view>
+                        <view class="{{selected === index ? 'tag_selected tag_name' : 'tag_name'}}">
+                            <view class="tag_name_text">
+                                {{item}}
+                            </view>
+                        </view>
                     </view>
                 </view>
             </view>
-        </view>
-        <view class="instruction_container">
-            <scroll-view class="equipment-scroll" scroll-y="true">
-                <view class="equipment-container" wx:for="{{ equipmentList }}" wx:key="index" data-index="{{ index }}" bindtap="doReserve">
-                    <view class="equipment-image-container">
-                        <image class="equipment-image" src="{{ item.equipmentImageURL }}" mode="aspectFit"></image>
+        </scroll-view>
+
+        <view class="instruction_container_wrap">
+            <scroll-view class="instruction-scroll" scroll-y="true">
+                <view class="instruction-container" wx:for="{{ screenedList }}" wx:key="index" wx:for-item="item" data-index="{{ index }}" data-instruction-tags="{{item.instructionTags}}" bindtap="openInstruction">
+                    <view class="instruction-image-container">
+                        <image class="instruction-image" src="{{ item.instructionCoverURL }}" mode="aspectFit"></image>
                     </view>
-                    <view class="equipment-vertical-delimiter"></view>
-                    <view class="equipment-content">
-                        <view class="euqipment-title">设备名称：{{ item.equipmentName }}{{ item.equipmentID }}号</view>
+                    <view class="instruction-content">
+                        <view class="instruction-title">{{ item.instructionName }}</view>
                         <view class="whitespace"></view>
-                        <view class="equipment-status" style="{{ item.equipmentStatus === 0 ? 'color: green' : item.equipmentStatus === 1 ? 'color: orange' : 'color: red' }}">{{ equipmentStatus2String[item.equipmentStatus] }}</view>
+                        <view class="instruciton-tag-container">
+                            <view class="left-container">
+                                <view class="tag-text">
+                                    标签:
+                                </view>
+                            </view>
+                            <view class="right-container">
+                                <view class="instruction-tags" wx:for="{{item.instrucitonTags}}" wx:for-index="index1" wx:for-item="name" data-index1="{{index1}}" data-item1="item1" bidntap="test1">{{name}}</view>
+                            </view>
+                        </view>
                     </view>
                 </view>
             </scroll-view>
