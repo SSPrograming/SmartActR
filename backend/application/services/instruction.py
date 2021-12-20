@@ -22,13 +22,9 @@ class InstructionService:
             instruction_to_add["instructionCoverURL"] = i.instructionCoverURL
             instructionList.append(instruction_to_add)
         return instructionList
+
     def getTagList():
-        taglist = []
-        addr = InstructionTag.query.with_entities(InstructionTag.tagName).filter().all()
-        print(type(addr[0]))
-        for i in addr:
-            a = str(i)
-            new_one = a[2:-3]
-            taglist.append(new_one)
-        print(taglist)
+        taglist_raw = InstructionTag.query.with_entities(InstructionTag.tagName).filter().all()
+        tagset = set([item.tagName for item in taglist_raw])
+        taglist = [tag for tag in tagset]
         return taglist
