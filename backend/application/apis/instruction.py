@@ -25,3 +25,13 @@ def get_all_instruction_info():
     return jsonify({
         "instructionList":instructionList
     })
+
+@bp_instruction.route('/api/v1/instruction/getTagList', methods=['GET'])
+@login_required
+def get_TagList():
+    tagList = InstructionService.getTagList()
+    return jsonify({
+        "errorCode":0,
+        "errMsg":"",
+        "tagList":tagList
+    })
