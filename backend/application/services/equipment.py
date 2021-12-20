@@ -9,7 +9,13 @@ class EquipmentService:
         return equipmentType.query.all()
 
     def get_all_equipment():
-        return Equipment.query.all()
+        EquipmentTypeList = equipmentType.query.order_by(equipmentType.equipmentOrder).all()
+        EquipmentList = []
+        for Type in EquipmentTypeList:
+            TypeID = Type.equipmentType
+            m_equipmentList = Equipment.query.filter(Equipment.equipmentType==TypeID).all()
+            EquipmentList.extend(m_equipmentList)
+        return EquipmentList
 
     def get_single_equipmentType(equipmentTypeID):
         """

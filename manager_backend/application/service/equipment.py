@@ -2,8 +2,9 @@ from application.database import db
 from application.models import Equipment, equipmentType, QRCode, Reserve_Record
 from application.utils import strToTime, strToDate, now
 import datetime
-
+from sqlalchemy import and_
 from config import query_yaml
+import os
 
 class EquipmentService():
     def get_name_by_type(Type):
@@ -13,7 +14,7 @@ class EquipmentService():
         return target_type.equipmentName, True
     
     def get_all_equipmentType():
-        return equipmentType.query.all()
+        return equipmentType.query.order_by(equipmentType.equipmentOrder.asc()).all()
 
     def get_type_count(Type):
         return Equipment.query.filter(Equipment.equipmentType==Type).count()
@@ -57,7 +58,7 @@ class EquipmentService():
             return "二维码不存在", False
         return target_qrcode_entry.QRCodeURL, True
         
-    def add_equipmentType(self, equipmentName, Count, Description, img_name):
+    def add_equipmentType(equipmentName, Count, Description, img_name):
         new_equipmentType = equipmentType()
         new_equipmentType.equipmentDescription = Description
         new_equipmentType.equipmentName = equipmentName
@@ -83,7 +84,7 @@ class EquipmentService():
         添加对应数量的设备
         """
         for i in range(Count):
-            addstatus = self.add_equipment(target_equipmentType, i+1)
+            addstatus = EquipmentService.add_equipment(target_equipmentType, i+1)
             if not addstatus:
                 return "添加设备失败", False
         return str(target_equipmentType), True
@@ -143,6 +144,21 @@ class EquipmentService():
         for record in related_records:
             try:
                 db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关二维码记录失败", False
+        return "ok", True
+
+    def drop_single_qrCode(Type, id):
+        related_record = QRCode.query.filter(QRCode.equipmentType==Type,
+                                              QRCode.equipmentID==id).first()
+        if related_record is not None:
+            qrcode_name = related_record.QRCodeURL.split('/')[-1]
+            if os.path.exists(query_yaml('app.QRCODEPATH')+ qrcode_name):
+                os.remove(query_yaml('app.QRCODEPATH')+ qrcode_name)
+            try:
+                db.session.delete(related_record)
                 db.session.commit()
             except:
                 db.session.rollback()
@@ -216,4 +232,78 @@ class EquipmentService():
         if target_type is None:
             return "设备种类不存在", False
         return target_type.equipmentImageURL, True
+    
+    def get_equipment_recordList(equipmentType, equipmentID,startDate, endDate, num):
+        query_condition = and_(Reserve_Record.equipmentType==equipmentType,Reserve_Record.equipmentID==equipmentID)
+        if startDate is not None:
+            try:
+                startDate = strToDate(startDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate>=startDate)
         
+        if endDate is not None:
+            try:
+                endDate = strToDate(endDate)
+            except:
+                return "bad arguments", False
+            query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
+
+        recordList = Reserve_Record.query.filter(query_condition).limit(num).all()
+        return recordList, True
+    
+    def swap_equipmentOrder(Type1, Type2):
+        target_type1 = equipmentType.query.filter(equipmentType.equipmentType==Type1).first()
+        target_type2 = equipmentType.query.filter(equipmentType.equipmentType==Type2).first()
+        if target_type1 is None or target_type2 is None:
+            return "设备种类不存在", False
+        Type1_order = target_type1.equipmentOrder
+        Type2_order = target_type2.equipmentOrder
+        target_type1.equipmentOrder = 2147483647
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        target_type2.equipmentOrder = Type1_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        
+        target_type1.equipmentOrder = Type2_order
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "交换次序失败", False
+        
+        return "ok", True
+
+    def deleteEquipment(Type, id):
+        targetEquipment = Equipment.query.filter(Equipment.equipmentType==Type,
+                                                     Equipment.equipmentID==id).first()
+        if targetEquipment is None:
+            return "该设备不存在", False
+        
+        msg, drop_qrcode_status = EquipmentService.drop_single_qrCode(Type, id)
+        if not drop_qrcode_status:
+            return msg, False
+        relatedRecords = Reserve_Record.query.filter(Reserve_Record.equipmentType==Type,
+                                                     Reserve_Record.equipmentID==id).all()
+        for record in relatedRecords:
+            try:
+                db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关预约记录时出错", False
+        
+        try:
+            db.session.delete(targetEquipment)
+        except:
+            db.session.rollback()
+            return "删除设备失败", False
+        db.session.commit()
+        return "ok", True

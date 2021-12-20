@@ -8,7 +8,9 @@ from verify_identity import verify_identity
 from threading import Timer
 from application.utils import now
 from application.service import ReserveService, UserService
+from timetasks import FileLock
 import datetime
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = query_yaml('db.MYSQL')
@@ -17,6 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 manager = Manager(app)
 migrate = Migrate(app, db)
+app.lock = FileLock()
 
 app.before_request(verify_identity)
 for bluep in bp:
