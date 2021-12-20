@@ -73,44 +73,63 @@ Page({
     app.$api.reserve.checkIn(param)
       .then((res) => {
         if (res.data.errCode === 0) {
-          //if(res.data.checkInStatus === 0)
-          wx.showToast({
-            title: "签到成功！",
-          })
+          if (res.data.checkInStatus === 0) {
+            wx.showToast({
+              title: "签到成功！",
+            });
+          } else if (res.data.checkInStatus === 1) {
+            wx.showToast({
+              title: "无效的二维码",
+              icon: 'error',
+            });
+          } else if (res.data.checkInStatus === 2) {
+            wx.showToast({
+              title: "无相关预约记录",
+              icon: 'error',
+            });
+          } else {
+            app.dealError(res.data, 'SERVER');
+          }
         } else {
           app.dealError(res.data, 'SERVER');
         }
       })
       .catch((err) => {
         app.dealError(err, 'API');
-      })
+      });
   },
   //扫码签到
   scanCode(e) {
-    let that = this
     wx.scanCode({
       onlyFromCamera: true,
       success: (res) => {
         this.setData({
           codeScanned: res.result,
         });
-        console.log(this.data.codeScanned);
         app.dealThing(this.checkIn);
       },
-      fail(err) {
-
+      fail: (err) => {
       }
-    })
+    });
   },
 
   unbind() {
-    app.$api.user.unbind()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        this.dealError(err, 'API');
-      });
+    const needToDo = () => {
+      app.$api.user.unbind()
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            wx.showToast({
+              title: "解绑成功！",
+            });
+          } else {
+            app.dealError(res.data, 'SERVER');
+          }
+        })
+        .catch((err) => {
+          app.dealError(err, 'API');
+        });
+    };
+    app.dealThing(needToDo);
   },
 
   getBindStatus() {
@@ -125,7 +144,7 @@ Page({
             wx.showModal({
               content: "您已经绑定身份",
               confirmText: "解绑身份",
-              success(res) {
+              success: (res) => {
                 if (res.confirm) {
                   //解绑身份
                   app.dealThing(this.unbind);
