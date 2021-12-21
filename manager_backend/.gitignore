@@ -6,3 +6,4 @@ migrations/
 *.jpg
 *.png
 static/
+!template.config.yaml

@@ -1,0 +1,25 @@
+app:
+  ENV: dev
+  SECRET: #填写随机字符串，务必保密
+  HOST: 127.0.0.1
+  PORT: 5000
+  SALT: #填写随机字符串
+  QRSALT: #填写随机字符串
+  IMGSALT: #填写随机字符串
+  MANAGERSERVERURL: #填写本机的公网IP地址以及图床端口号，样例：http://120.53.231.51:9999/
+  VALIDTIME: 20 #用户签到的有效时间，现在为预约开始时间的前后20分钟
+  NOTICETIME: 30 #在预约开始时间前多少分钟提示用户
+  INTERVAL: 60 #一般无需改动，扫描更新数据的时间间隔，现为60s
+  FREEZELEN: 7 #冻结权限持续时间的长度
+  QRCODEPATH: ./application/static/qrcode/ #不要修改
+  ACCESSTOKENURL: https://api.weixin.qq.com/cgi-bin/token #不要修改
+  SENDMESSAGEURL: https://api.weixin.qq.com/cgi-bin/message/subscribe/send #不要修改
+  TEMPLATEID: dxPlNmH8nMSh6kWMlHnb1iZFFyv29MQuEmCgCxYwKW4 #不要修改
+  APPID: #填写小程序的ID
+  APPSECRET: #填写小程序的secret
+  ADMINNAME: admin #配置管理员账号的名称
+  ADMINPASS: admin@SmartActR #配置管理员账号的密码
+  FRONTENDSALT: A!D@M#A%N #前端用来加密的字符串，不要修改
+
+db:
+  MYSQL: mysql+pymysql://root:{{password}}@mysql:3306/SmartActR?charset=utf8mb4 #将password替换为你配置的数据库密码
