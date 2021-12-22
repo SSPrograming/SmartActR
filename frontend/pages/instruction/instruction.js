@@ -17,7 +17,6 @@ Page({
     loading: false,
     chosenInstructionID: -1,
     instructionContent: "",
-
   },
 
   getTagList() {
@@ -28,14 +27,14 @@ Page({
           List.unshift("全部");
           this.setData({
             tagList: List,
-          })
+          });
         } else {
           app.dealError(res.data, 'SERVER');
         }
       })
       .catch((err) => {
         app.dealError(err, 'API');
-      })
+      });
   },
 
   getInstructionList() {
@@ -46,14 +45,13 @@ Page({
             instructionList: res.data.instructionList,
             screenedList: res.data.instructionList,
           });
-          //console.log(this.data.instructionList);
         } else {
           app.dealError(res.data, 'SERVER');
         }
       })
       .catch((err) => {
         app.dealError(err, 'API');
-      })
+      });
     this.setData({
       loading: false,
     });
@@ -65,14 +63,11 @@ Page({
       this.setData({
         selected: 0,
         screenedList: List,
-      })
+      });
     } else if (e.currentTarget.dataset.index != this.data.selected) {
       let tag = e.currentTarget.dataset.name;
       let newTagList = [];
-      //console.log(tag);
-      //console.log(this.data.instructionList);
       for (let i = 0; i < this.data.instructionList.length; i++) {
-        //console.log(this.data.instructionList[i]);
         for (let j = 0; j < this.data.instructionList[i].instructionTags.length; j++) {
           if (tag === this.data.instructionList[i].instructionTags[j]) {
             newTagList.push(this.data.instructionList[i]);
@@ -82,7 +77,7 @@ Page({
       this.setData({
         screenedList: newTagList,
         selected: e.currentTarget.dataset.index,
-      })
+      });
     }
   },
 
@@ -90,37 +85,9 @@ Page({
     this.setData({
       chosenInstructionID: e.currentTarget.dataset.instructionId,
     });
-    let params = {
-      "instructionID": this.data.chosenInstructionID,
-    }
-    console.log(e.currentTarget.dataset);
     wx.navigateTo({
       url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
     })
-    //app.dealThing(this.getSingleInstruction);
-  },
-
-  getSingleInstruction() {
-    let params = {
-      "instructionID": this.data.chosenInstructionID,
-    }
-    app.$api.instruction.getSingleInstruction(params)
-      .then((res) => {
-        if (res.data.errCode === 0) {
-          //console.log(res);
-          this.setData({
-            instructionContent: res.data.instructionContent,
-          });
-          wx.navigateTo({
-            url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
-          })
-        } else {
-          app.dealError(res.data, 'SERVER');
-        }
-      })
-      .catch((err) => {
-        app.dealError(err, 'API');
-      })
   },
 
   search_event(e) {
@@ -142,8 +109,8 @@ Page({
     this.setData({
       loading: true,
     });
-    app.dealThing(this.getInstructionList);
     app.dealThing(this.getTagList);
+    app.dealThing(this.getInstructionList);
   },
 
 
@@ -151,15 +118,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    //app.dealThing(this.getAllEquipmentStatus);
-    app.dealThing(this.getInstructionList);
     app.dealThing(this.getTagList);
+    app.dealThing(this.getInstructionList);
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {},
+  onReady() { },
 
   /**
    * 生命周期函数--监听页面显示

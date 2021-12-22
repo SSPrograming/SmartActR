@@ -19,7 +19,6 @@ Page({
     app.$api.instruction.getSingleInstruction(params)
       .then((res) => {
         if (res.data.errCode === 0) {
-          console.log(res);
           this.setData({
             instructionContent: res.data.instructionContent,
           });
@@ -33,7 +32,7 @@ Page({
       })
       .catch((err) => {
         app.dealError(err, 'API');
-      })
+      });
   },
 
   /**
