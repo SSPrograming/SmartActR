@@ -249,7 +249,7 @@ class EquipmentService():
                 return "bad arguments", False
             query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
 
-        recordList = Reserve_Record.query.filter(query_condition).limit(num).all()
+        recordList = Reserve_Record.query.filter(query_condition).order_by(Reserve_Record.recordID.desc()).limit(num).all()
         return recordList, True
     
     def swap_equipmentOrder(Type1, Type2):

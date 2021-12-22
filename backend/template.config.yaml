@@ -1,0 +1,15 @@
+app:
+  SALT: bar #替换为随机字符串
+  ENV: dev
+  SECRET: abcdefg #替换为随机字符串
+  HOST: 127.0.0.1
+  PORT: 5000
+  APPID: #填写微信小程序ID 
+  APPSECRET: #填写微信小程序密钥
+  WECHATURL: https://api.weixin.qq.com/sns/jscode2session #无需修改
+  TSINGHUAURL: https://alumni-test.iterator-traits.com/fake-id-tsinghua-proxy/api/user/session/token #替换为真实清华身份认证系统
+  RESERVEMESSAGE: dxPlNmH8nMSh6kWMlHnb1jQqeNaq4LyAhfGVj4oPDrg #无需修改
+  EXPIREHOURS: 24 #配置小程序端用户身份令牌的有效时间，单位为小时
+
+db:
+  MYSQL: mysql+pymysql://root:{{password}}@mysql:3306/SmartActR?charset=utf8mb4 #将{{password}}替换为数据库密码，如abcd1234，需要与docker-compose.yaml中一致
