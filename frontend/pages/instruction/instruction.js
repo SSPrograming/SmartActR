@@ -48,13 +48,18 @@ Page({
         } else {
           app.dealError(res.data, 'SERVER');
         }
+        wx.stopPullDownRefresh();
+        this.setData({
+          loading: false,
+        });
       })
       .catch((err) => {
         app.dealError(err, 'API');
+        wx.stopPullDownRefresh();
+        this.setData({
+          loading: false,
+        });
       });
-    this.setData({
-      loading: false,
-    });
   },
 
   screenInstruction(e) {
@@ -102,17 +107,8 @@ Page({
     this.setData({
       screenedList: new_instruction_list,
       selected: 0,
-    })
-  },
-
-  onPullDownRefresh() {
-    this.setData({
-      loading: true,
     });
-    app.dealThing(this.getTagList);
-    app.dealThing(this.getInstructionList);
   },
-
 
   /**
    * 生命周期函数--监听页面加载
@@ -160,7 +156,11 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-
+    this.setData({
+      loading: true,
+    });
+    app.dealThing(this.getTagList);
+    app.dealThing(this.getInstructionList);
   },
 
   /**
