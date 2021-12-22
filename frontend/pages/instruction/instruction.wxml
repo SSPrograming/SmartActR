@@ -50,7 +50,7 @@
                                 </view>
                             </view>
                             <view class="right-container">
-                                <view class="instruction-tags" wx:for="{{item.instructionTags}}" wx:for-index="index1" wx:for-item="name" data-index1="{{index1}}" data-item1="item1">{{name}}</view>
+                                <view class="instruction-tags" wx:for="{{item.instructionTags}}" wx:for-index="index1" wx:for-item="name" wx:key="index1" data-index1="{{index1}}" data-item1="item1" bidntap="test1">{{name}}</view>
                             </view>
                         </view>
                     </view>
