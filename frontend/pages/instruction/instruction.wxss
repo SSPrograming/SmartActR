@@ -90,7 +90,7 @@
   width: 80%;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll {
-  max-height: calc(100vh - 585rpx);
+  max-height: calc(100vh - 250rpx);
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container {
   /* 位置 */
@@ -105,6 +105,7 @@
   /* CSS3 */
   box-shadow: 8rpx 8rpx 10rpx #DED1DA;
   border-radius: 20rpx;
+  border: #d14291 2rpx solid;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-image-container {
   flex-basis: 240rpx;
@@ -137,7 +138,7 @@
   display: flex;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .left-container {
-  width: 50%;
+  width: 40%;
   font-size: 32rpx;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .left-container .tag-text {
@@ -145,9 +146,9 @@
   color: purple;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .right-container {
-  width: 50%;
-  font-size: 32rpx;
-  color: #d80077;
+  width: 60%;
+  font-size: 30rpx;
+  color: #df037c;
 }
 .container .chosing_container .instruction_container_wrap .instruction-scroll .equipment-container:last-child {
   /* 大小 */

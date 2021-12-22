@@ -15,6 +15,8 @@ Page({
     screenedList: [],
     selected: 0,
     loading: false,
+    chosenInstructionID: -1,
+    instructionContent: "",
 
   },
 
@@ -44,7 +46,7 @@ Page({
             instructionList: res.data.instructionList,
             screenedList: res.data.instructionList,
           });
-          console.log(this.data.instructionList);
+          //console.log(this.data.instructionList);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -52,7 +54,6 @@ Page({
       .catch((err) => {
         app.dealError(err, 'API');
       })
-
     this.setData({
       loading: false,
     });
@@ -83,16 +84,66 @@ Page({
         selected: e.currentTarget.dataset.index,
       })
     }
-
   },
 
   openInstruction(e) {
+    this.setData({
+      chosenInstructionID: e.currentTarget.dataset.instructionId,
+    });
+    let params = {
+      "instructionID": this.data.chosenInstructionID,
+    }
     console.log(e.currentTarget.dataset);
+    wx.navigateTo({
+      url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
+    })
+    //app.dealThing(this.getSingleInstruction);
   },
 
-  test1(e) {
-    console.log(e.currentTarget.dataset);
-    console.log("wonderful");
+  getSingleInstruction() {
+    let params = {
+      "instructionID": this.data.chosenInstructionID,
+    }
+    app.$api.instruction.getSingleInstruction(params)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          //console.log(res);
+          this.setData({
+            instructionContent: res.data.instructionContent,
+          });
+          wx.navigateTo({
+            url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
+          })
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+  },
+
+  search_event(e) {
+    let list = this.data.instructionList;
+    let value = e.detail.value;
+    let new_instruction_list = [];
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].instructionName.indexOf(value) != -1) {
+        new_instruction_list.push(list[i]);
+      }
+    }
+    this.setData({
+      screenedList: new_instruction_list,
+      selected: 0,
+    })
+  },
+
+  onPullDownRefresh() {
+    this.setData({
+      loading: true,
+    });
+    app.dealThing(this.getInstructionList);
+    app.dealThing(this.getTagList);
   },
 
 
