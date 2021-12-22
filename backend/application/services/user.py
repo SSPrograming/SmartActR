@@ -134,16 +134,11 @@ class UserService():
             return e, False
     
     def get_freeze_info(user):
-        print('user:',user)
         individual = User.query.filter(User.userID == user).first()
-        print("开始user.get_freeze_info()")
-        print('indivivual:')
-        print(type(individual.userID),individual.userID)
-        print(individual.status)
-        # individual = list[0]
-        if individual.status == '1': #状态是0，表示冻结
-            print('冻结了:',individual.userID,individual.status)
-            return 1,individual.freezeDate #返回freezeStatus为1，冻结
+        if individual is None:
+            return "用户不存在", False
+        print(individual.freezeStatus)
+        if individual.status==True:
+            return {"status": 1,"date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
         else:
-            print('没有冻结:',individual.userID,individual.status)
-            return 0,individual.freezeDate #返回freezeStatus为0，未冻结
+            return {"status": 0,"date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True

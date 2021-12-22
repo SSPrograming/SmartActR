@@ -122,7 +122,6 @@ Page({
       }),
       loading: true,
     });
-    app.dealThing(this.getAllEquipmentStatus);
     app.dealThing(this.getNotice);
   },
 
@@ -146,6 +145,7 @@ Page({
         selected: 1,
       });
     }
+    app.dealThing(this.getAllEquipmentStatus);
   },
 
   /**

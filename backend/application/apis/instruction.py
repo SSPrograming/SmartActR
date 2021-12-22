@@ -35,7 +35,7 @@ def get_all_instruction_info():
 def get_TagList():
     tagList = InstructionService.getTagList()
     return jsonify({
-        "errorCode":0,
+        "errCode":0,
         "errMsg":"",
         "tagList":tagList
     }), 200
