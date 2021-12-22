@@ -1,149 +1,156 @@
 .container .search_container {
-  background-color: #ffffff;
-  align-items: center;
-  height: 80rpx;
-  position: relative;
+  background-color: #A62E73;
+  display: flex;
+  height: 100rpx;
 }
-
-.container .search_container .e_search {
-  position: absolute;
-  left: 50%;
-  top: 10rpx;
-  transform: translateX(-50%);
-  padding: 10rpx auto 10rpx auto;
-  height: 40rpx;
-  width: 90%;
-  background-color: #e7e7e7;
-  font-size: 27rpx;
-  text-align: center;
-  border-radius: 20rpx;
+.container .search_container .left_contianer {
+  width: 20%;
+  height: 100%;
 }
-
+.container .search_container .left_contianer .mic_container {
+  float: right;
+  height: 70rpx;
+  margin-top: 15rpx;
+  width: 75%;
+  background-color: white;
+  border-radius: 70rpx 0 0 70rpx;
+  display: flex;
+}
+.container .search_container .left_contianer .mic_container .mic {
+  margin-top: 10rpx;
+  margin-left: 20%;
+  max-width: 80%;
+  max-height: 80%;
+}
+.container .search_container .right_contianer {
+  width: 80%;
+  height: 100%;
+}
+.container .search_container .right_contianer .searchbar_container {
+  float: left;
+  height: 100%;
+  width: 94%;
+}
+.container .search_container .right_contianer .searchbar_container .e_search {
+  margin-top: 15rpx;
+  height: 70rpx;
+  width: 100%;
+  background-color: white;
+  font-size: 35rpx;
+  border-radius: 0 70rpx 70rpx 0;
+}
 .container .search_container .placeholder {
-  text-align: center;
-  background-position: 60rpx center;
-  background-repeat: no-repeat;
-  background-size: 27rpx;
-  background-image: url("/resources/icons/instruction/macroscope.png");
+  text-align: left;
 }
-
+.container .search_container .placeholder-focus {
+  text-align: left;
+}
 .container .chosing_container {
   display: flex;
   width: 100%;
 }
-
-.container .chosing_container .tag_container {
-  height: 1000rpx;
-  width: 30%;
-  border: 5rpx solid #bb3479;
-  border-top: #e7e7e7;
+.container .chosing_container .tag_scroll {
+  width: 200rpx;
+}
+.container .chosing_container .tag_scroll .tag_container {
+  flex-shrink: 0;
+  height: 100vh;
+  width: 200rpx;
   background-color: white;
 }
-
-.container .chosing_container .tag_container .tag_title {
-  margin-right: -10rpx;
+.container .chosing_container .tag_scroll .tag_container .tag {
+  height: 100rpx;
+  background-color: white;
+  display: flex;
+}
+.container .chosing_container .tag_scroll .tag_container .tag .vertical_bar {
+  /* 大小 */
+  flex-basis: 10rpx;
+  margin: 15rpx 7rpx 15rpx 7rpx;
+  /* 背景 */
+  background: #D03B7F;
+  /* CSS3 */
+  border-radius: 7rpx;
+}
+.container .chosing_container .tag_scroll .tag_container .tag .tag_name {
+  margin: auto 0 auto auto;
   height: 80rpx;
-  width: 100%;
-  color: #e7e7e7;
-  background-color: #fc82c1;
-  position: relative;
-}
-
-.container .chosing_container .tag_container .tag_title .name {
-  position: absolute;
-  top: 15rpx;
-  left: 25rpx;
-  text-align: center;
-  font-family: "YouYuan";
-}
-
-.container .chosing_container .tag_container .tag {
-  margin: 20rpx 10rpx;
-  border: 3rpx solid black;
-  border-radius: 30rpx;
+  width: 90%;
   text-align: center;
 }
-
-
-
-.equipments-container {
-  /* 大小 */
-  margin-top: 30rpx;
+.container .chosing_container .tag_scroll .tag_container .tag .tag_name .tag_name_text {
+  margin-top: 17rpx;
+  font-size: 35rpx;
 }
-
-.equipment-scroll {
-  /* 大小 */
-  max-height: 100vh;
+.container .chosing_container .tag_scroll .tag_container .tag .tag_selected {
+  border-radius: 30rpx 0 0 30rpx;
+  background-color: #EBEBEB;
 }
-
-.equipment-container {
+.container .chosing_container .instruction_container_wrap {
+  width: 80%;
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll {
+  max-height: calc(100vh - 250rpx);
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container {
   /* 位置 */
   display: flex;
   /* 大小 */
-  width: 90%;
+  width: 80%;
   height: 180rpx;
   padding: 20rpx;
-  margin: 15rpx auto 15rpx auto;
-  /* 文字 */
-  font-size: 32rpx;
+  margin: 30rpx auto 30rpx auto;
   /* 背景 */
   background: #ffffff;
-  border: #bb3479 4rpx solid;
   /* CSS3 */
-  box-shadow: 0rpx 5rpx 10rpx rgba(240, 194, 214, .6);
+  box-shadow: 8rpx 8rpx 10rpx #DED1DA;
   border-radius: 20rpx;
+  border: #d14291 2rpx solid;
 }
-
-.equipment-container:last-child {
-  /* 大小 */
-  margin-bottom: 200rpx;
-}
-
-.equipment-image-container {
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-image-container {
   flex-basis: 240rpx;
   width: 220rpx;
 }
-
-.equipment-image {
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-image-container .instruction-image {
   /* 大小 */
   max-width: 100%;
   max-height: 100%;
 }
-
-.equipment-vertical-delimiter {
-  /* 大小 */
-  flex-basis: 4rpx;
-  margin: 0 20rpx 0 20rpx;
-  /* 背景 */
-  background: linear-gradient(#a52d72, #cf3c7e);
-  /* CSS3 */
-  border-radius: 2rpx;
-}
-
-.equipment-content {
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content {
   /* 位置 */
   display: flex;
   flex-direction: column;
   /* 大小 */
   flex: 1;
   /* 文字 */
-  text-align: right;
+  text-align: center;
 }
-
-.equipment-status {
-  /* 文字 */
-  font-size: 48rpx;
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruction-title {
+  font-size: 35rpx;
 }
-
-.whitespace {
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .whitespace {
   /* 大小 */
   flex: 1;
 }
-
-::-webkit-scrollbar {
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container {
+  flex-basis: 100rpx;
+  height: 100rpx;
+  display: flex;
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .left-container {
+  width: 40%;
+  font-size: 32rpx;
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .left-container .tag-text {
+  float: right;
+  color: purple;
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll .instruction-container .instruction-content .instruciton-tag-container .right-container {
+  width: 60%;
+  font-size: 30rpx;
+  color: #df037c;
+}
+.container .chosing_container .instruction_container_wrap .instruction-scroll .equipment-container:last-child {
   /* 大小 */
-  width: 0;
-  height: 0;
-  /* 文字 */
-  color: transparent;
+  margin-bottom: 200rpx;
 }

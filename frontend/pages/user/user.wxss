@@ -10,7 +10,7 @@
   /* 位置 */
   position: relative;
   /* 大小 */
-  height: 150vw;
+  height: 100vh;
 }
 .user_info_wrap .background {
   /* 大小 */
@@ -21,7 +21,7 @@
   /* 位置 */
   position: absolute;
   left: 50%;
-  top: 10%;
+  top: 8%;
   transform: translateX(-50%);
   /* 大小 */
   height: 50vw;
@@ -50,7 +50,7 @@
   position: absolute;
   overflow: hidden;
   left: 50%;
-  top: 50%;
+  top: 38%;
   transform: translateX(-50%);
   /* 大小 */
   width: 85%;
