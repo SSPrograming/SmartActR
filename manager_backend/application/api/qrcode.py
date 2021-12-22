@@ -14,7 +14,7 @@ bp_qrcode = Blueprint(
     __name__
 )
 
-@bp_qrcode.route('/api/v1/qrcode/refreshQRCode', methods=['POST'])
+@bp_qrcode.route('/manager-api/v1/qrcode/refreshQRCode', methods=['POST'])
 @login_required
 def refreshQRCode():
     try:
@@ -35,7 +35,7 @@ def refreshQRCode():
     qr_img.save("./application/static/qrcode/"+img_name)
     return jsonify({"errCode": 0,"qrcodeURL": img_url}), 200
 
-@bp_qrcode.route('/api/v1/qrcode/getQRCode', methods=['POST'])
+@bp_qrcode.route('/manager-api/v1/qrcode/getQRCode', methods=['POST'])
 @login_required
 def getQRCode():
     try:

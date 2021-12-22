@@ -14,7 +14,7 @@ bp_admin = Blueprint(
     __name__
 )
 
-@bp_admin.route('/api/v1/admin/getAdminName', methods=['GET'])
+@bp_admin.route('/manager-api/v1/admin/getAdminName', methods=['GET'])
 @login_required
 def getAdminName():
     admin_name = Admin.query.first()
@@ -27,7 +27,7 @@ def getAdminName():
     return jsonify({"name": admin_name.userName}), 200
 
 
-@bp_admin.route('/api/v1/admin/login', methods=['POST'])
+@bp_admin.route('/manager-api/v1/admin/login', methods=['POST'])
 def login():
     try:
         username = request.json['username']

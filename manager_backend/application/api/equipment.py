@@ -13,7 +13,7 @@ bp_equipment = Blueprint(
     __name__
 )
 
-@bp_equipment.route('/api/v1/equipment/getAllEquipmentType', methods=['GET'])
+@bp_equipment.route('/manager-api/v1/equipment/getAllEquipmentType', methods=['GET'])
 @login_required
 def getAllEquipmentType():
     type_all_raw = EquipmentService.get_all_equipmentType()
@@ -28,7 +28,7 @@ def getAllEquipmentType():
     ]
     return jsonify({"errCode": 0, "TypeList": type_list}), 200
 
-@bp_equipment.route('/api/v1/equipment/testPicUpload', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/testPicUpload', methods=['POST'])
 @login_required
 def testPicUpload():
     testFile = request.files.get('testFile')
@@ -37,7 +37,7 @@ def testPicUpload():
     testFileURL = query_yaml("app.MANAGERSERVERURL")+"image/test/test_"+testFile.filename
     return jsonify({"errCode": 0,"testPicURL": testFileURL}), 200
 
-@bp_equipment.route('/api/v1/equipment/addEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/addEquipmentType', methods=['POST'])
 @login_required
 def AddEquipmentType():
     try:
@@ -55,7 +55,7 @@ def AddEquipmentType():
     equipmentImage.save('./application/static/equipment/'+msg+'_'+imgName)
     return jsonify({"errCode":0}), 200
 
-@bp_equipment.route('/api/v1/equipment/getAllEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/getAllEquipment', methods=['POST'])
 @login_required
 def getAllEquipment():
     try:
@@ -77,7 +77,7 @@ def getAllEquipment():
 
 
 
-@bp_equipment.route('/api/v1/equipment/editEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/editEquipmentType', methods=['POST'])
 @login_required
 def editEquipmentType():
     try:
@@ -107,7 +107,7 @@ def editEquipmentType():
         new_img_file.save("./application/static/equipment/"+str(target_type)+"_"+new_img_file_name)
     return jsonify({"errCode": 0}), 200
     
-@bp_equipment.route('/api/v1/equipment/deleteEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/deleteEquipmentType', methods=['POST'])
 @login_required
 def deleteEquipmentType():
     try:
@@ -131,7 +131,7 @@ def deleteEquipmentType():
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     return jsonify({"errCode": 0}), 200
 
-@bp_equipment.route('/api/v1/equipment/editEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/editEquipment', methods=['POST'])
 @login_required
 def editEquipment():
     try:
@@ -145,7 +145,7 @@ def editEquipment():
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     return jsonify({"errCode": 0}), 200
 
-@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/addEquipment', methods=['POST'])
 @login_required
 def addEquipment():
     try:
@@ -162,7 +162,7 @@ def addEquipment():
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_equipment.route('/api/v1/equipment/getEquipmentRecordList', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/getEquipmentRecordList', methods=['POST'])
 @login_required
 def getEquipmentRecordList():
     try:
@@ -190,7 +190,7 @@ def getEquipmentRecordList():
     })
     return jsonify({"errCode": 0, "recordList": recordList}), 200
 
-@bp_equipment.route('/api/v1/equipment/swapEquipmentOrder', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/swapEquipmentOrder', methods=['POST'])
 @login_required
 def swapEquipmentOrder():
     try:
@@ -204,7 +204,7 @@ def swapEquipmentOrder():
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_equipment.route('/api/v1/equipment/deleteEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/deleteEquipment', methods=['POST'])
 @login_required
 def deleteEquipment():
     try:

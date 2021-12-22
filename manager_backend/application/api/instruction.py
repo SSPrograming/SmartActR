@@ -13,7 +13,7 @@ bp_instruction = Blueprint(
     __name__
 )
 
-@bp_instruction.route('/api/v1/instruction/addImage',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/addImage',methods=['POST'])
 @login_required
 def addImage():
     try:
@@ -31,7 +31,7 @@ def addImage():
     return jsonify({"errCode": 0, "ImageURL": msg_or_info[0], "instructionImageID": msg_or_info[2]}), 200
 
 
-@bp_instruction.route('/api/v1/instruction/addInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/addInstruction',methods=['POST'])
 @login_required
 def addInstruction():
     try:
@@ -54,7 +54,7 @@ def addInstruction():
     instructionCover.save('./application/static/instructioncover/'+new_cover_name)
     return jsonify({"errCode": 0}), 200
     
-@bp_instruction.route('/api/v1/instruction/updateInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/updateInstruction',methods=['POST'])
 @login_required
 def updateInstruction():
     try:
@@ -74,7 +74,7 @@ def updateInstruction():
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_instruction.route('/api/v1/instruction/updateContent',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/updateContent',methods=['POST'])
 @login_required
 def updateContent():
     try:
@@ -88,7 +88,7 @@ def updateContent():
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_instruction.route('/api/v1/instruction/getSingleInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstruction',methods=['POST'])
 @login_required
 def getSingleInstruction():
     try:
@@ -102,7 +102,7 @@ def getSingleInstruction():
     else:
         return jsonify({"errCode": 0, "instructionContent": msg}), 200
 
-@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['GET'])
+@bp_instruction.route('/manager-api/v1/instruction/getInstructionList',methods=['GET'])
 @login_required
 def getInstructionList():
     instructionList_raw = InstructionService.getInstructionList()
@@ -116,7 +116,7 @@ def getInstructionList():
     ]
     return jsonify({"errCode": 0, "instructionList": instructionList}), 200
 
-@bp_instruction.route('/api/v1/instruction/deleteInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/deleteInstruction',methods=['POST'])
 @login_required
 def deleteInstruction():
     try:
@@ -130,7 +130,7 @@ def deleteInstruction():
     else:
         return jsonify({"errCode":0}), 200
 
-@bp_instruction.route('/api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
 @login_required
 def getSingleInstructionImageList():
     try:
@@ -147,7 +147,7 @@ def getSingleInstructionImageList():
     ]
     return jsonify({"imageList":imageList, "errCode": 0}), 200
 
-@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/deleteImage',methods=['POST'])
 @login_required
 def deleteImage():
     try:
