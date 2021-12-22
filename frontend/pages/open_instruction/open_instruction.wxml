@@ -9,6 +9,5 @@
     <view class="inner_wrapper">
       <template is="wxParse" data="{{wxParseData:content.nodes}}" />
     </view>
-    
   </view>
 </scroll-view>
