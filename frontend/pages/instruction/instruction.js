@@ -54,7 +54,6 @@ Page({
       .catch((err) => {
         app.dealError(err, 'API');
       })
-
     this.setData({
       loading: false,
     });
@@ -128,6 +127,13 @@ Page({
       screenedList: new_instruction_list,
       selected: 0,
     })
+  },
+
+  onPullDownRefresh() {
+    this.setData({
+      loading: true,
+    });
+    app.dealThing(this.getInstructionList);
   },
 
 
