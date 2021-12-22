@@ -46,7 +46,7 @@ Page({
             instructionList: res.data.instructionList,
             screenedList: res.data.instructionList,
           });
-          console.log(this.data.instructionList);
+          //console.log(this.data.instructionList);
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -90,8 +90,14 @@ Page({
     this.setData({
       chosenInstructionID: e.currentTarget.dataset.instructionId,
     });
+    let params = {
+      "instructionID": this.data.chosenInstructionID,
+    }
     console.log(e.currentTarget.dataset);
-    app.dealThing(this.getSingleInstruction);
+    wx.navigateTo({
+      url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
+    })
+    //app.dealThing(this.getSingleInstruction);
   },
 
   getSingleInstruction() {
@@ -101,10 +107,13 @@ Page({
     app.$api.instruction.getSingleInstruction(params)
       .then((res) => {
         if (res.data.errCode === 0) {
-          console.log(res);
+          //console.log(res);
           this.setData({
             instructionContent: res.data.instructionContent,
           });
+          wx.navigateTo({
+            url: `/pages/open_instruction/open_instruction?instructionID=${this.data.chosenInstructionID}`,
+          })
         } else {
           app.dealError(res.data, 'SERVER');
         }
@@ -134,6 +143,7 @@ Page({
       loading: true,
     });
     app.dealThing(this.getInstructionList);
+    app.dealThing(this.getTagList);
   },
 
 

@@ -1,4 +1,5 @@
 <!--pages/instruction/instruction.wxml-->
+
 <page-meta root-background-color="#ebebeb">
     <navigation-bar title="智慧活动室" loading="{{ loading }}" front-color="#ffffff" background-color="#bb3479" />
 </page-meta>
@@ -12,7 +13,7 @@
         </view>
         <view class="right_contianer">
             <view class="searchbar_container">
-                <input placeholder-class="placeholder {{isFocus? '' : ''}}" type="text" class="e_search" confirm-type="search" selection-start="15" selection-end="30" placeholder="请输入要搜索的设备名" bindconfirm="search_event"/>
+                <input placeholder-class="placeholder {{isFocus? '' : ''}}" type="text" class="e_search" confirm-type="search" selection-start="15" selection-end="30" placeholder="请输入要搜索的设备名" bindconfirm="search_event" />
             </view>
         </view>
 
