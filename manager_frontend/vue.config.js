@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://120.53.231.51:8888/',
+        target: 'http://www.smartactr.cloud/',
         ws: true,
         changeOrigin: true
       }
