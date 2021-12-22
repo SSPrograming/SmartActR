@@ -3,9 +3,7 @@
 
 - [x] **用户相关** 
 
-/api/v1/user/login
-
-POST
+@bp_user**.**route('/api/v1/user/login', methods=['POST'])
 
 > 登录接口
 
@@ -29,7 +27,7 @@ ret：
 
 
 
-@bp.route('/api/v1/user/bind', methods=['POST'])
+@bp_user.route('/api/v1/user/bind', methods=['POST'])
 
 @login_required
 
@@ -39,8 +37,8 @@ params：
 
 ```
 {
-	"ticket": "ticket", #后端利用token获取学生信息
-}, header中存放jwt
+	"token": "ticket", #后端利用token获取学生信息
+}
 ```
 
 ret:
@@ -54,7 +52,7 @@ ret:
 
 
 
-@bp.route('/api/v1/user/getBindStatus', methods=['GET'])
+@bp_user.route('/api/v1/user/getBindStatus', methods=['GET'])
 
 @login_required
 
@@ -103,30 +101,6 @@ ret:
 
 
 
-#TODO
-
-@bp.user('/api/v1/user/postFeedback', methods=['POST'])
-
-@login_required
-
-params:
-
-```
-{
-	"content": ""
-}
-```
-
-
-
-#TODO
-
-#返回所有的使用说明除去正文以外的信息
-
-#需要使用的数据库：instruction, instrucionTag, instructionImage
-
-#返回的图片是封面图
-
 @bp_instruction('/api/v1/instruction/getInstructionList', method=['GET'])
 
 @login_required
@@ -152,8 +126,6 @@ ret:
 
 
 
-#TODO
-
 @bp_instruction('/api/v1/instruction/getSingleInstruction', method=['POST'])
 
 @login_required
@@ -176,8 +148,6 @@ ret:
 
 
 
-#TODO
-
 @bp_instruction.route('/api/v1/instruction/getFreezeStatus', method=['GET'])
 
 @login_required
@@ -191,17 +161,11 @@ ret:
 }
 ```
 
-
-
-
-
-
-
 ****
 
 - [x] **预约相关**
 
-@bp_user.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 
 @login_required
 
@@ -238,7 +202,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
 
 @login_required
 
@@ -277,7 +241,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
+@bp_reserve.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
 
 @login_required
 
@@ -310,7 +274,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+@bp_reserve.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
 
 @login_required
 
@@ -337,7 +301,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+@bp_reserve.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
 
 @login_required
 
@@ -366,7 +330,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/checkIn', methods=['POST'])
+@bp_reserve.route('/api/v1/checkIn', methods=['POST'])
 
 @login_required
 
@@ -390,7 +354,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/reserve/cancelReserve', methods=['POST'])
+@bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
 
 @login_required
 

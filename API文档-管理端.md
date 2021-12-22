@@ -3,14 +3,14 @@
 
 - [x] **登录**
 
-@bp_notice.route('/api/v1/admin/login', methods=['POST'])
+@bp_admin**.**route('/api/v1/admin/login', methods=['POST'])
 
 params
 
 ```
 {
 	"username":"",
-	"password":"" "加盐散列"
+	"password":"" 
 }
 ```
 
@@ -127,7 +127,7 @@ ret:
 
 - [x] **预约管理**
 
-@bp_notice.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
+@bp_reserve.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
 
 @login_required
 
@@ -153,7 +153,7 @@ ret:
 
 
 
-@bp_notice.route('/api/v1/reserve/getHistoryRecord', methods=['POST'])
+@bp_reserve.route('/api/v1/reserve/getHistoryRecord', methods=['POST'])
 
 @login_required
 
@@ -414,6 +414,7 @@ params:
 
 ```
 {
+	"num": number,	
 	"equipmentType": number,
 	"equipmentID": number
 }
@@ -981,34 +982,4 @@ ret：
 
 
 ****
-
-**反馈**
-
-@bp_instruction.route('/api/v1/feedback/getFeedbackList',methods=['POST'])
-
-@login_required
-
-```
-{
-	"startDate": "",
-	"endDate": "",
-	"limitNum": number
-}
-```
-
-ret:
-
-```
-{
-	"feedbackList":
-	[
-		{
-			"feedbackID": number,
-			"postDate": "",
-			"feedbackContent": "",
-			"userName":""
-		}
-	]
-}
-```
 
