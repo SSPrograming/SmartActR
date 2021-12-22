@@ -10,7 +10,7 @@ bp_user = Blueprint(
     __name__
 )
 
-@bp_user.route('/api/v1/user/queryUserInfo',methods=['POST'])
+@bp_user.route('/manager-api/v1/user/queryUserInfo',methods=['POST'])
 @login_required
 def queryUserInfo():
     stuID = request.json["stuID"] if "stuID" in request.json.keys() else None
@@ -31,7 +31,7 @@ def queryUserInfo():
     else:
         return jsonify({"errCode": 0, "stuList": msg_or_stuList}), 200
 
-@bp_user.route('/api/v1/user/updateUserStatus',methods=['POST'])
+@bp_user.route('/manager-api/v1/user/updateUserStatus',methods=['POST'])
 @login_required
 def updateUserStatus():
     try:
@@ -45,7 +45,7 @@ def updateUserStatus():
     return jsonify({"errCode": 0}), 200
 
 
-@bp_user.route('/api/v1/user/getStudentRecordList', methods=['POST'])
+@bp_user.route('/manager-api/v1/user/getStudentRecordList', methods=['POST'])
 @login_required
 def getEquipmentRecordList():
     try:

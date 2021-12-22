@@ -3,12 +3,13 @@ from application.database import db
 from application.models import User, Student
 import datetime
 
+
 class UserService():
     def create_user(self, userID, identity):
         try:
-            frzTime = datetime.date(year=1970,month=1,day=1)
+            frzTime = datetime.date(year=1970, month=1, day=1)
             nuser = User(userID=userID, status='not bind', violationTimes=0,
-                        freezeDate=frzTime, identity=identity)
+                         freezeDate=frzTime, identity=identity)
             nuser.freezeStatus = 0
             nuser.violateToday = 0
             db.session.add(nuser)
@@ -18,10 +19,10 @@ class UserService():
             print(e)
             db.session.rollback()
             return e, False
-    
+
     def get_user(self, userID):
         try:
-            u = User.query.filter(User.userID==userID).first()
+            u = User.query.filter(User.userID == userID).first()
             if u is None:
                 return u, False
             else:
@@ -29,10 +30,10 @@ class UserService():
         except Exception as e:
             print(e)
             return e, False
-    
+
     def get_user_status(self, userID):
         try:
-            u = User.query.filter(User.userID==userID).first()
+            u = User.query.filter(User.userID == userID).first()
             if u is None:
                 return "用户不存在", False
             else:
@@ -40,10 +41,10 @@ class UserService():
         except Exception as e:
             print(e)
             return e, False
-    
+
     def get_stuInfo(self, userID):
         try:
-            u = Student.query.filter(Student.userID==userID).first()
+            u = Student.query.filter(Student.userID == userID).first()
             if u is None:
                 return "用户不存在", False
             else:
@@ -54,7 +55,7 @@ class UserService():
 
     def get_student(self, userID):
         try:
-            u = Student.query.filter(Student.userID==userID).first()
+            u = Student.query.filter(Student.userID == userID).first()
             if u is None:
                 return u, False
             else:
@@ -62,7 +63,7 @@ class UserService():
         except Exception as e:
             print(e)
             return e, False
-    
+
     def bind_user(self, userID, stuInfo):
         # TODO:失败时回滚
         try:
@@ -132,13 +133,13 @@ class UserService():
         except Exception as e:
             db.session.rollback()
             return e, False
-    
+
     def get_freeze_info(user):
         individual = User.query.filter(User.userID == user).first()
         if individual is None:
             return "用户不存在", False
         print(individual.freezeStatus)
-        if individual.status==True:
-            return {"status": 1,"date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
+        if individual.status == True:
+            return {"status": 1, "date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
         else:
-            return {"status": 0,"date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
+            return {"status": 0, "date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
