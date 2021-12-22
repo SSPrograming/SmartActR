@@ -15,6 +15,8 @@ Page({
     screenedList: [],
     selected: 0,
     loading: false,
+    chosenInstructionID: -1,
+    instructionContent: "",
 
   },
 
@@ -83,16 +85,49 @@ Page({
         selected: e.currentTarget.dataset.index,
       })
     }
-
   },
 
   openInstruction(e) {
+    this.setData({
+      chosenInstructionID: e.currentTarget.dataset.instructionId,
+    });
     console.log(e.currentTarget.dataset);
+    app.dealThing(this.getSingleInstruction);
   },
 
-  test1(e) {
-    console.log(e.currentTarget.dataset);
-    console.log("wonderful");
+  getSingleInstruction() {
+    let params = {
+      "instructionID": this.data.chosenInstructionID,
+    }
+    app.$api.instruction.getSingleInstruction(params)
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          console.log(res);
+          this.setData({
+            instructionContent: res.data.instructionContent,
+          });
+        } else {
+          app.dealError(res.data, 'SERVER');
+        }
+      })
+      .catch((err) => {
+        app.dealError(err, 'API');
+      })
+  },
+
+  search_event(e) {
+    let list = this.data.instructionList;
+    let value = e.detail.value;
+    let new_instruction_list = [];
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].instructionName.indexOf(value) != -1) {
+        new_instruction_list.push(list[i]);
+      }
+    }
+    this.setData({
+      screenedList: new_instruction_list,
+      selected: 0,
+    })
   },
 
 

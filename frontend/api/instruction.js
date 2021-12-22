@@ -20,6 +20,13 @@ const instruction = {
       method: 'GET',
     })
   },
+  getSingleInstruction(params) {
+    return request({
+      url: '/instruction/getSingleInstruction',
+      method: 'POST',
+      data: params,
+    })
+  }
 };
 
 export default instruction;
