@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: '', // ！本机调试时填写的后端url
+        target: 'http://www.smartactr.cloud/',
         ws: true,
         changeOrigin: true
       }
