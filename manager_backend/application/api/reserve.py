@@ -12,7 +12,7 @@ bp_reserve = Blueprint(
     __name__
 )
 
-@bp_reserve.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
+@bp_reserve.route('/manager-api/v1/reserve/getTodayRecord', methods=['GET'])
 @login_required
 def getTodayRecord():
     record_list_raw = ReserveService.get_today_record()
@@ -32,7 +32,7 @@ def getTodayRecord():
     return jsonify({"errCode": 0, "recordList": record_list}), 200
 
 
-@bp_reserve.route('/api/v1/reserve/getHistoryRecord', methods=['POST'])
+@bp_reserve.route('/manager-api/v1/reserve/getHistoryRecord', methods=['POST'])
 @login_required
 def getHistoryRecord():
     try:

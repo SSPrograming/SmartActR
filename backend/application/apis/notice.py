@@ -7,7 +7,7 @@ bp_notice = Blueprint(
     __name__
 )
 
-@bp_notice.route('/api/v1/reserve/getNotice', methods=['GET'])
+@bp_notice.route('/user-api/v1/reserve/getNotice', methods=['GET'])
 @login_required
 def notice():
     notice = NoticeService.get_notice()

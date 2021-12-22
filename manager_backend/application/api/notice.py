@@ -12,7 +12,7 @@ bp_notice = Blueprint(
     __name__
 )
 
-@bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/getNoticeList', methods=['POST'])
 @login_required
 def getNoticeList():
     try:
@@ -50,7 +50,7 @@ def getNoticeList():
     }), 200
         
 
-@bp_notice.route('/api/v1/notice/createNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/createNotice', methods=['POST'])
 @login_required
 def createNotice():
     try:
@@ -65,7 +65,7 @@ def createNotice():
     else:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
 
-@bp_notice.route('/api/v1/notice/updateNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/updateNotice', methods=['POST'])
 @login_required
 def updateNotice():
     try:
@@ -82,7 +82,7 @@ def updateNotice():
     else:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
 
-@bp_notice.route('/api/v1/notice/deleteNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/deleteNotice', methods=['POST'])
 @login_required
 def deleteNotice():
     try:
