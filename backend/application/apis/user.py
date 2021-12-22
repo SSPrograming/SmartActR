@@ -10,7 +10,7 @@ bp_user = Blueprint(
     __name__
 )
 
-@bp_user.route('/api/v1/user/login', methods=['POST'])
+@bp_user.route('/user-api/v1/user/login', methods=['POST'])
 def login():
     response = {}
     try:
@@ -51,7 +51,7 @@ def login():
         return jsonify(response), 200
 
 
-@bp_user.route('/api/v1/user/getIdentity', methods=['GET'])
+@bp_user.route('/user-api/v1/user/getIdentity', methods=['GET'])
 @login_required
 def getIdentity():
     openid = g.userID
@@ -62,7 +62,7 @@ def getIdentity():
         return jsonify({"errCode": 0,"identity": user.identity}), 200
 
 
-@bp_user.route('/api/v1/user/bind', methods=['POST'])
+@bp_user.route('/user-api/v1/user/bind', methods=['POST'])
 @login_required
 def bind():
     try:
@@ -102,7 +102,7 @@ def bind():
         return jsonify({"errCode": 1,"errMsg": "Invalid token"}), 200
 
 
-@bp_user.route('/api/v1/user/getBindStatus', methods=['GET'])
+@bp_user.route('/user-api/v1/user/getBindStatus', methods=['GET'])
 @login_required
 def getBindStatus():
     msg, succ = UserService.get_user_status(UserService, g.userID)
@@ -115,7 +115,7 @@ def getBindStatus():
         return jsonify({"errCode": 1,"errMsg": msg}), 200
 
 
-@bp_user.route('/api/v1/user/getStudentInfo', methods=['GET'])
+@bp_user.route('/user-api/v1/user/getStudentInfo', methods=['GET'])
 @login_required
 def getStudentInfo():
     msg, succ = UserService.get_stuInfo(UserService, g.userID)
@@ -133,7 +133,7 @@ def getStudentInfo():
         return jsonify({"errCode": 1,"errMsg": msg}), 200
 
 
-@bp_user.route('/api/v1/user/unbind', methods=['POST'])
+@bp_user.route('/user-api/v1/user/unbind', methods=['POST'])
 @login_required
 def unBind():
     """
@@ -150,7 +150,7 @@ def unBind():
         return jsonify({"errCode": 1,"unBinded": False}), 200
 
 
-@bp_user.route('/api/v1/user/test', methods=['GET'])
+@bp_user.route('/user-api/v1/user/test', methods=['GET'])
 def test():
     """
     测试用接口

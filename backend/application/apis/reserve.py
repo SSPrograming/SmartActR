@@ -12,7 +12,7 @@ bp_reserve = Blueprint(
 )
 
 
-@bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/getEquipmentStatus', methods=['POST'])
 @login_required
 def getEquipmentStatus():
     try:
@@ -106,7 +106,7 @@ def getEquipmentStatus():
     }), 200
 
 
-@bp_reserve.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 @login_required
 def getAllEquipmentStatus():
     try:
@@ -165,7 +165,7 @@ def getAllEquipmentStatus():
     })
 
 
-@bp_reserve.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/reserveEquipment', methods=['POST'])
 @login_required
 def reserveEquipment():
     try:
@@ -200,7 +200,7 @@ def reserveEquipment():
         return jsonify({"errCode": 1, "errMsg": "设备不存在或已被占用"})
 
 
-@bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/cancelReserve', methods=['POST'])
 @login_required
 def cancelReserve():
     print(request.json)
@@ -216,7 +216,7 @@ def cancelReserve():
         return jsonify({"errCode": 1, "errMsg": msg}), 200
 
 
-@bp_reserve.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+@bp_reserve.route('/user-api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
 @login_required
 def getHistoryReserveInfo():
     history_record = ReserveService.get_history_record(g.userID)
@@ -239,7 +239,7 @@ def getHistoryReserveInfo():
     }), 200
 
 
-@bp_reserve.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+@bp_reserve.route('/user-api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
 @login_required
 def getCurrentReserveInfo():
     current_record = ReserveService.get_current_record(g.userID)

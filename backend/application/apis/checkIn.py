@@ -8,7 +8,7 @@ bp_checkIn = Blueprint(
 )
 
 
-@bp_checkIn.route('/api/v1/checkIn', methods=['POST'])
+@bp_checkIn.route('/user-api/v1/checkIn', methods=['POST'])
 @login_required
 def checkIn():
     try:

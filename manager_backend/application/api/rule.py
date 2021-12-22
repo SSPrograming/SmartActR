@@ -11,7 +11,7 @@ bp_rule = Blueprint(
     __name__
 )
 
-@bp_rule.route('/api/v1/rules/addRule', methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/addRule', methods=['POST'])
 @login_required
 def addRule():
     argumentErr = {"errCode": 1, "errMsg": "bad arguments"}
@@ -53,7 +53,7 @@ def addRule():
         return jsonify({"errCode": 0}), 200
 
 
-@bp_rule.route('/api/v1/rules/updateRule', methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/updateRule', methods=['POST'])
 @login_required
 def updateRule():
     argumentErr = {"errCode": 1, "errMsg": "bad arguments"}
@@ -96,7 +96,7 @@ def updateRule():
         return jsonify({"errCode": 0}), 200
     
 
-@bp_rule.route('/api/v1/rules/getRules', methods=['GET'])
+@bp_rule.route('/manager-api/v1/rules/getRules', methods=['GET'])
 @login_required
 def getRules():
     rule_list_raw = ruleService.get_rule_list()
@@ -119,7 +119,7 @@ def getRules():
         rule_list_ret.append(rule)
     return jsonify({"rules": rule_list_ret, "errCode": 0}), 200
 
-@bp_rule.route('/api/v1/rules/deleteRule', methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/deleteRule', methods=['POST'])
 @login_required
 def deleteRule():
     argumentErr = {"errCode": 1, "errMsg": "bad arguments"}

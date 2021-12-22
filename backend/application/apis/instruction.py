@@ -8,7 +8,7 @@ bp_instruction = Blueprint(
 )
 
 
-@bp_instruction.route('/api/v1/instruction/getSingleInstruction', methods=['POST'])
+@bp_instruction.route('/user-api/v1/instruction/getSingleInstruction', methods=['POST'])
 @login_required 
 def get_single_instruction_info():
     try: 
@@ -21,7 +21,7 @@ def get_single_instruction_info():
         "instructionContent" : markdown.markdown(content)
     }), 200 
 
-@bp_instruction.route('/api/v1/instruction/getInstructionList', methods=['GET'])
+@bp_instruction.route('/user-api/v1/instruction/getInstructionList', methods=['GET'])
 @login_required
 def get_all_instruction_info():
     instructionList = InstructionService.get_all_instrucion()
@@ -30,7 +30,7 @@ def get_all_instruction_info():
         "instructionList":instructionList
     }), 200
 
-@bp_instruction.route('/api/v1/instruction/getTagList', methods=['GET'])
+@bp_instruction.route('/user-api/v1/instruction/getTagList', methods=['GET'])
 @login_required
 def get_TagList():
     tagList = InstructionService.getTagList()
