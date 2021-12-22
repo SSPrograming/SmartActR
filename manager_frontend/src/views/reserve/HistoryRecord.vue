@@ -1,8 +1,8 @@
 <template>
   <div class="history-record">
     <div class="container">
-      <ReserveView :record-info="recordInfo" @refresh="getRecordList" @query="query" show-equipment-name
-                   show-user-name></ReserveView>
+      <ReserveView :record-info="recordInfo" show-equipment-name show-user-name
+                   @refresh="getRecordList" @query="query"></ReserveView>
     </div>
   </div>
 </template>
@@ -19,11 +19,25 @@ export default {
     return {
       recordInfo: {
         toolbar: {
+          showNums: 20,
           queryStartDate: null,
           queryEndDate: null
         },
         tableLoading: false,
-        recordList: []
+        recordList: [
+          /*
+          {
+            recordID: 0,
+            postTime: '',
+            reserveDate: '',
+            startTime: '',
+            endTime: '',
+            username: '',
+            status: '',
+            equipmentName: ''
+          }
+          */
+        ]
       }
     }
   },
@@ -36,15 +50,16 @@ export default {
   },
   methods: {
     getRecordList() {
-      if (!this.recordInfo.toolbar.queryStartDate || !this.recordInfo.toolbar.queryEndDate ||
+      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate &&
           this.recordInfo.toolbar.queryStartDate > this.recordInfo.toolbar.queryEndDate) {
         this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
         return
       }
       const params = {
-        startDate: this.recordInfo.toolbar.queryStartDate && this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'),
-        endDate: this.recordInfo.toolbar.queryEndDate && this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd')
+        num: this.recordInfo.toolbar.showNums
       }
+      this.recordInfo.toolbar.queryStartDate && (params.startDate = this.$utils.time.format(this.recordInfo.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.recordInfo.toolbar.queryEndDate && (params.endDate = this.$utils.time.format(this.recordInfo.toolbar.queryEndDate, 'yyyy-MM-dd'))
       this.recordInfo.tableLoading = true
       this.$api.reserve.getHistoryRecord(params).then((res) => {
         if (res.data.errCode === 0) {
@@ -60,9 +75,7 @@ export default {
       })
     },
     query() {
-      if (this.recordInfo.toolbar.queryStartDate && this.recordInfo.toolbar.queryEndDate) {
-        this.getRecordList()
-      }
+      this.getRecordList()
     }
   }
 }

@@ -11,9 +11,9 @@
         <el-form-item label="密码" @keyup.enter.native="onSubmit">
           <el-input v-model="form.password" show-password></el-input>
         </el-form-item>
-        <el-form-item>
+        <div style="text-align: center; padding: 10px;">
           <el-button type="primary" @click="onSubmit">登录</el-button>
-        </el-form-item>
+        </div>
       </el-form>
     </div>
   </div>
@@ -33,11 +33,11 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.loading = true
       const params = {
         username: this.form.username,
         password: this.$utils.password.getHash(this.form.username, this.form.password)
       }
-      this.loading = true
       this.$api.admin.login(params).then((res) => {
         if (res.data.errCode === 0) {
           this.$store.commit({

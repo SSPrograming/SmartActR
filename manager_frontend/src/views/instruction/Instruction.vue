@@ -15,7 +15,7 @@
         <el-table-column prop="instructionName" label="标题" width="250" :sortable="'custom'"></el-table-column>
         <el-table-column prop="instructionTags" label="标签" width="auto">
           <template slot-scope="scope">
-            <el-tag v-for="tag in scope.row.instructionTags" :key="tag" type="success">
+            <el-tag v-for="tag in scope.row.instructionTags" :key="tag" type="success" disable-transitions>
               {{ tag }}
             </el-tag>
           </template>
@@ -50,11 +50,14 @@ export default {
       dialogLoading: false,
       tableLoading: false,
       instructionList: [
+        /*
         {
           instructionName: '3D辉夜机使用说明',
           instructionID: 1,
-          instructionTags: ['快乐', '好用']
+          instructionTags: ['快乐', '好用'],
+          instructionCoverURL: null
         }
+        */
       ],
       sortType: {
         prop: 'instructionID',
@@ -63,10 +66,11 @@ export default {
       pageSize: 10,
       currentPage: 1,
       showInstructionInfoEditor: false,
-      editInstructionID: null,
       form: {
+        instructionID: null,
         instructionName: '',
-        instructionTags: []
+        instructionTags: [],
+        instructionCoverURL: null
       }
     }
   },
@@ -80,6 +84,9 @@ export default {
           this.pageSize * this.currentPage <= this.instructionList.length ?
               this.pageSize * this.currentPage : this.instructionList.length)
     }
+  },
+  mounted() {
+    this.getInstructionList()
   },
   methods: {
     changeSortType(event) {
@@ -96,33 +103,59 @@ export default {
       this.$utils.sort(this.instructionList, this.sortType, 'instructionID')
     },
     getInstructionList() {
-
+      this.tableLoading = true
+      this.$api.instruction.getInstructionList().then((res) => {
+        if (res.data.errCode === 0) {
+          this.instructionList = res.data.instructionList
+          this.$utils.alertMessage(this, '获取数据成功', 'success')
+        } else {
+          this.$utils.error.APIError(this, res.data)
+        }
+        this.tableLoading = false
+      }).catch((err) => {
+        this.$utils.error.ServerError(this, err)
+        this.tableLoading = false
+      })
     },
     handleAdd() {
-      if (this.editInstructionID) {
-        this.editInstructionID = null
+      if (this.form.instructionID) {
         this.form = {
+          instructionID: null,
           instructionName: '',
-          instructionTags: []
+          instructionTags: [],
+          instructionCoverURL: null
         }
       }
       this.showInstructionInfoEditor = true
     },
     handleEdit(row) {
-      this.editInstructionID = row.instructionID
       this.form = {
+        instructionID: row.instructionID,
         instructionName: row.instructionName,
         instructionTags: row.instructionTags.concat(),
+        instructionCoverURL: row.instructionCoverURL
       }
       this.showInstructionInfoEditor = true
     },
     handleDelete(row) {
-      this.$confirm('此操作将删除该公告, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该使用说明, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        this.tableLoading = true
+        this.$api.instruction.deleteInstruction({instructionID: row.instructionID}).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '删除成功', 'success')
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+            this.tableLoading = false
+          }
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.tableLoading = false
+        })
       }).catch(() => {
       })
     },
@@ -138,8 +171,58 @@ export default {
       this.showInstructionInfoEditor = false
     },
     editorConfirm() {
-      console.log(this.form)
-      this.showInstructionInfoEditor = true
+      this.dialogLoading = true
+      // 创建
+      if (!this.form.instructionID) {
+        let formData = new FormData()
+        formData.append('instructionName', this.form.instructionName)
+        formData.append('instructionTags', this.form.instructionTags)
+        formData.append('instructionCover', this.form.instructionCoverURL)
+        this.$api.instruction.addInstruction(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '添加成功', 'success')
+            this.form = {
+              instructionID: null,
+              instructionName: '',
+              instructionTags: [],
+              instructionCoverURL: null
+            }
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        })
+      }
+      // 编辑
+      else {
+        let formData = new FormData()
+        formData.append('instructionID', this.form.instructionID)
+        formData.append('instructionName', this.form.instructionName)
+        formData.append('instructionTags', this.form.instructionTags)
+        if (typeof this.form.instructionCoverURL === "object") {
+          formData.append('instructionCover', this.form.instructionCoverURL)
+        }
+        this.$api.instruction.updateInstruction(formData).then((res) => {
+          if (res.data.errCode === 0) {
+            this.$utils.alertMessage(this, '编辑成功', 'success')
+            this.getInstructionList()
+          } else {
+            this.$utils.error.APIError(this, res.data)
+          }
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        }).catch((err) => {
+          this.$utils.error.ServerError(this, err)
+          this.dialogLoading = false
+          this.showInstructionInfoEditor = false
+        })
+      }
     }
   }
 }
@@ -156,6 +239,7 @@ export default {
 
 .pagination {
   margin-top: $--pagination-margin-top;
+  margin-bottom: $--pagination-margin-bottom;
 }
 
 .delete {
@@ -171,14 +255,14 @@ export default {
 }
 
 .lookup {
-  color: green;
+  color: $--color-lookup;
 
   &:focus, &:hover {
-    color: mix(green, $--color-white, 75%);
+    color: mix($--color-lookup, $--color-white, 75%);
   }
 
   &:active {
-    color: mix(green, $--color-black, 75%);
+    color: mix($--color-lookup, $--color-black, 75%);
   }
 }
 </style>

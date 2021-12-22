@@ -4,13 +4,14 @@ import datetime
 from application.utils import now
 
 class InstructionService:
-    def get_instruction(instructionID):
+    def get_instruction_content(instructionID):
         ins = Instruction.query.filter(Instruction.instructionID == instructionID).first()
         return ins.instructionContent
+    
     def get_all_instrucion():
         instructionList = []
-        instructionID_list = Instruction.query.all()
-        for i in instructionID_list:
+        instructionObject_list = Instruction.query.all()
+        for i in instructionObject_list:
             instruction_to_add = {}
             instruction_to_add['instructionID'] = i.instructionID
             instruction_to_add["instructionName"] = i.instructionName
@@ -21,3 +22,9 @@ class InstructionService:
             instruction_to_add["instructionCoverURL"] = i.instructionCoverURL
             instructionList.append(instruction_to_add)
         return instructionList
+
+    def getTagList():
+        taglist_raw = InstructionTag.query.with_entities(InstructionTag.tagName).filter().all()
+        tagset = set([item.tagName for item in taglist_raw])
+        taglist = [tag for tag in tagset]
+        return taglist

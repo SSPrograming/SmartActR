@@ -4,6 +4,7 @@ from application.utils import strToTime, strToDate, now
 import datetime
 from sqlalchemy import and_
 from config import query_yaml
+import os
 
 class EquipmentService():
     def get_name_by_type(Type):
@@ -57,7 +58,7 @@ class EquipmentService():
             return "二维码不存在", False
         return target_qrcode_entry.QRCodeURL, True
         
-    def add_equipmentType(self, equipmentName, Count, Description, img_name):
+    def add_equipmentType(equipmentName, Count, Description, img_name):
         new_equipmentType = equipmentType()
         new_equipmentType.equipmentDescription = Description
         new_equipmentType.equipmentName = equipmentName
@@ -83,7 +84,7 @@ class EquipmentService():
         添加对应数量的设备
         """
         for i in range(Count):
-            addstatus = self.add_equipment(target_equipmentType, i+1)
+            addstatus = EquipmentService.add_equipment(target_equipmentType, i+1)
             if not addstatus:
                 return "添加设备失败", False
         return str(target_equipmentType), True
@@ -143,6 +144,21 @@ class EquipmentService():
         for record in related_records:
             try:
                 db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关二维码记录失败", False
+        return "ok", True
+
+    def drop_single_qrCode(Type, id):
+        related_record = QRCode.query.filter(QRCode.equipmentType==Type,
+                                              QRCode.equipmentID==id).first()
+        if related_record is not None:
+            qrcode_name = related_record.QRCodeURL.split('/')[-1]
+            if os.path.exists(query_yaml('app.QRCODEPATH')+ qrcode_name):
+                os.remove(query_yaml('app.QRCODEPATH')+ qrcode_name)
+            try:
+                db.session.delete(related_record)
                 db.session.commit()
             except:
                 db.session.rollback()
@@ -217,7 +233,7 @@ class EquipmentService():
             return "设备种类不存在", False
         return target_type.equipmentImageURL, True
     
-    def get_equipment_recordList(equipmentType, equipmentID,startDate, endDate):
+    def get_equipment_recordList(equipmentType, equipmentID,startDate, endDate, num):
         query_condition = and_(Reserve_Record.equipmentType==equipmentType,Reserve_Record.equipmentID==equipmentID)
         if startDate is not None:
             try:
@@ -233,7 +249,7 @@ class EquipmentService():
                 return "bad arguments", False
             query_condition = and_(query_condition, Reserve_Record.reserveDate<=endDate)
 
-        recordList = Reserve_Record.query.filter(query_condition).all()
+        recordList = Reserve_Record.query.filter(query_condition).limit(num).all()
         return recordList, True
     
     def swap_equipmentOrder(Type1, Type2):
@@ -263,4 +279,31 @@ class EquipmentService():
             db.session.rollback()
             return "交换次序失败", False
         
+        return "ok", True
+
+    def deleteEquipment(Type, id):
+        targetEquipment = Equipment.query.filter(Equipment.equipmentType==Type,
+                                                     Equipment.equipmentID==id).first()
+        if targetEquipment is None:
+            return "该设备不存在", False
+        
+        msg, drop_qrcode_status = EquipmentService.drop_single_qrCode(Type, id)
+        if not drop_qrcode_status:
+            return msg, False
+        relatedRecords = Reserve_Record.query.filter(Reserve_Record.equipmentType==Type,
+                                                     Reserve_Record.equipmentID==id).all()
+        for record in relatedRecords:
+            try:
+                db.session.delete(record)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return "删除相关预约记录时出错", False
+        
+        try:
+            db.session.delete(targetEquipment)
+        except:
+            db.session.rollback()
+            return "删除设备失败", False
+        db.session.commit()
         return "ok", True

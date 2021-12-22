@@ -48,7 +48,7 @@ def AddEquipmentType():
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     imgName = equipmentImage.filename
-    msg, addStatus = EquipmentService.add_equipmentType(EquipmentService, equipmentName,
+    msg, addStatus = EquipmentService.add_equipmentType(equipmentName,
                                                         equipmentCount, equipmentDescription,imgName)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg})
@@ -166,13 +166,14 @@ def addEquipment():
 @login_required
 def getEquipmentRecordList():
     try:
+        num = request.json["num"]
         equipmentType = request.json["equipmentType"]
         equipmentID = request.json["equipmentID"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     startDate = request.json["startDate"] if "startDate" in request.json.keys() else None
     endDate = request.json["endDate"] if "endDate" in request.json.keys() else None
-    recordList_raw, getStatus = EquipmentService.get_equipment_recordList(equipmentType, equipmentID,startDate, endDate)
+    recordList_raw, getStatus = EquipmentService.get_equipment_recordList(equipmentType, equipmentID,startDate, endDate, num)
 
     if not getStatus:
         return jsonify({"errCode": 1, "errMsg": recordList_raw}), 200
@@ -202,3 +203,17 @@ def swapEquipmentOrder():
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
+
+@bp_equipment.route('/api/v1/equipment/deleteEquipment', methods=['POST'])
+@login_required
+def deleteEquipment():
+    try:
+        Type = request.json["equipmentType"]
+        id = request.json["equipmentID"]
+    except:
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+    
+    msg, DeleteStatus = EquipmentService.deleteEquipment(Type, id)
+    if not DeleteStatus:
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
+    return jsonify({"errCode": 0}), 200

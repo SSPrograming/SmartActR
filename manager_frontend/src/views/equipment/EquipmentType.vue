@@ -1,8 +1,8 @@
 <template>
   <div class="equipment-type">
     <el-dialog title="设备种类编辑" :visible.sync="showEquipmentTypeEditor" v-loading="dialogLoading">
-      <EquipmentTypeEditor :form="form" @editorCancel="editorCancel"
-                           @editorConfirm="editorConfirm" :add="editEquipmentType === null"></EquipmentTypeEditor>
+      <EquipmentTypeEditor :form="form" @editorConfirm="editorConfirm" @editorCancel="editorCancel">
+      </EquipmentTypeEditor>
     </el-dialog>
     <div class="container">
       <div class="header">
@@ -14,9 +14,9 @@
           <div slot="header" class="card-header">
             <span>{{ item.equipmentName }}</span>
             <span class="whitespace"></span>
-            <el-button class="button move" type="text" @click="handleMoveUp(index)" :disabled="index===0">上移</el-button>
+            <el-button class="button move" type="text" @click="handleMoveUp(index)" :disabled="index===0">前移</el-button>
             <el-button class="button move" type="text" @click="handleMoveDown(index)"
-                       :disabled="index===equipmentTypeList.length - 1">下移
+                       :disabled="index===equipmentTypeList.length - 1">后移
             </el-button>
             <el-button class="button" type="text" @click="handleEdit(item)">编辑</el-button>
             <el-button class="button delete" type="text" @click="handleDelete(item)">删除</el-button>
@@ -60,16 +60,26 @@ export default {
   data() {
     return {
       loading: false,
-      equipmentTypeList: [],
+      equipmentTypeList: [
+        /*
+        {
+          equipmentType: null,
+          equipmentName: '',
+          equipmentCount: 1,
+          equipmentDescription: '',
+          equipmentImage: null,
+        }
+        */
+      ],
+      dialogLoading: false,
+      showEquipmentTypeEditor: false,
       form: {
+        equipmentType: null,
         equipmentName: '',
         equipmentCount: 1,
         equipmentDescription: '',
         equipmentImage: null,
-      },
-      editEquipmentType: null,
-      dialogLoading: false,
-      showEquipmentTypeEditor: false
+      }
     }
   },
   mounted() {
@@ -100,9 +110,9 @@ export default {
       })
     },
     handleAdd() {
-      if (this.editEquipmentType) {
-        this.editEquipmentType = null
+      if (this.form.equipmentType) {
         this.form = {
+          equipmentType: null,
           equipmentName: '',
           equipmentCount: 1,
           equipmentDescription: '',
@@ -121,7 +131,7 @@ export default {
       this.loading = true
       this.$api.equipment.swapEquipmentOrder(params).then((res) => {
         if (res.data.errCode === 0) {
-          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.$utils.alertMessage(this, '前移成功', 'success')
           this.getAllEquipmentType()
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -142,7 +152,7 @@ export default {
       this.loading = true
       this.$api.equipment.swapEquipmentOrder(params).then((res) => {
         if (res.data.errCode === 0) {
-          this.$utils.alertMessage(this, '上移成功', 'success')
+          this.$utils.alertMessage(this, '前移成功', 'success')
           this.getAllEquipmentType()
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -154,8 +164,8 @@ export default {
       })
     },
     handleEdit(item) {
-      this.editEquipmentType = item.equipmentType
       this.form = {
+        equipmentType: item.equipmentType,
         equipmentName: item.equipmentName,
         equipmentCount: item.equipmentCount,
         equipmentDescription: item.equipmentDescription,
@@ -208,7 +218,7 @@ export default {
     editorConfirm() {
       this.dialogLoading = true
       // 创建
-      if (!this.editEquipmentType) {
+      if (!this.form.equipmentType) {
         let formData = new FormData()
         formData.append('equipmentName', this.form.equipmentName)
         formData.append('equipmentCount', this.form.equipmentCount)
@@ -218,6 +228,7 @@ export default {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '添加成功', 'success')
             this.form = {
+              equipmentType: null,
               equipmentName: '',
               equipmentCount: 1,
               equipmentDescription: '',
@@ -238,7 +249,7 @@ export default {
       // 编辑
       else {
         let formData = new FormData()
-        formData.append('equipmentType', this.editEquipmentType)
+        formData.append('equipmentType', this.form.equipmentType)
         formData.append('equipmentName', this.form.equipmentName)
         formData.append('equipmentDescription', this.form.equipmentDescription)
         if (typeof this.form.equipmentImage === "object") {
@@ -323,14 +334,14 @@ export default {
   }
 
   .lookup {
-    color: green;
+    color: $--color-lookup;
 
     &:focus, &:hover {
-      color: mix(green, $--color-white, 75%);
+      color: mix($--color-lookup, $--color-white, 75%);
     }
 
     &:active {
-      color: mix(green, $--color-black, 75%);
+      color: mix($--color-lookup, $--color-black, 75%);
     }
   }
 }

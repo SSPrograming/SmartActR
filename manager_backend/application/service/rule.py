@@ -1,7 +1,11 @@
+from requests.sessions import merge_setting
 from application.database import db
 from application.models import Reserve_Record, ruleTable
-from application.utils import strToTime, strToDate, now, next_weekday
+from application.utils import strToTime, strToDate, now, next_weekday, WechatService
 import datetime
+from application.service import UserService, EquipmentService
+from config import query_yaml
+
 
 class ruleService():
     def addRule(ruleType, ruleContent):
@@ -19,7 +23,6 @@ class ruleService():
                 day = int(day)
             except:
                 return "bad arguments", False
-            print(expireDate,now_date, next_weekday(day), day)
             if day<1 or day>7 or expireDate < now_date or expireDate < next_weekday(day):
                 return "无意义的规则", False
 
@@ -42,6 +45,8 @@ class ruleService():
             new_rule.expireDate = expireDate
             new_rule.ruleDescription = ruleContent['ruleDescription']
             
+
+
             # 将冲突的预约记录标记为取消
             conflict_record_list = []
             record_list = Reserve_Record.query.filter(Reserve_Record.status=="成功",
@@ -51,11 +56,17 @@ class ruleService():
                 if record.reserveDate.isoweekday()==day:
                     if not (record.startTime>=endTime or record.endTime <= startTime):
                         conflict_record_list.append(record)
+            
+            token, getStatus = WechatService.getAccessToken()
             for record in conflict_record_list:
                 try:
                     record.status='取消'
                     db.session.commit()
-                except:
+                    if getStatus:
+                        messageContent = ruleService.compute_cancel_message(record)
+                        WechatService.sendMessage(content=messageContent, token=token)
+                except Exception as e:
+                    print(e)
                     db.session.rollback()
                     return "更新数据库失败", False
 
@@ -89,7 +100,6 @@ class ruleService():
                     if not (rule_.startTime>=endTime or rule_.endTime<=startTime):
                         return "添加规则失败：已有其他规则占用同一时间段", False
                 elif rule_.repeat==0 and rule_.date==date:
-                    print(rule_.date)
                     if not (rule_.startTime>=endTime or rule_.endTime<=startTime):
                         return "添加规则失败：已有其他规则占用同一时间段", False
             new_rule = ruleTable()
@@ -99,7 +109,8 @@ class ruleService():
             new_rule.date = date
             new_rule.expireDate = expireDate
             new_rule.ruleDescription = ruleContent['ruleDescription']
-
+            
+            token, getStatus = WechatService.getAccessToken()
             # 将冲突的预约记录标记为取消
             conflict_record_list = []
             record_list = Reserve_Record.query.filter(Reserve_Record.status=="成功",
@@ -111,6 +122,9 @@ class ruleService():
                 try:
                     record.status='取消'
                     db.session.commit()
+                    if getStatus:
+                        messageContent = ruleService.compute_cancel_message(record)
+                        WechatService.sendMessage(content=messageContent, token=token)
                 except:
                     db.session.rollback()
                     return "更新数据库失败", False
@@ -150,7 +164,6 @@ class ruleService():
                 day = int(day)
             except:
                 return "bad arguments", False
-            print(expireDate,now_date, next_weekday(day), day)
             if day<1 or day>7 or expireDate < now_date or expireDate < next_weekday(day):
                 return "无意义的规则", False
 
@@ -173,6 +186,8 @@ class ruleService():
             target_rule.endTime = endTime
             target_rule.expireDate = expireDate
             target_rule.ruleDescription = ruleContent['ruleDescription']
+
+            token, getStatus = WechatService.getAccessToken()
             # 将冲突的预约记录标记为取消
             conflict_record_list = []
             record_list = Reserve_Record.query.filter(Reserve_Record.status=="成功",
@@ -186,6 +201,9 @@ class ruleService():
                 try:
                     record.status='取消'
                     db.session.commit()
+                    if getStatus:
+                        messageContent = ruleService.compute_cancel_message(record)
+                        WechatService.sendMessage(content=messageContent, token=token)
                 except:
                     db.session.rollback()
                     return "更新数据库失败", False
@@ -220,7 +238,6 @@ class ruleService():
                     if not (rule_.startTime>=endTime or rule_.endTime<=startTime):
                         return "更新规则失败：已有其他规则占用同一时间段", False
                 elif rule_.repeat==0 and rule_.date==date:
-                    print(rule_.date)
                     if not (rule_.startTime>=endTime or rule_.endTime<=startTime):
                         return "更新规则失败：已有其他规则占用同一时间段", False
             target_rule.repeat = 0
@@ -230,6 +247,7 @@ class ruleService():
             target_rule.expireDate = expireDate
             target_rule.ruleDescription = ruleContent['ruleDescription']
 
+            token, getStatus = WechatService.getAccessToken()
             # 将冲突的预约记录标记为取消
             conflict_record_list = []
             record_list = Reserve_Record.query.filter(Reserve_Record.status=="成功",
@@ -241,6 +259,9 @@ class ruleService():
                 try:
                     record.status='取消'
                     db.session.commit()
+                    if getStatus:
+                        messageContent = ruleService.compute_cancel_message(record)
+                        WechatService.sendMessage(content=messageContent, token=token)
                 except:
                     db.session.rollback()
                     return "更新数据库失败", False
@@ -266,3 +287,17 @@ class ruleService():
         except:
             db.session.rollback()
             return "更新数据库失败", False
+
+    
+    def compute_cancel_message(record):
+        messageContent = {}
+        messageContent_data = {}
+        messageContent["touser"] = record.userID
+        messageContent["template_id"] = query_yaml('app.TEMPLATEID')
+        messageContent_data["name1"] = {"value":UserService.get_name_by_id(record.userID)}
+        messageContent_data["time22"] = {"value":str(record.reserveDate) + ' ' + record.startTime.strftime("%H:%M")}
+        messageContent_data["time23"] = {"value":str(record.reserveDate) + ' ' + record.endTime.strftime("%H:%M")}
+        messageContent_data["thing8"] = {"value":"预约取消提醒: " + EquipmentService.get_name_by_type(record.equipmentType)[0] + str(record.equipmentID) + '号'}
+        messageContent_data["thing7"] = {"value":"活动室被占用"}
+        messageContent["data"] = messageContent_data
+        return messageContent

@@ -8,7 +8,7 @@
         <el-input v-model="form.equipmentID" style="width: 250px" placeholder="请输入设备编号" disabled></el-input>
       </el-form-item>
       <el-form-item label="设备状态" required>
-        <el-select v-model="form.equipmentStatus" placeholder="请选择">
+        <el-select v-model="form.equipmentStatus" placeholder="请选择设备状态">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -24,7 +24,11 @@
 export default {
   name: "EquipmentEditor",
   props: {
-    form: Object
+    form: {
+      equipmentName: String,
+      equipmentID: Number,
+      equipmentStatus: String,
+    }
   },
   data() {
     return {
@@ -52,6 +56,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>
