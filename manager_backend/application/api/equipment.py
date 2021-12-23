@@ -217,3 +217,9 @@ def deleteEquipment():
     if not DeleteStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     return jsonify({"errCode": 0}), 200
+
+
+@bp_equipment.route('/manager-api/v1/equipment/transfer', methods=['POST'])
+@login_required
+def transfer():
+    return jsonify({"errCode": EquipmentService.transfer_image()}), 200

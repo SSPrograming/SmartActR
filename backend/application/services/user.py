@@ -138,8 +138,4 @@ class UserService():
         individual = User.query.filter(User.userID == user).first()
         if individual is None:
             return "用户不存在", False
-        print(individual.freezeStatus)
-        if individual.status == True:
-            return {"status": 1, "date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
-        else:
-            return {"status": 0, "date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True
+        return {"status": individual.freezeStatus, "date": individual.freezeDate.strftime("%Y-%m-%d %H:%M")}, True

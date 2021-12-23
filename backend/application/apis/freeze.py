@@ -8,7 +8,7 @@ bp_freeze = Blueprint(
 )
 
 
-@bp_freeze.route('/user-api/v1/instruction/getFreezeStatus', methods=['GET'])
+@bp_freeze.route('/user-api/v1/user/getFreezeStatus', methods=['GET'])
 @login_required 
 def get_freeze_status():
     msg_or_info, getStatus = UserService.get_freeze_info(g.userID)
