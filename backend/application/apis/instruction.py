@@ -18,7 +18,7 @@ def get_single_instruction_info():
     content = InstructionService.get_instruction_content(instructionID)
     return jsonify({
         "errCode": 0,
-        "instructionContent" : markdown.markdown(content)
+        "instructionContent" : content
     }), 200 
 
 @bp_instruction.route('/user-api/v1/instruction/getInstructionList', methods=['GET'])
@@ -38,4 +38,14 @@ def get_TagList():
         "errCode":0,
         "errMsg":"",
         "tagList":tagList
+    }), 200
+
+@bp_instruction.route('/user-api/v1/instruction/getREADME', methods=['GET'])
+@login_required
+def getREADME():
+    instructionID = InstructionService.getREADME()
+    return jsonify({
+        "errCode":0,
+        "errMsg":"",
+        "instructionID": instructionID
     }), 200
