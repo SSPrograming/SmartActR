@@ -18,7 +18,7 @@ def get_single_instruction_info():
     content = InstructionService.get_instruction_content(instructionID)
     return jsonify({
         "errCode": 0,
-        "instructionContent" : markdown.markdown(content)
+        "instructionContent" : content
     }), 200 
 
 @bp_instruction.route('/user-api/v1/instruction/getInstructionList', methods=['GET'])

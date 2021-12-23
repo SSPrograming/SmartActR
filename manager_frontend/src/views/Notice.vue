@@ -4,13 +4,11 @@
       <NoticeEditor :form="form" @editorCancel="editorCancel" @editorConfirm="editorConfirm"></NoticeEditor>
     </el-dialog>
     <div class="container">
-      <div class="toolbar">
-        <Toolbar :toolbar="toolbar" choose-num choose-date query
-                 @query="query">
-        </Toolbar>
+      <div class="header">
+        <Toolbar :toolbar="toolbar" choose-num choose-date query @query="query"></Toolbar>
         <el-button type="primary" plain @click="handleCreate">创建公告</el-button>
       </div>
-      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="doSort"
+      <el-table class="table" :data="slicedData" v-loading="tableLoading" @sort-change="changeSortType"
                 :default-sort="{prop: 'noticeID', order: 'descending'}">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="postDate" label="发布时间" width="150" :sortable="'custom'"></el-table-column>
@@ -25,19 +23,19 @@
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)"> 删除</el-button>
+            <el-button type="text" size="small" class="delete" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="prev, pager, next" :page-size="pageSize" :current-page.sync="currentPage"
-                     :total="dataLength" background>
+      <el-pagination class="pagination" layout="prev, pager, next" :page-size="pageSize"
+                     :current-page.sync="currentPage" :total="dataLength" background>
       </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-import NoticeEditor from '@/components/NoticeEditor'
+import NoticeEditor from '@/components/Editor/NoticeEditor'
 import Toolbar from '@/components/Toolbar'
 
 export default {
@@ -48,29 +46,33 @@ export default {
   },
   data() {
     return {
-      dialogLoading: false,
-      tableLoading: false,
-      noticeList: [{
-        noticeID: 0,
-        postDate: '',
-        expireDate: '',
-        content: ''
-      }],
-      sortType: {
-        prop: 'noticeID',
-        order: 'descending'
-      },
       toolbar: {
         showNums: 20,
         queryStartDate: null,
         queryEndDate: null,
         queryStr: '',
       },
+      tableLoading: false,
+      noticeList: [
+        /*
+        {
+        noticeID: 0,
+        postDate: '',
+        expireDate: '',
+        content: ''
+        }
+        */
+      ],
+      sortType: {
+        prop: 'noticeID',
+        order: 'descending'
+      },
       pageSize: 10,
       currentPage: 1,
-      editNoticeID: null,
+      dialogLoading: false,
       showNoticeEditor: false,
       form: {
+        noticeID: null,
         expireDate: null,
         noticeContent: '',
       }
@@ -81,6 +83,7 @@ export default {
       return this.noticeList.length
     },
     slicedData() {
+      this.doSort()
       return this.noticeList.slice(this.pageSize * (this.currentPage - 1),
           this.pageSize * this.currentPage <= this.noticeList.length ?
               this.pageSize * this.currentPage : this.noticeList.length)
@@ -90,7 +93,7 @@ export default {
     this.getNoticeList()
   },
   methods: {
-    doSort(event) {
+    changeSortType(event) {
       if (event) {
         this.sortType.prop = event.prop
         this.sortType.order = event.order
@@ -99,52 +102,26 @@ export default {
         this.sortType.prop = 'noticeID'
         this.sortType.order = 'descending'
       }
+    },
+    doSort() {
       this.$utils.sort(this.noticeList, this.sortType, 'noticeID')
     },
     getNoticeList() {
+      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate &&
+          this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
+        this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
+        return
+      }
       let params = {
         num: this.toolbar.showNums
       }
-      if (this.toolbar.queryStartDate && this.toolbar.queryEndDate && this.toolbar.queryStr) {
-        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
-          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
-          return
-        }
-        params = {
-          ...params,
-          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
-          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
-          queryStr: this.toolbar.queryStr,
-          queryType: 3
-        }
-      } else if (this.toolbar.queryStartDate && this.toolbar.queryEndDate) {
-        if (this.toolbar.queryStartDate > this.toolbar.queryEndDate) {
-          this.$utils.alertMessage(this, '请选择正确的时间区间', 'warning')
-          return
-        }
-        params = {
-          ...params,
-          queryStartDate: this.toolbar.queryStartDate && this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'),
-          queryEndDate: this.toolbar.queryEndDate && this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'),
-          queryType: 1
-        }
-      } else if (this.toolbar.queryStr) {
-        params = {
-          ...params,
-          queryStr: this.toolbar.queryStr,
-          queryType: 2
-        }
-      } else {
-        params = {
-          ...params,
-          queryType: 0
-        }
-      }
+      this.toolbar.queryStartDate && (params.queryStartDate = this.$utils.time.format(this.toolbar.queryStartDate, 'yyyy-MM-dd'))
+      this.toolbar.queryEndDate && (params.queryEndDate = this.$utils.time.format(this.toolbar.queryEndDate, 'yyyy-MM-dd'))
+      this.toolbar.queryStr && (params.queryStr = this.toolbar.queryStr)
       this.tableLoading = true
       this.$api.notice.getNoticeList(params).then((res) => {
         if (res.data.errCode === 0) {
           this.noticeList = res.data.noticeList
-          this.doSort()
           this.$utils.alertMessage(this, '获取数据成功', 'success')
         } else {
           this.$utils.error.APIError(this, res.data)
@@ -159,9 +136,9 @@ export default {
       this.getNoticeList()
     },
     handleCreate() {
-      if (this.editNoticeID) {
-        this.editNoticeID = null
+      if (this.form.noticeID) {
         this.form = {
+          noticeID: null,
           expireDate: null,
           noticeContent: '',
         }
@@ -169,15 +146,15 @@ export default {
       this.showNoticeEditor = true
     },
     handleEdit(row) {
-      this.editNoticeID = row.noticeID
       this.form = {
+        noticeID: row.noticeID,
         expireDate: new Date(row.expireDate),
         noticeContent: row.content,
       }
       this.showNoticeEditor = true
     },
     handleDelete(row) {
-      this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该公告, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -202,20 +179,18 @@ export default {
       this.showNoticeEditor = false
     },
     editorConfirm() {
-      if (!this.form.expireDate) {
-        this.$utils.alertMessage(this, '请设置过期时间', 'warning')
-        return
-      }
       let params = {
         expireDate: this.form.expireDate && this.$utils.time.format(this.form.expireDate, 'yyyy-MM-dd'),
         noticeContent: this.form.noticeContent
       }
       this.dialogLoading = true
-      if (!this.editNoticeID) {
+      // 创建
+      if (!this.form.noticeID) {
         this.$api.notice.createNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '创建成功', 'success')
             this.form = {
+              noticeID: null,
               expireDate: null,
               noticeContent: '',
             }
@@ -230,11 +205,10 @@ export default {
           this.dialogLoading = false
           this.showNoticeEditor = false
         })
-      } else {
-        params = {
-          ...params,
-          noticeID: this.editNoticeID
-        }
+      }
+      // 编辑
+      else {
+        this.form.noticeID && (params.noticeID = this.form.noticeID)
         this.$api.notice.updateNotice(params).then((res) => {
           if (res.data.errCode === 0) {
             this.$utils.alertMessage(this, '编辑成功', 'success')
@@ -258,17 +232,19 @@ export default {
 <style scoped lang="scss">
 @import "src/element-variables";
 
-.toolbar {
+.header {
   display: flex;
   justify-content: space-between;
+  margin-bottom: $--toolbar-margin-bottom;
 }
 
 .content {
   white-space: nowrap;
 }
 
-.table {
-  margin: 10px auto 10px;
+.pagination {
+  margin-top: $--pagination-margin-top;
+  margin-bottom: $--pagination-margin-bottom;
 }
 
 .delete {
@@ -279,7 +255,7 @@ export default {
   }
 
   &:active {
-    color: $--color-danger;
+    color: mix($--color-danger, $--color-black, 75%);
   }
 }
 

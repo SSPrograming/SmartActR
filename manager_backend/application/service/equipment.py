@@ -1,5 +1,5 @@
 from application.database import db
-from application.models import Equipment, equipmentType, QRCode, Reserve_Record
+from application.models import Equipment, equipmentType, QRCode, Reserve_Record, InstructionImage, Instruction
 from application.utils import strToTime, strToDate, now
 import datetime
 from sqlalchemy import and_
@@ -307,3 +307,43 @@ class EquipmentService():
             return "删除设备失败", False
         db.session.commit()
         return "ok", True
+    
+    def transfer_image():
+        def replace_url(oldurl):
+            return oldurl.replace('www.smartactr.cloud','120.53.231.51')
+        qrcodeList = QRCode.query.all()
+        for qrcode in qrcodeList:
+            qrcode.QRCodeURL = replace_url(qrcode.QRCodeURL)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return False
+        instructionImage = InstructionImage.query.all()
+        for instruction_image in instructionImage:
+            instruction_image.imageURL = replace_url(instruction_image.imageURL)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return False
+        
+        equipmenttypelist = equipmentType.query.all()
+        for equipmenttype in equipmenttypelist:
+            equipmenttype.equipmentImageURL = replace_url(equipmenttype.equipmentImageURL)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return False
+
+        instructionlist = Instruction.query.all()
+        for instruction in instructionlist:
+            instruction.instructionCoverURL = replace_url(instruction.instructionCoverURL)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return False
+        
+        return True

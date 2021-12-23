@@ -7,12 +7,6 @@ import {
 } from './common';
 
 const reserve_config = {
-  equipmentType2imagePath: [
-    '',
-    '/resources/images/3DPrinter.jpg',
-    '/resources/images/experimentTable.jpg',
-    '/resources/images/laserCutter.jpg',
-  ],
   equipmentStatus2String: [
     '空闲',
     '拥挤',
@@ -60,6 +54,31 @@ const reserve = {
       method: 'POST',
       data: params,
     });
+  },
+  getNotice() {
+    return request({
+      url: '/reserve/getNotice',
+      method: 'GET',
+    });
+  },
+  checkIn(params) {
+    return request({
+      url: '/checkIn',
+      method: 'Post',
+      data: params,
+    })
+  },
+  getInstructionList() {
+    return request({
+      url: '/instruction/getInstructionList',
+      method: 'GET',
+    })
+  },
+  getTagList() {
+    return request({
+      url: '/instruction/getTagList',
+      method: 'GET',
+    })
   },
 };
 

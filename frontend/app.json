@@ -1,46 +1,48 @@
 {
-    "entryPagePath": "pages/reserve/reserve",
-    "pages": [
-        "pages/reserve/reserve",
-        "pages/do_reserve/do_reserve",
-        "pages/user/user",
-        "pages/instruction/instruction"
-    ],
-    "window": {
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "智慧活动室",
-        "backgroundColor": "#eee",
-        "backgroundTextStyle": "light"
-    },
-    "tabBar": {
-        "custom": true,
-        "color": "#888888",
-        "selectedColor": "#888888",
-        "backgroundColor": "#ffffff",
-        "list": [
-            {
-                "pagePath": "pages/reserve/reserve",
-                "text": "预约",
-                "iconPath": "resources/icons/toolbar/reserve.png",
-                "selectedIconPath": "resources/icons/toolbar/reserve-selected.png"
-            },
-            {
-                "pagePath": "pages/instruction/instruction",
-                "text": "使用说明",
-                "iconPath": "resources/icons/toolbar/instruction.png",
-                "selectedIconPath": "resources/icons/toolbar/instruction-selected.png"
-            },
-            {
-                "pagePath": "pages/user/user",
-                "text": "用户",
-                "iconPath": "resources/icons/toolbar/user.png",
-                "selectedIconPath": "resources/icons/toolbar/user-selected.png"
-            }
-        ]
-    },
-    "debug": false,
-    "usingComponents": {},
-    "sitemapLocation": "sitemap.json",
-    "style": "v2"
+  "entryPagePath": "pages/reserve/reserve",
+  "pages": [
+    "pages/reserve/reserve",
+    "pages/do_reserve/do_reserve",
+    "pages/user/user",
+    "pages/instruction/instruction",
+    "pages/reserve_history/reserve_history",
+    "pages/open_instruction/open_instruction"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "智慧活动室",
+    "backgroundColor": "#eee",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#888888",
+    "selectedColor": "#888888",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/reserve/reserve",
+        "text": "预约",
+        "iconPath": "resources/icons/toolbar/reserve.png",
+        "selectedIconPath": "resources/icons/toolbar/reserve-selected.png"
+      },
+      {
+        "pagePath": "pages/instruction/instruction",
+        "text": "使用说明",
+        "iconPath": "resources/icons/toolbar/instruction.png",
+        "selectedIconPath": "resources/icons/toolbar/instruction-selected.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "用户",
+        "iconPath": "resources/icons/toolbar/user.png",
+        "selectedIconPath": "resources/icons/toolbar/user-selected.png"
+      }
+    ]
+  },
+  "debug": false,
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
 }
