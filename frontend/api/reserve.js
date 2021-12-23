@@ -66,19 +66,19 @@ const reserve = {
       url: '/checkIn',
       method: 'Post',
       data: params,
-    })
+    });
   },
   getInstructionList() {
     return request({
       url: '/instruction/getInstructionList',
       method: 'GET',
-    })
+    });
   },
   getTagList() {
     return request({
       url: '/instruction/getTagList',
       method: 'GET',
-    })
+    });
   },
 };
 

@@ -25,7 +25,7 @@ Page({
           let WxParse = require('../../wxParse/wxParse.js');
           let content = this.data.instructionContent;
           let that = this;
-          WxParse.wxParse('content', 'html', content, that, 30)
+          WxParse.wxParse('content', 'md', content, that, 30)
         } else {
           app.dealError(res.data, 'SERVER');
         }
