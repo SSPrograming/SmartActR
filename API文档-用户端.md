@@ -3,7 +3,7 @@
 
 - [x] **用户相关** 
 
-@bp_user**.**route('/api/v1/user/login', methods=['POST'])
+@bp_user**.**route('/user-api/v1/user/login', methods=['POST'])
 
 > 登录接口
 
@@ -27,7 +27,7 @@ ret：
 
 
 
-@bp_user.route('/api/v1/user/bind', methods=['POST'])
+@bp_user.route('/user-api/v1/user/bind', methods=['POST'])
 
 @login_required
 
@@ -52,7 +52,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/user/getBindStatus', methods=['GET'])
+@bp_user.route('/user-api/v1/user/getBindStatus', methods=['GET'])
 
 @login_required
 
@@ -68,7 +68,7 @@ ret:
 
 
 
-@bp_user('/api/v1/user/getIdentity', methods=['GET'])
+@bp_user('/user-api/v1/user/getIdentity', methods=['GET'])
 
 @login_required
 
@@ -84,7 +84,7 @@ ret:
 
 
 
-@bp_user('/api/v1/user/getStudentInfo', methods=['GET'])
+@bp_user('/user-api/v1/user/getStudentInfo', methods=['GET'])
 
 @login_required
 
@@ -101,7 +101,7 @@ ret:
 
 
 
-@bp_instruction('/api/v1/instruction/getInstructionList', method=['GET'])
+@bp_instruction('/user-api/v1/instruction/getInstructionList', method=['GET'])
 
 @login_required
 
@@ -126,7 +126,7 @@ ret:
 
 
 
-@bp_instruction('/api/v1/instruction/getSingleInstruction', method=['POST'])
+@bp_instruction('/user-api/v1/instruction/getSingleInstruction', method=['POST'])
 
 @login_required
 
@@ -148,7 +148,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/getFreezeStatus', method=['GET'])
+@bp_instruction.route('/user-api/v1/instruction/getFreezeStatus', method=['GET'])
 
 @login_required
 
@@ -165,7 +165,7 @@ ret:
 
 - [x] **预约相关**
 
-@bp_reserve.route('/api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/getAllEquipmentStatus', methods=['POST'])
 
 @login_required
 
@@ -202,7 +202,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/getEquipmentStatus', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/getEquipmentStatus', methods=['POST'])
 
 @login_required
 
@@ -241,7 +241,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/reserveEquipment', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/reserveEquipment', methods=['POST'])
 
 @login_required
 
@@ -274,7 +274,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
+@bp_reserve.route('/user-api/v1/reserve/getCurrentReserveInfo', methods=['GET'])
 
 @login_required
 
@@ -301,7 +301,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
+@bp_reserve.route('/user-api/v1/reserve/getHistoryReserveInfo', methods=['GET'])
 
 @login_required
 
@@ -330,7 +330,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/checkIn', methods=['POST'])
+@bp_reserve.route('/user-api/v1/checkIn', methods=['POST'])
 
 @login_required
 
@@ -354,7 +354,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/cancelReserve', methods=['POST'])
+@bp_reserve.route('/user-api/v1/reserve/cancelReserve', methods=['POST'])
 
 @login_required
 
@@ -380,7 +380,7 @@ ret:
 
 - [x] **公告相关**
 
-@bp_notice.route('/api/v1/reserve/getNotice', methods=['GET'])
+@bp_notice.route('/user-api/v1/reserve/getNotice', methods=['GET'])
 
 @login_required
 

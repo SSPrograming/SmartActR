@@ -3,7 +3,7 @@
 
 - [x] **登录**
 
-@bp_admin**.**route('/api/v1/admin/login', methods=['POST'])
+@bp_admin**.**route('/manager-api/v1/admin/login', methods=['POST'])
 
 params
 
@@ -28,7 +28,7 @@ ret:
 
 - [x] **公告相关**
 
-@bp_notice.route('/api/v1/notice/getNoticeList', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/getNoticeList', methods=['POST'])
 
 params:
 
@@ -59,7 +59,7 @@ ret:
 
 
 
-@bp_notice.route('/api/v1/notice/createNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/createNotice', methods=['POST'])
 
 params:
 
@@ -81,7 +81,7 @@ ret:
 
 
 
-@bp_notice.route('/api/v1/notice/updateNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/updateNotice', methods=['POST'])
 
 params:
 
@@ -104,7 +104,7 @@ ret:
 
 
 
-@bp_notice.route('/api/v1/notice/deleteNotice', methods=['POST'])
+@bp_notice.route('/manager-api/v1/notice/deleteNotice', methods=['POST'])
 
 params:
 
@@ -127,7 +127,7 @@ ret:
 
 - [x] **预约管理**
 
-@bp_reserve.route('/api/v1/reserve/getTodayRecord', methods=['GET'])
+@bp_reserve.route('/manager-api/v1/reserve/getTodayRecord', methods=['GET'])
 
 @login_required
 
@@ -153,7 +153,7 @@ ret:
 
 
 
-@bp_reserve.route('/api/v1/reserve/getHistoryRecord', methods=['POST'])
+@bp_reserve.route('/manager-api/v1/reserve/getHistoryRecord', methods=['POST'])
 
 @login_required
 
@@ -192,7 +192,7 @@ ret:
 
 展示有哪些种类的设备：
 
-@bp_equipment.route('/api/v1/equipment/getAllEquipmentType', methods=['GET'])
+@bp_equipment.route('/manager-api/v1/equipment/getAllEquipmentType', methods=['GET'])
 
 @login_required
 
@@ -217,7 +217,7 @@ ret:
 
 获取某设备种类的所有设备信息：
 
-@bp_equipment.route('/api/v1/equipment/getEquipmentList', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/getEquipmentList', methods=['POST'])
 
 @login_required
 
@@ -250,7 +250,7 @@ ret:
 
 添加新的设备种类：
 
-@bp_equipment.route('/api/v1/equipment/addEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/addEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -279,7 +279,7 @@ ret:
 
 编辑设备种类：
 
-@bp_equipment.route('/api/v1/equipment/editEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/editEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -307,7 +307,7 @@ ret:
 
 删除设备种类：
 
-@bp_equipment.route('/api/v1/equipment/deleteEquipmentType', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/deleteEquipmentType', methods=['POST'])
 
 @login_required
 
@@ -329,7 +329,7 @@ ret:
 
 交换设备顺序：
 
-@bp_equipment.route('/api/v1/equipment/swapEquipmentOrder', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/swapEquipmentOrder', methods=['POST'])
 
 @login_required
 
@@ -354,7 +354,7 @@ ret:
 
 添加设备：
 
-@bp_equipment.route('/api/v1/equipment/addEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/addEquipment', methods=['POST'])
 
 @login_required
 
@@ -379,7 +379,7 @@ ret:
 
 编辑设备状态：
 
-@bp_equipment.route('/api/v1/equipment/editEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/editEquipment', methods=['POST'])
 
 @login_required
 
@@ -406,7 +406,7 @@ ret:
 
 获取设备预约记录：
 
-@bp_equipment.route('/api/v1/equipment/getEquipmentRecordList', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/getEquipmentRecordList', methods=['POST'])
 
 @login_required
 
@@ -445,7 +445,7 @@ ret:
 
 删除设备：
 
-@bp_equipment.route('/api/v1/equipment/deleteEquipment', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/equipment/deleteEquipment', methods=['POST'])
 
 @login_required
 
@@ -462,7 +462,7 @@ params:
 
 **二维码查看**：
 
-@bp_equipment.route('/api/v1/qrcode/getQRCode', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/qrcode/getQRCode', methods=['POST'])
 
 @login_required
 
@@ -485,7 +485,7 @@ ret:
 
 
 
-@bp_equipment.route('/api/v1/qrcode/refreshQRCode', methods=['POST'])
+@bp_equipment.route('/manager-api/v1/qrcode/refreshQRCode', methods=['POST'])
 
 @login_required
 
@@ -511,7 +511,7 @@ ret:
 
 #### 独占规则
 
-@bp_rule.route('/api/v1/rules/addRule',methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/addRule',methods=['POST'])
 
 @login_required
 
@@ -540,7 +540,7 @@ ret:
 
 
 
-@bp_rule.route('/api/v1/rules/updateRule',methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/updateRule',methods=['POST'])
 
 @login_required
 
@@ -572,7 +572,7 @@ ret:
 
 
 
-@bp_rule.route('/api/v1/rules/deleteRule',methods=['POST'])
+@bp_rule.route('/manager-api/v1/rules/deleteRule',methods=['POST'])
 
 @login_required
 
@@ -594,7 +594,7 @@ ret:
 
 
 
-@bp_rule.route('/api/v1/rules/getRules',methods=['GET'])
+@bp_rule.route('/manager-api/v1/rules/getRules',methods=['GET'])
 
 @login_required
 
@@ -627,7 +627,7 @@ ret:
 
 **使用说明**
 
-@bp_instruction.route('/api/v1/instruction/addInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/addInstruction',methods=['POST'])
 
 @login_required
 
@@ -654,7 +654,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/addImage',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/addImage',methods=['POST'])
 
 @login_required
 
@@ -678,7 +678,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/deleteImage',methods=['POST'])
 
 @login_required
 
@@ -701,7 +701,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/updateInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/updateInstruction',methods=['POST'])
 
 @login_required
 
@@ -733,7 +733,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/updateContent',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/updateContent',methods=['POST'])
 
 @login_required
 
@@ -760,7 +760,7 @@ ret；
 
 
 
-@bp_instruction.route('/api/v1/instruction/getSingleInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstruction',methods=['POST'])
 
 @login_required
 
@@ -782,7 +782,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
 
 @login_required
 
@@ -811,7 +811,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/deleteImage',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/deleteImage',methods=['POST'])
 
 @login_required
 
@@ -834,7 +834,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/getInstructionList',methods=['GET'])
+@bp_instruction.route('/manager-api/v1/instruction/getInstructionList',methods=['GET'])
 
 @login_required
 
@@ -859,7 +859,7 @@ ret:
 
 
 
-@bp_instruction.route('/api/v1/instruction/deleteInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/deleteInstruction',methods=['POST'])
 
 @login_required
 
@@ -883,7 +883,7 @@ ret:
 
 **用户管理**
 
-@bp_user.route('/api/v1/user/queryUserInfo',methods=['POST'])
+@bp_user.route('/manager-api/v1/user/queryUserInfo',methods=['POST'])
 
 @login_required
 
@@ -920,7 +920,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/user/getStudentRecordList',methods=['POST'])
+@bp_user.route('/manager-api/v1/user/getStudentRecordList',methods=['POST'])
 
 @login_required
 
@@ -958,7 +958,7 @@ ret:
 
 
 
-@bp_user.route('/api/v1/user/updateUserStatus',methods=['POST'])
+@bp_user.route('/manager-api/v1/user/updateUserStatus',methods=['POST'])
 
 @login_required
 
