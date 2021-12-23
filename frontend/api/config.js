@@ -1,5 +1,6 @@
 // config.js
-const baseUrl = 'http://120.53.231.51:5000/api/v1';
+const serverUrl = 'http://www.smartactr.cloud' // 填写后端url
+const baseUrl = `${serverUrl}/user-api/v1`
 
 export default {
   baseUrl,

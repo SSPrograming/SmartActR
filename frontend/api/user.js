@@ -45,6 +45,12 @@ const user = {
       method: 'GET',
     });
   },
+  getFreezeStatus() {
+    return request({
+      url: '/user/getFreezeStatus',
+      method: 'GET',
+    });
+  },
 };
 
 export default user;
