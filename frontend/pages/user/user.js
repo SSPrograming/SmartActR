@@ -17,53 +17,41 @@ Page({
     codeScanned: '',
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    // 获取学生信息
+  // 活动室使用须知
+  showNotice(e) {
     const needToDo = () => {
-      app.$api.user.getIdentity()
+      app.$api.instruction.getREADME()
         .then((res) => {
           if (res.data.errCode === 0) {
-            // 如果后端返回正确信息
-            this.setData({
-              identity: res.data.identity,
-            });
+            if (res.data.instructionID == -1) {
+              wx.showModal({
+                title: '提示',
+                content: '暂无使用须知',
+                showCancel: false,
+                confirmText: '确定',
+                confirmColor: '#cf3c7f',
+              });
+            } else {
+              wx.navigateTo({
+                url: `/pages/open_instruction/open_instruction?instructionID=${res.data.instructionID}`,
+              })
+            }
           } else {
-            // 如果后端返回错误信息
             app.dealError(res.data, 'SERVER');
           }
         })
         .catch((err) => {
-          // 如果后端 api 调用失败
           app.dealError(err, 'API');
         });
     };
     app.dealThing(needToDo);
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  //跳转历史记录
+  // 跳转历史记录
   seeRecord(e) {
     wx.navigateTo({
       url: `/pages/reserve_history/reserve_history`,
-    })
-  },
-
-  //活动室使用须知
-  showNotice(e) {
-    wx.showModal({
-      title: "使用须知",
-      content: "1. 活动室内禁止吃东西\r\n2. 活动室里禁止卖萌\r\n3. 活动室里禁止使用2进制",
-      showCancel: false,
-    })
+    });
   },
 
   checkIn() {
@@ -98,7 +86,8 @@ Page({
         app.dealError(err, 'API');
       });
   },
-  //扫码签到
+
+  // 扫码签到
   scanCode(e) {
     wx.scanCode({
       onlyFromCamera: true,
@@ -184,6 +173,39 @@ Page({
         }
       },
     })
+  },
+
+  /**
+ * 生命周期函数--监听页面加载
+ */
+  onLoad(options) {
+    // 获取学生信息
+    const needToDo = () => {
+      app.$api.user.getIdentity()
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            // 如果后端返回正确信息
+            this.setData({
+              identity: res.data.identity,
+            });
+          } else {
+            // 如果后端返回错误信息
+            app.dealError(res.data, 'SERVER');
+          }
+        })
+        .catch((err) => {
+          // 如果后端 api 调用失败
+          app.dealError(err, 'API');
+        });
+    };
+    app.dealThing(needToDo);
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
   },
 
   /**
