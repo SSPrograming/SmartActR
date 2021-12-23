@@ -72,7 +72,6 @@ App({
   onLaunch() {
     // 调用API
     this.$util.hello();
-
     // 把绑定加入登录回调函数列表
     this.loginCallBack.push(() => {
       // 获取绑定状态
@@ -94,7 +93,36 @@ App({
           this.dealError(err, 'API');
         });
     });
-
+    // 把获取冻结状态加入登录回调列表
+    this.loginCallBack.push(() => {
+      this.$api.user.getFreezeStatus()
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            // 如果后端返回正确信息
+            this.globalData.freezeStatus = res.data.freezeStatus;
+            if (res.data.freezeStatus) {
+              const date = new Date(res.data.freezeDate);
+              date.setDate(date.getDate() + 7);
+              this.globalData.freezeDate = date;
+              const date_str = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+              wx.showModal({
+                title: '冻结提示',
+                content: `抱歉，您因为多次违约或恶劣行为被冻结，冻结时间持续到${date_str}，期间您无法进行预约操作`,
+                showCancel: false,
+                confirmText: '确定',
+                confirmColor: '#cf3c7f',
+              });
+            }
+          } else {
+            // 如果后端返回错误信息
+            this.dealError(res.data, 'SERVER');
+          }
+        })
+        .catch((err) => {
+          // 如果后端 api 调用失败
+          this.dealError(err, 'API');
+        })
+    });
     // 登录
     this.login();
   },

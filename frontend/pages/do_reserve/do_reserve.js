@@ -138,7 +138,18 @@ Page({
   doReserve() {
     const needToDo = () => {
       //判断冻结
-
+      if (app.globalData.freezeStatus) {
+        const date = app.globalData.freezeDate;
+        const date_str = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        wx.showModal({
+          title: '冻结提示',
+          content: `抱歉，您因为多次违约或恶劣行为被冻结，冻结时间持续到${date_str}，期间您无法进行预约操作`,
+          showCancel: false,
+          confirmText: '确定',
+          confirmColor: '#cf3c7f',
+        });
+        return;
+      }
       //判断是否
       app.$api.user.getBindStatus()
         .then((res) => {
@@ -259,7 +270,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {},
+  onShow() { },
 
   /**
    * 生命周期函数--监听页面隐藏
