@@ -32,3 +32,9 @@ class InstructionService:
         tagset = set([item.tagName for item in taglist_raw])
         taglist = [tag for tag in tagset]
         return taglist
+
+    def getREADME():
+        readme_obj = InstructionTag.query.filter(InstructionTag.tagName=='使用须知').order_by(InstructionTag.instructionID.desc()).first()
+        if readme_obj is None:
+            return -1
+        return readme_obj.instructionID

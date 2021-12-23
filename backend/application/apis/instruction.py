@@ -39,3 +39,13 @@ def get_TagList():
         "errMsg":"",
         "tagList":tagList
     }), 200
+
+@bp_instruction.route('/user-api/v1/instruction/getREADME', methods=['GET'])
+@login_required
+def getREADME():
+    instructionID = InstructionService.getREADME()
+    return jsonify({
+        "errCode":0,
+        "errMsg":"",
+        "instructionID": instructionID
+    }), 200
