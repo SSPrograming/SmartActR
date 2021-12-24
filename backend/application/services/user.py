@@ -79,7 +79,6 @@ class UserService():
             db.session.add(stu)
             db.session.commit()
             if not bindStatus:
-                print(msg)
                 return msg, False
             else:
                 return 'ok', True

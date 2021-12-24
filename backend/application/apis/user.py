@@ -75,7 +75,6 @@ def bind():
     payload = {"token": ticket}
     tResponse = requests.post(url=tsinghuaURL, json=payload)
     tContent = tResponse.json()
-    print(tContent)
     if 'user' in tContent.keys():
         try:
             stuID = tContent['user']['card']

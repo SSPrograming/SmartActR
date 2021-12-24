@@ -92,7 +92,6 @@ def getEquipmentStatus():
                 minute_round = 0
             item_startTime = item_startTime.replace(
                 hour=hour, minute=minute_round)
-            print(item_startTime)
             spareTime[0]["startTime"] = item_startTime.strftime("%H:%M")
             if spareTime[0]["startTime"] == spareTime[0]["endTime"]:
                 del spareTime[0]

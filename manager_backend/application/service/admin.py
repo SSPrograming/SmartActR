@@ -19,11 +19,9 @@ class AdminService():
         frontend_salt = query_yaml('app.FRONTENDSALT')
         hashFunc = hashlib.md5()
         raw_code = adminName + adminPass + frontend_salt
-        print(raw_code)
         hashFunc.update(raw_code.encode('utf-8'))
         frontend_code = hashFunc.hexdigest()
 
-        print(frontend_code)
         administrator = Admin.query.filter(Admin.userName == adminName).first()
         if administrator is None:
             new_admin = Admin()

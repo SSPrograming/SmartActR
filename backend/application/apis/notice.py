@@ -20,8 +20,6 @@ def notice():
         "expireDate": "", #格式的样例："2021-11-12"
         }) 
     else:
-        print("Date:")
-        print(notice.noticeDate)
         noticeDate_str = str(notice.noticeDate)
         expireDate_str = str(notice.expireDate)
         return jsonify({
