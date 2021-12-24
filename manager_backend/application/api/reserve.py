@@ -12,6 +12,7 @@ bp_reserve = Blueprint(
     __name__
 )
 
+
 @bp_reserve.route('/manager-api/v1/reserve/getTodayRecord', methods=['GET'])
 @login_required
 def getTodayRecord():
@@ -20,14 +21,14 @@ def getTodayRecord():
     for item in record_list_raw:
         record_list.append({
             "recordID": item.recordID,
-			"postTime": item.postTime.strftime("%Y-%m-%d %H:%M"),
-			"reserveDate": item.reserveDate.strftime("%Y-%m-%d"),
-			"startTime": item.startTime.strftime("%H:%M"),
-			"endTime": item.endTime.strftime("%H:%M"),
-			"userName": UserService.get_name_by_id(item.userID),
-			"status": item.status,
-			"equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0] 
-                            + str(item.equipmentID) + "号"
+            "postTime": item.postTime.strftime("%Y-%m-%d %H:%M"),
+            "reserveDate": item.reserveDate.strftime("%Y-%m-%d"),
+            "startTime": item.startTime.strftime("%H:%M"),
+            "endTime": item.endTime.strftime("%H:%M"),
+            "userName": UserService.get_name_by_id(item.userID),
+            "status": item.status,
+            "equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0]
+            + str(item.equipmentID) + "号"
         })
     return jsonify({"errCode": 0, "recordList": record_list}), 200
 
@@ -37,25 +38,28 @@ def getTodayRecord():
 def getHistoryRecord():
     try:
         num = request.json["num"]
-        start_date = request.json["startDate"] if "startDate" in request.json.keys() else None
-        end_date = request.json["endDate"] if "endDate" in request.json.keys() else None
+        start_date = request.json["startDate"] if "startDate" in request.json.keys(
+        ) else None
+        end_date = request.json["endDate"] if "endDate" in request.json.keys(
+        ) else None
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     try:
-        record_list_raw = ReserveService.get_history_record(start_date, end_date, num)
+        record_list_raw = ReserveService.get_history_record(
+            start_date, end_date, num)
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
     record_list = []
     for item in record_list_raw:
         record_list.append({
             "recordID": item.recordID,
-			"postTime": item.postTime.strftime("%Y-%m-%d %H:%M") if item.postTime else "undefined",
-			"reserveDate": item.reserveDate.strftime("%Y-%m-%d") if item.reserveDate else "undefined",
-			"startTime": item.startTime.strftime("%H:%M") if item.startTime else "undefined",
-			"endTime": item.endTime.strftime("%H:%M") if item.endTime else "undefined",
-			"userName": UserService.get_name_by_id(item.userID),
-			"status": item.status,
-			"equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0]
-                            +str(item.equipmentID) + "号"
+            "postTime": item.postTime.strftime("%Y-%m-%d %H:%M") if item.postTime else "undefined",
+            "reserveDate": item.reserveDate.strftime("%Y-%m-%d") if item.reserveDate else "undefined",
+            "startTime": item.startTime.strftime("%H:%M") if item.startTime else "undefined",
+            "endTime": item.endTime.strftime("%H:%M") if item.endTime else "undefined",
+            "userName": UserService.get_name_by_id(item.userID),
+            "status": item.status,
+            "equipmentName": EquipmentService.get_name_by_type(item.equipmentType)[0]
+            + str(item.equipmentID) + "号"
         })
     return jsonify({"errCode": 0, "recordList": record_list}), 200
