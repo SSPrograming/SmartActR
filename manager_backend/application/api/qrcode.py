@@ -14,6 +14,7 @@ bp_qrcode = Blueprint(
     __name__
 )
 
+
 @bp_qrcode.route('/manager-api/v1/qrcode/refreshQRCode', methods=['POST'])
 @login_required
 def refreshQRCode():
@@ -22,18 +23,21 @@ def refreshQRCode():
         equipment_id = request.json['equipmentID']
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    raw_str = str(equipment_type) + '-' + str(equipment_id) + '-' + str(datetime.datetime.now())
+    raw_str = str(equipment_type) + '-' + str(equipment_id) + \
+        '-' + str(datetime.datetime.now())
     raw_code = hash_code(raw_str)
     print(raw_code)
     img_name = str(equipment_type)+"-"+str(equipment_id)+".png"
     img_url = query_yaml("app.MANAGERSERVERURL")+"image/qrcode/"+img_name
-    msg, refreshStatus = EquipmentService.update_hashcode(equipment_type, equipment_id,raw_code, img_url)
-    if refreshStatus==False:
+    msg, refreshStatus = EquipmentService.update_hashcode(
+        equipment_type, equipment_id, raw_code, img_url)
+    if refreshStatus == False:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     qr_img = qrcode.make(raw_code)
     print(os.getcwd())
     qr_img.save("./application/static/qrcode/"+img_name)
-    return jsonify({"errCode": 0,"qrcodeURL": img_url}), 200
+    return jsonify({"errCode": 0, "qrcodeURL": img_url}), 200
+
 
 @bp_qrcode.route('/manager-api/v1/qrcode/getQRCode', methods=['POST'])
 @login_required

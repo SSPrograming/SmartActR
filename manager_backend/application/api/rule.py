@@ -11,6 +11,7 @@ bp_rule = Blueprint(
     __name__
 )
 
+
 @bp_rule.route('/manager-api/v1/rules/addRule', methods=['POST'])
 @login_required
 def addRule():
@@ -31,12 +32,12 @@ def addRule():
             expireDate = request.json["expireDate"]
             ruleContent["expireDate"] = expireDate
             day = request.json["day"]
-            if day==0:
-                day=7
+            if day == 0:
+                day = 7
             ruleContent["day"] = day
         except:
             return jsonify(argumentErr), 200
-    elif repeat==0:
+    elif repeat == 0:
         try:
             date = request.json["date"]
             ruleContent["expireDate"] = date
@@ -45,7 +46,7 @@ def addRule():
             return jsonify(argumentErr), 200
     else:
         return jsonify(argumentErr)
-    
+
     msg, addStatus = ruleService.addRule(repeat, ruleContent)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
@@ -74,12 +75,12 @@ def updateRule():
             expireDate = request.json["expireDate"]
             ruleContent["expireDate"] = expireDate
             day = request.json["day"]
-            if day==0:
-                day=7
+            if day == 0:
+                day = 7
             ruleContent["day"] = day
         except:
             return jsonify(argumentErr), 200
-    elif repeat==0:
+    elif repeat == 0:
         try:
             date = request.json["date"]
             ruleContent["expireDate"] = date
@@ -88,25 +89,26 @@ def updateRule():
             return jsonify(argumentErr), 200
     else:
         return jsonify(argumentErr)
-    
+
     msg, addStatus = ruleService.updateRule(ruleID, repeat, ruleContent)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
-    
+
 
 @bp_rule.route('/manager-api/v1/rules/getRules', methods=['GET'])
 @login_required
 def getRules():
     rule_list_raw = ruleService.get_rule_list()
     now_datetime = now()
-    now_date = datetime.date(now_datetime.year, now_datetime.month, now_datetime.day)
+    now_date = datetime.date(
+        now_datetime.year, now_datetime.month, now_datetime.day)
     rule_list_ret = []
     for item in rule_list_raw:
         rule = {}
         rule["repeat"] = item.repeat
-        if item.repeat==1:
+        if item.repeat == 1:
             rule["day"] = item.day % 7
         else:
             rule["date"] = str(item.date)
@@ -118,6 +120,7 @@ def getRules():
         rule["ruleDescription"] = '' if item.ruleDescription is None else item.ruleDescription
         rule_list_ret.append(rule)
     return jsonify({"rules": rule_list_ret, "errCode": 0}), 200
+
 
 @bp_rule.route('/manager-api/v1/rules/deleteRule', methods=['POST'])
 @login_required

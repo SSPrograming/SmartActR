@@ -13,7 +13,8 @@ bp_instruction = Blueprint(
     __name__
 )
 
-@bp_instruction.route('/manager-api/v1/instruction/addImage',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/addImage', methods=['POST'])
 @login_required
 def addImage():
     try:
@@ -24,14 +25,15 @@ def addImage():
     if not os.path.exists("./application/static/instruction/"):
         os.makedirs("./application/static/instruction")
     ImageName = Image.filename
-    msg_or_info, addStatus = InstructionService.addImage(ImageName, instructionID)
+    msg_or_info, addStatus = InstructionService.addImage(
+        ImageName, instructionID)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg_or_info}), 200
     Image.save("./application/static/instruction/" + msg_or_info[1])
     return jsonify({"errCode": 0, "ImageURL": msg_or_info[0], "instructionImageID": msg_or_info[2]}), 200
 
 
-@bp_instruction.route('/manager-api/v1/instruction/addInstruction',methods=['POST'])
+@bp_instruction.route('/manager-api/v1/instruction/addInstruction', methods=['POST'])
 @login_required
 def addInstruction():
     try:
@@ -40,21 +42,24 @@ def addInstruction():
         instructionTags = request.form.get("instructionTags").split(',')
         print(request.form.to_dict())
     except:
-        return jsonify({"errCode":1, "errMsg": "bad arguments"}), 200
-    
+        return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
+
     instructionCoverName = instructionCover.filename
-    msg_or_url, addStatus = InstructionService.addInstruction(instructionName, instructionTags, instructionCoverName)
+    msg_or_url, addStatus = InstructionService.addInstruction(
+        instructionName, instructionTags, instructionCoverName)
     if not addStatus:
         return jsonify({"errCode": 1, "errMsg": msg_or_url}), 200
-    
+
     if not os.path.exists("./application/static/instructioncover/"):
         os.makedirs("./application/static/instructioncover")
 
     new_cover_name = msg_or_url.split('/')[-1]
-    instructionCover.save('./application/static/instructioncover/'+new_cover_name)
+    instructionCover.save(
+        './application/static/instructioncover/'+new_cover_name)
     return jsonify({"errCode": 0}), 200
-    
-@bp_instruction.route('/manager-api/v1/instruction/updateInstruction',methods=['POST'])
+
+
+@bp_instruction.route('/manager-api/v1/instruction/updateInstruction', methods=['POST'])
 @login_required
 def updateInstruction():
     try:
@@ -64,17 +69,21 @@ def updateInstruction():
     except Exception as e:
         print(e)
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    instructionCover = request.files["instructionCover"] if "instructionCover" in request.files.keys() else None
+    instructionCover = request.files["instructionCover"] if "instructionCover" in request.files.keys(
+    ) else None
     instructionCoverName = instructionCover.filename if instructionCover is not None else None
-    msg, updateStatus = InstructionService.updateInstruction(instructionID, instructionName,instructionTags,instructionCoverName)
+    msg, updateStatus = InstructionService.updateInstruction(
+        instructionID, instructionName, instructionTags, instructionCoverName)
     if instructionCover is not None:
-        instructionCover.save("./application/static/instructioncover/" + str(instructionID) + '_' + instructionCoverName)
+        instructionCover.save("./application/static/instructioncover/" +
+                              str(instructionID) + '_' + instructionCoverName)
     if not updateStatus:
-        return jsonify({"errCode": 1,"errMsg": msg}), 200
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/updateContent',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/updateContent', methods=['POST'])
 @login_required
 def updateContent():
     try:
@@ -82,27 +91,30 @@ def updateContent():
         instructionContent = request.form["instructionContent"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    msg, updateStatus = InstructionService.updateInstructionContent(instructionID, instructionContent)
+    msg, updateStatus = InstructionService.updateInstructionContent(
+        instructionID, instructionContent)
     if not updateStatus:
-        return jsonify({"errCode": 1,"errMsg": msg}), 200
+        return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/getSingleInstruction',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstruction', methods=['POST'])
 @login_required
 def getSingleInstruction():
     try:
         instructionID = int(request.json["instructionID"])
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    
+
     msg, getStatus = InstructionService.getSingleInstruction(instructionID)
     if not getStatus:
         return jsonify({"errCode": 1, "errMsg": msg})
     else:
         return jsonify({"errCode": 0, "instructionContent": msg}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/getInstructionList',methods=['GET'])
+
+@bp_instruction.route('/manager-api/v1/instruction/getInstructionList', methods=['GET'])
 @login_required
 def getInstructionList():
     instructionList_raw = InstructionService.getInstructionList()
@@ -116,38 +128,42 @@ def getInstructionList():
     ]
     return jsonify({"errCode": 0, "instructionList": instructionList}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/deleteInstruction',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/deleteInstruction', methods=['POST'])
 @login_required
 def deleteInstruction():
     try:
         instructionID = int(request.json["instructionID"])
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    
+
     msg, deleteStatus = InstructionService.deleteInstruction(instructionID)
     if not deleteStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
-        return jsonify({"errCode":0}), 200
+        return jsonify({"errCode": 0}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/getSingleInstructionImageList',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/getSingleInstructionImageList', methods=['POST'])
 @login_required
 def getSingleInstructionImageList():
     try:
         instructionID = request.json["instructionID"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    
-    imageList_raw = InstructionService.getSingleInstructionImageList(instructionID)
+
+    imageList_raw = InstructionService.getSingleInstructionImageList(
+        instructionID)
     imageList = [
         {
             "imageURL": item.imageURL,
             "instructionImageID": item.instructionImageID
         } for item in imageList_raw
     ]
-    return jsonify({"imageList":imageList, "errCode": 0}), 200
+    return jsonify({"imageList": imageList, "errCode": 0}), 200
 
-@bp_instruction.route('/manager-api/v1/instruction/deleteImage',methods=['POST'])
+
+@bp_instruction.route('/manager-api/v1/instruction/deleteImage', methods=['POST'])
 @login_required
 def deleteImage():
     try:
@@ -155,11 +171,9 @@ def deleteImage():
         instructionImageID = request.json["instructionImageID"]
     except:
         return jsonify({"errCode": 1, "errMsg": "bad arguments"}), 200
-    msg, deleteStatus = InstructionService.deleteImage(instructionID, instructionImageID)
+    msg, deleteStatus = InstructionService.deleteImage(
+        instructionID, instructionImageID)
     if not deleteStatus:
         return jsonify({"errCode": 1, "errMsg": msg}), 200
     else:
         return jsonify({"errCode": 0}), 200
-
-
-    

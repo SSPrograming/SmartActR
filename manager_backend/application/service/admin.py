@@ -5,12 +5,14 @@ from config import query_yaml
 import datetime
 import hashlib
 
+
 class AdminService():
     def get_admin(username, pswd):
         pswd = encrypt_password(pswd)
-        admin_user = Admin.query.filter(Admin.userName==username, Admin.password==pswd).first()
+        admin_user = Admin.query.filter(
+            Admin.userName == username, Admin.password == pswd).first()
         return admin_user
-    
+
     def create_admin():
         adminName = query_yaml('app.ADMINNAME')
         adminPass = query_yaml('app.ADMINPASS')
@@ -20,9 +22,9 @@ class AdminService():
         print(raw_code)
         hashFunc.update(raw_code.encode('utf-8'))
         frontend_code = hashFunc.hexdigest()
-        
+
         print(frontend_code)
-        administrator = Admin.query.filter(Admin.userName==adminName).first()
+        administrator = Admin.query.filter(Admin.userName == adminName).first()
         if administrator is None:
             new_admin = Admin()
             new_admin.userName = adminName
