@@ -14,6 +14,7 @@ bp_admin = Blueprint(
     __name__
 )
 
+
 @bp_admin.route('/manager-api/v1/admin/getAdminName', methods=['GET'])
 @login_required
 def getAdminName():
@@ -33,13 +34,10 @@ def login():
         username = request.json['username']
         pswd = request.json['password']
     except:
-        return jsonify({"errCode": 1,"errMsg": "bad agruments"}), 200
+        return jsonify({"errCode": 1, "errMsg": "bad agruments"}), 200
     admin_user = AdminService.get_admin(username, pswd)
     if admin_user is None:
-        return jsonify({"errCode": 1,"errMsg": "用户名或密码无效"}), 200
+        return jsonify({"errCode": 1, "errMsg": "用户名或密码无效"}), 200
     adminjwt = generate_jwt({"username": admin_user.userName})
 
     return jsonify({"errCode": 0, "jwt": adminjwt})
-
-    
-        
