@@ -148,18 +148,3 @@ def unBind():
     else:
         print(msg1, msg2, msg3)
         return jsonify({"errCode": 1,"unBinded": False}), 200
-
-
-@bp_user.route('/user-api/v1/user/test', methods=['GET'])
-def test():
-    """
-    测试用接口
-    """
-    msg = True
-    for i in range(2):
-        msg = msg and EquipmentService.insert_single_equipment(1, i+1)
-    for i in range(8):
-        msg = msg and EquipmentService.insert_single_equipment(2, i+1)
-    msg = msg and EquipmentService.insert_single_equipment(3,1)
-    print(msg)
-    return jsonify({"ok":msg}), 200
