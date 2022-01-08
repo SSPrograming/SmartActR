@@ -25,7 +25,6 @@ class CheckInService:
                 starttime_A = datetime.datetime.combine(datetime.date.today(), equipment.startTime)
                 diff_A = current_time_A - starttime_A
                 diff = diff_A.total_seconds() / 60   #以分钟位时间间隔单位
-                print("diff:",diff)
                 if diff <= 20 and diff >= -20:
                     flag = True
                     equipment.status = "完成"
